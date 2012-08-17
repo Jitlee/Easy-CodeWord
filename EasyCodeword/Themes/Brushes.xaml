@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <!-- ColorPicker 颜色开始 -->
+    
+    <LinearGradientBrush x:Key="ColorPickerSplitFill" EndPoint="0,0" StartPoint="0,1">
+        <GradientStop Color="#FFA0A0A0" Offset="0"/>
+        <GradientStop Color="White" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <SolidColorBrush x:Key="ColorPickerItemBorderBrush" Color="Transparent"/>
+    <SolidColorBrush x:Key="ColorPickerItemBackground" Color="Transparent"/>
+    <LinearGradientBrush x:Key="ColorPickerItemSelectedBorderBrush" EndPoint="1,1" StartPoint="0,0">
+        <GradientStop Color="#FFA0A0A0" Offset="0"/>
+        <GradientStop Color="#FFA0A0A0" Offset="0.50"/>
+        <GradientStop Color="White" Offset="0.51"/>
+        <GradientStop Color="White" Offset="1"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="ColorPickerItemSelectedBackground" Color="#FFF"/>
+    <SolidColorBrush x:Key="ColorPickerItemStroke" Color="#FFF0F0F0"/>
+    <SolidColorBrush x:Key="ColorPickerItemPanelBackground" Color="#F0F0F0"/>
+    
+    <Thickness x:Key="ColorPickerItemBorderThickness">1</Thickness>
+    <Thickness x:Key="ColorPickerItemPadding">2</Thickness>
+    <sys:Double x:Key="ColorPickerItemStrokeThickness">1</sys:Double>
+    
+    <!-- ColorPicker 颜色结束 -->
+</ResourceDictionary>
