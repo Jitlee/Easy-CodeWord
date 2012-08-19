@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Easy-Codeword;component/Themes/Brushes.xaml"/>
-        <ResourceDictionary Source="/Easy-Codeword;component/Themes/ColorPicker.xaml"/>
+        <ResourceDictionary Source="/EasyCodeword;component/Themes/Brushes.xaml"/>
+        <ResourceDictionary Source="/EasyCodeword;component/Themes/ColorPicker.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

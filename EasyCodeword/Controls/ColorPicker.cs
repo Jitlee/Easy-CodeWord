@@ -67,7 +67,7 @@ namespace EasyCodeword.Controls
         class CommonColor
         {
             public string DisplayName { get; set; }
-            public Brush Value { get; set; }
+            public SolidColorBrush Value { get; set; }
         }
 
         #endregion
@@ -97,11 +97,15 @@ namespace EasyCodeword.Controls
         }
 
         public static readonly DependencyProperty SelectedBrushProperty =
-            DependencyProperty.Register("SelectedBrush", typeof(Brush), typeof(ColorPicker), new PropertyMetadata(Brushes.Black, OnSelectedBrushPropertyChanged));
+            DependencyProperty.Register("SelectedBrush", typeof(SolidColorBrush),
+                typeof(ColorPicker),
+                new FrameworkPropertyMetadata(Brushes.Black,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    OnSelectedBrushPropertyChanged));
 
-        public Brush SelectedBrush
+        public SolidColorBrush SelectedBrush
         {
-            get { return (Brush)GetValue(SelectedBrushProperty); }
+            get { return (SolidColorBrush)GetValue(SelectedBrushProperty); }
             set { SetValue(SelectedBrushProperty, value); }
         }
 
@@ -118,7 +122,7 @@ namespace EasyCodeword.Controls
         {
             if (null != _selectedRectangle && e.AddedItems.Count == 1)
             {
-                _selectedRectangle.Fill = e.AddedItems[0] as Brush;
+                _selectedRectangle.Fill = e.AddedItems[0] as SolidColorBrush;
             }
 
             RaiseEvent(e);
@@ -186,6 +190,7 @@ namespace EasyCodeword.Controls
         private void OthersButton_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+            colorDialog.FullOpen = true;
             if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 var color = colorDialog.Color;

@@ -1,0 +1,81 @@
+﻿<Window x:Class="EasyCodeword.Views.ReplaceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="替换"
+        ShowInTaskbar="False"
+        WindowStyle="ToolWindow"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock
+            Text="查找内容："
+            Margin="5,0,0,0"
+            VerticalAlignment="Center"/>
+        <TextBox
+            x:Name="SearchTextBox"
+            Width="175"
+            Grid.Column="1"
+            Margin="3"
+            TextChanged="SearchTextBox_TextChanged"
+            VerticalAlignment="Center"/>
+        <TextBlock
+            Text="替换内容："
+            Grid.Row="1"
+            Margin="5,0,0,0"
+            VerticalAlignment="Center"/>
+        <TextBox
+            x:Name="ReplaceTextBox"
+            Width="175"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="3"
+            VerticalAlignment="Center"/>
+        <Button
+            x:Name="SearchNextButton"
+            Grid.Column="2"
+            Content="查找下一个"
+            Click="Search_Click"
+            Style="{DynamicResource NormalButtonStyle}"/>
+        <CheckBox
+            x:Name="CaseSensitiveCheckBox"
+            Content="区分大小写"
+            Margin="5,0,0,0"
+            VerticalAlignment="Center"
+            Grid.Row="2"
+            Grid.RowSpan="2"/>
+        <Button
+            x:Name="ReplaceButton"
+            Grid.Row="1"
+            Grid.Column="2"
+            Content="替换"
+            Click="Replace_Click"
+            Style="{DynamicResource NormalButtonStyle}"/>
+        <Button
+            x:Name="ReplaceAllButton"
+            Grid.Row="2"
+            Grid.Column="2"
+            Content="全部替换"
+            Click="ReplaceAll_Click"
+            Style="{DynamicResource NormalButtonStyle}"/>
+        <Button
+            x:Name="CancelButton"
+            Grid.Row="3"
+            Grid.Column="2"
+            IsCancel="True"
+            Content="取消"
+            Click="Cancel_Click"
+            Style="{DynamicResource NormalButtonStyle}"/>
+    </Grid>
+</Window>

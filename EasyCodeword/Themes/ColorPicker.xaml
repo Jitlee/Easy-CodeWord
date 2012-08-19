@@ -32,6 +32,8 @@
     </ControlTemplate>
 
     <Style TargetType="ctrls:ColorPicker">
+    	<Setter Property="VerticalAlignment" Value="Center"/>
+		<Setter Property="Margin" Value="3"/>
         <Setter Property="ItemContainerStyle" Value="{DynamicResource ColorPickerItemStyle}"/>
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -39,7 +41,7 @@
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
         <Setter Property="MinWidth" Value="120" />
-        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="MinHeight" Value="28" />
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Template">

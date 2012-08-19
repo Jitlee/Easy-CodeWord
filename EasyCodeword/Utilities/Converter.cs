@@ -138,14 +138,5 @@ namespace EasyCodeword.Utilities
             }
             return Brushes.Black;
         }
-
-        public static string ToArgbString(SolidColorBrush brush)
-        {
-            var alpha= brush.Color.A;
-            var red = brush.Color.R;
-            var green = brush.Color.G;
-            var blue = brush.Color.B;
-            return string.Format("#{0:X}{0:X}{0:X}{0:X}", alpha, red, green, blue);
-        }
     }
 }
