@@ -127,6 +127,12 @@ namespace EasyCodeword
             SetFontFamily(SettingViewModel.Instance.__FontFamily.FontFamily);
             SetFontStyle(SettingViewModel.Instance.__FontStyle);
             SetFontSize(SettingViewModel.Instance.__FontSize.FontSize);
+
+            // 播放背景音乐
+            if (SettingViewModel.Instance.AutoPlayMusic)
+            {
+                SoundPlayerViewModel.Instance.Play(SettingViewModel.Instance.MusicFolder);
+            }
         }
 
         private void LoadAccidentFile()
@@ -173,7 +179,7 @@ namespace EasyCodeword
         {
             if (e.Key == Key.Enter)
             {
-                MainTextBox.AppendText("\r\r　　");
+                MainTextBox.AppendText("\r\n\r\n　　");
                 MainTextBox.Select(MainTextBox.Text.Length, 0);
             }
         }
@@ -208,7 +214,7 @@ namespace EasyCodeword
                 }
                 else
                 {
-                    File.WriteAllText(MainViewModel.Instance.FileName, this.MainTextBox.Text);
+                    File.WriteAllText(MainViewModel.Instance.FileName, this.MainTextBox.Text, Encoding.Default);
                 }
             }
             catch (Exception ex)
@@ -255,7 +261,7 @@ namespace EasyCodeword
                 }
                 else
                 {
-                    File.WriteAllText(MainViewModel.Instance.FileName, this.MainTextBox.Text);
+                    File.WriteAllText(MainViewModel.Instance.FileName, this.MainTextBox.Text, Encoding.Default);
                 }
             }
             catch (Exception ex)
@@ -463,9 +469,24 @@ namespace EasyCodeword
 
         private void AutoTypeSetting_Click(object sender, RoutedEventArgs e)
         {
-            //this.MainTextBox.Text =
-            //    Regex.Replace(this.MainTextBox.Text,
-            //        "/r"
+            this.MainTextBox.Text =
+                Regex.Replace(this.MainTextBox.Text,
+                    @"([\s]*[\r\n]+[\s]*)|([\s]{5,})",
+                    "\r\n\r\n　　");
+        }
+
+        private void MainTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (MainTextBox.Text.Length > 0)
+            {
+                CharacterCountTextBlock.Text = string.Format("{0}\\{1}",
+                    Regex.Matches(MainTextBox.Text, "[\u4e00-\u9fff]").Count
+                    , MainTextBox.Text.Length);
+            }
+            else
+            {
+                CharacterCountTextBlock.Text = string.Empty;
+            }
         }
     }
 }

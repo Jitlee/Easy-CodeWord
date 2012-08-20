@@ -61,6 +61,7 @@
     <Compile Include="Core\EntityObject.cs" />
     <Compile Include="Core\MainViewModel.cs" />
     <Compile Include="Core\SettingViewModel.cs" />
+    <Compile Include="Core\SoundPlayerViewModel.cs" />
     <Compile Include="Utilities\Common.cs" />
     <Compile Include="Utilities\Converter.cs" />
     <Compile Include="Utilities\RWReg.cs" />

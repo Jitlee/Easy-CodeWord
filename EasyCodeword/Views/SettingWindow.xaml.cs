@@ -60,5 +60,17 @@ namespace EasyCodeword.Views
                 e.Handled = true;
             }
         }
+
+        private void MusicBrowser_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog();
+
+            dlg.Description = "选择包含相关图片的文件夹";
+
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                SettingViewModel.Instance.MusicFolder = dlg.SelectedPath;
+            }
+        }
     }
 }

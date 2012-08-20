@@ -124,7 +124,38 @@
                 </Grid>
             </TabItem>
             <TabItem Header="音乐">
-            	<Grid Background="#FFE5E5E5"/>
+            	<Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid
+                        Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox
+                            IsChecked="{Binding AutoPlayMusic}"
+                            Content="播放音乐"
+                            Grid.Column="0"/>
+                        <TextBox
+                            x:Name="MusicFolderTextBox"
+                           Text="{Binding MusicFolder}"
+                            IsEnabled="{Binding AutoPlayMusic}"
+                            Grid.Column="1"/>
+                        <Button
+                            Content="..."
+                            Click="MusicBrowser_Click"
+                            DockPanel.Dock="Right"
+                            IsEnabled="{Binding AutoPlayMusic}"
+                            Style="{DynamicResource NormalButtonStyle}"
+                            Grid.Column="2"/>
+                    </Grid>
+                </Grid>
             </TabItem>
             <TabItem Header="常规">
                 <Grid Background="#FFE5E5E5">

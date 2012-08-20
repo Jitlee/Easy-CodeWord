@@ -13,6 +13,7 @@
                 <Setter Property="BorderBrush" Value="Transparent"/>
                 <Setter Property="AcceptsTab" Value="True"/>
                 <Setter Property="AcceptsReturn" Value="False"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                 <Setter Property="Template">

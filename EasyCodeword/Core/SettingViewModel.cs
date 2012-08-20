@@ -229,6 +229,10 @@ namespace EasyCodeword.Core
 
         private int _autoSaveInterval = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSaveInterval", 3)); // 分钟
 
+        private bool _autoPlayMusic = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoPlayMusic", 1)) > 0; // 播放背景音乐
+
+        private string _musicFolder = RWReg.GetValue(SUB_NAME, "MusicFolder", string.Empty).ToString();
+
         private readonly DelegateCommand _saveCommand;
 
         #endregion
@@ -329,7 +333,10 @@ namespace EasyCodeword.Core
             set
             {
                 _fontFamily = value; RaisePropertyChanged("__FontFamily");
-                _saveCommand.RaiseCanExecuteChanged();
+                if (null != value)
+                {
+                    _saveCommand.RaiseCanExecuteChanged();
+                }
             }
         }
 
@@ -339,7 +346,10 @@ namespace EasyCodeword.Core
             set
             {
                 _fontStyle = value; RaisePropertyChanged("__FontStyle");
-                _saveCommand.RaiseCanExecuteChanged();
+                if (null != value)
+                {
+                    _saveCommand.RaiseCanExecuteChanged();
+                }
             }
         }
 
@@ -349,7 +359,10 @@ namespace EasyCodeword.Core
             set
             {
                 _fontSize = value; RaisePropertyChanged("__FontSize");
-                _saveCommand.RaiseCanExecuteChanged();
+                if (null != value)
+                {
+                    _saveCommand.RaiseCanExecuteChanged();
+                }
             }
         }
 
@@ -373,6 +386,30 @@ namespace EasyCodeword.Core
             set
             {
                 _autoSaveInterval = value; RaisePropertyChanged("AutoSaveInterval");
+                _saveCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public bool AutoPlayMusic
+        {
+            get
+            {
+                return _autoPlayMusic;
+            }
+            set
+            {
+                _autoPlayMusic = value;
+                RaisePropertyChanged("AutoPlayMusic");
+                _saveCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string MusicFolder
+        {
+            get { return _musicFolder; }
+            set
+            {
+                _musicFolder = value; RaisePropertyChanged("MusicFolder");
                 _saveCommand.RaiseCanExecuteChanged();
             }
         }
@@ -447,6 +484,34 @@ namespace EasyCodeword.Core
             {
                 RWReg.SetValue(SUB_NAME, "AutoSave", _autoSave ? 1 : 0);
             }
+
+            var hasAutoPlayMusicChanged = HasAutoPlayMusicChanged();
+            if (hasAutoPlayMusicChanged)
+            {
+                RWReg.SetValue(SUB_NAME, "AutoPlayMusic", _autoPlayMusic ? 1 : 0);
+            }
+
+            var hasMusicFolderChanged = HasMusicFolderChanged();
+            if (hasAutoPlayMusicChanged)
+            {
+                RWReg.SetValue(SUB_NAME, "MusicFolder", _musicFolder);
+            }
+
+            if (hasAutoPlayMusicChanged)
+            {
+                if (_autoPlayMusic)
+                {
+                    SoundPlayerViewModel.Instance.Play(SettingViewModel.Instance.MusicFolder);
+                }
+                else
+                {
+                    SoundPlayerViewModel.Instance.Stop();
+                }
+            }
+            else if (hasMusicFolderChanged && _autoPlayMusic)
+            {
+                SoundPlayerViewModel.Instance.Play(SettingViewModel.Instance.MusicFolder);
+            }
         }
 
         private bool CanSave()
@@ -456,7 +521,9 @@ namespace EasyCodeword.Core
                 || HasFontStyleChanged()
                 || HasFontSizeChanged()
                 || HasAutoSaveIntervalChanged()
-                || HasAutoSaveChanged();
+                || HasAutoSaveChanged()
+                || HasAutoPlayMusicChanged()
+                || HasMusicFolderChanged();
         }
 
         private bool HasBootChanged()
@@ -485,7 +552,7 @@ namespace EasyCodeword.Core
 
         private bool HasFontFamilyChanged()
         {
-            return !string.Equals(
+            return null != _fontFamily && !string.Equals(
                 RWReg.GetValue(SUB_NAME, "FontFamily", MainWindow.Instance.FontFamily.Source).ToString(),
                 _fontFamily.ToString(),
                 StringComparison.CurrentCultureIgnoreCase);
@@ -493,16 +560,23 @@ namespace EasyCodeword.Core
 
         private bool HasFontStyleChanged()
         {
-            return !int.Equals(
+            return null != _fontStyle && !int.Equals(
                 Converter.ToInt(RWReg.GetValue(SUB_NAME, "FontStyle", 0)),
                 _fontStyle.ID);
         }
 
         private bool HasFontSizeChanged()
         {
-            return !double.Equals(
+            return null != _fontSize && !double.Equals(
                 Converter.ToDouble(RWReg.GetValue(SUB_NAME, "FontSize", 14d)),
                 _fontSize.FontSize);
+        }
+
+        private bool HasAutoSaveChanged()
+        {
+            return !double.Equals(
+                Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSave", 1)),
+                _autoSave ? 1 : 0);
         }
 
         private bool HasAutoSaveIntervalChanged()
@@ -512,11 +586,18 @@ namespace EasyCodeword.Core
                 _autoSaveInterval);
         }
 
-        private bool HasAutoSaveChanged()
+        private bool HasAutoPlayMusicChanged()
         {
             return !double.Equals(
-                Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSave", 1)),
-                _autoSave ? 1 : 0);
+                Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoPlayMusic", 1)),
+                _autoPlayMusic ? 1 : 0);
+        }
+
+        private bool HasMusicFolderChanged()
+        {
+            return !string.Equals(
+                RWReg.GetValue(SUB_NAME, "MusicFolder", string.Empty).ToString(),
+                _musicFolder, StringComparison.CurrentCultureIgnoreCase);
         }
 
         //private bool HasAllowControlChanged()
