@@ -75,24 +75,24 @@ namespace EasyCodeword.Utilities
             return default(DateTime);
         }
 
-        public static TResult ToEnum<TResult>(object o) where TResult : struct
-        {
-            if (null != o)
-            {
-                Type type = typeof(TResult);
-                if (!type.IsEnum)
-                {
-                    throw new NotSupportedException("TResult must be an Enum.");
-                }
+        //public static TResult ToEnum<TResult>(object o) where TResult : struct
+        //{
+        //    if (null != o)
+        //    {
+        //        Type type = typeof(TResult);
+        //        if (!type.IsEnum)
+        //        {
+        //            throw new NotSupportedException("TResult must be an Enum.");
+        //        }
 
-                TResult result;
-                if (Enum.TryParse(o.ToString(), out result))
-                {
-                    return (TResult)System.Convert.ChangeType(result, type);
-                }
-            }
-            return default(TResult);
-        }
+        //        TResult result;
+        //        if (Enum.TryParse(o.ToString(), out result))
+        //        {
+        //            return (TResult)System.Convert.ChangeType(result, type);
+        //        }
+        //    }
+        //    return default(TResult);
+        //}
 
         public static int[] ToIntArray(byte[] array)
         {

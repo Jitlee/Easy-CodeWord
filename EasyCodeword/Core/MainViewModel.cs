@@ -44,13 +44,21 @@ namespace EasyCodeword.Core
             _timer = new Timer(TimerCallback, null, 0, 1000);
         }
 
+        ~MainViewModel()
+        {
+            _timer.Dispose();
+        }
+
         #endregion
 
         #region 私有方法
 
         private void TimerCallback(object state)
         {
-            Application.Current.Dispatcher.Invoke(new Action(() => { RaisePropertyChanged("Now"); }));
+            if (null != Application.Current)
+            {
+                Application.Current.Dispatcher.Invoke(new Action(() => { RaisePropertyChanged("Now"); }));
+            }
         }
 
         #endregion

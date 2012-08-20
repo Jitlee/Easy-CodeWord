@@ -5,10 +5,10 @@
     <Window.Resources>
         <Storyboard x:Key="ShowMessageStoryboard">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MessageTextBlock">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:6" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:6.5" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="0" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:10" Value="1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:10.5" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>

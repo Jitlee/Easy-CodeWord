@@ -59,12 +59,13 @@ namespace EasyCodeword.Core
             if (null != _files)
             {
                 var index = _index % _files.Count;
-                if (index > 0
+                if (index > -1
                     && index < _files.Count)
                 {
-                    if (File.Exists(_files[_index % _files.Count]))
+                    var file = _files[index];
+                    if (File.Exists(file))
                     {
-                        _soundPlayer.Open(new Uri(_files[_index % _files.Count], UriKind.Relative));
+                        _soundPlayer.Open(new Uri(file, UriKind.Relative));
                         _soundPlayer.Play();
                     }
                     else
@@ -107,6 +108,7 @@ namespace EasyCodeword.Core
                     {
                         _soundPlayer.Stop();
                     }
+                    AutoPlay();
                 }
             }
         }

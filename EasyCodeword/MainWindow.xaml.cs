@@ -385,7 +385,10 @@ namespace EasyCodeword
 
         private void AutoSaveCallback(object state)
         {
-            File.WriteAllText(Common.TempFile, this.MainTextBox.Text, Encoding.Default);
+            this.MainTextBox.Dispatcher.Invoke(new Action(() =>
+            {
+                File.WriteAllText(Common.TempFile, this.MainTextBox.Text, Encoding.Default);
+            }));
         }
 
         #endregion
