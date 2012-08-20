@@ -491,5 +491,12 @@ namespace EasyCodeword
                 CharacterCountTextBlock.Text = string.Empty;
             }
         }
+
+        private void Operation_Click(object sender, RoutedEventArgs e)
+        {
+            var powerWindow = new PowerWindow();
+            powerWindow.Owner = this;
+            powerWindow.ShowDialog();
+        }
     }
 }

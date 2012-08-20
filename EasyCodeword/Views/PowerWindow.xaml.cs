@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using System.Windows.Interop;
+using EasyCodeword.Core;
+using EasyCodeword.Utilities;
 
 namespace EasyCodeword.Views
 {
@@ -21,6 +13,14 @@ namespace EasyCodeword.Views
         public PowerWindow()
         {
             InitializeComponent();
+            this.DataContext = PowerViewModel.Instance;
+            this.Loaded += PowerWindow_Loaded;
+        }
+
+        private void PowerWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            var hWnd = new WindowInteropHelper(this).Handle;
+            Common.DisableMinmize(hWnd);
         }
     }
 }

@@ -65,5 +65,10 @@ namespace EasyCodeword.Core
         {
             DoExitWin(EWX_SHUTDOWN);
         }
+
+        public static void Poweroff()
+        {
+            DoExitWin(EWX_POWEROFF); ;
+        }
     }
 }

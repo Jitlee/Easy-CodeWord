@@ -141,7 +141,7 @@
                         <Button Content="统计窗口" Style="{DynamicResource NormalButtonStyle}"/>
                         <Button Content="邮件窗口" Style="{DynamicResource NormalButtonStyle}"/>
                         <Button Content="帮助卡片" Style="{DynamicResource NormalButtonStyle}"/>
-                        <Button Content="操作计算机" Style="{DynamicResource NormalButtonStyle}"/>
+                        <Button Content="操作计算机" Style="{DynamicResource NormalButtonStyle}" Click="Operation_Click"/>
                     </StackPanel>
                 </GroupBox>
             </Grid>
