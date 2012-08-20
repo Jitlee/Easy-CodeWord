@@ -31,7 +31,7 @@
             <TextBlock Text="关机" Margin="0"/>
             <TextBlock Text="注销" Margin="0"/>
             <TextBlock Text="重新启动" Margin="0"/>
-            <TextBlock Text="休眠" Margin="0"/>
+            <!--<TextBlock Text="休眠" Margin="0"/>-->
         </ComboBox>
         
         <TextBlock

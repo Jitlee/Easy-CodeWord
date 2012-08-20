@@ -49,6 +49,11 @@
                 <Setter Property="Margin" Value="3"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
             </Style>
+            
+            <Style TargetType="RadioButton">
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
 
             <Style x:Key="NormalButtonStyle" TargetType="Button">
                 <Setter Property="Height" Value="23"/>

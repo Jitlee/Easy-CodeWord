@@ -55,6 +55,7 @@
     <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="Core\DelegateCommand.cs" />
     <Compile Include="Core\EntityObject.cs" />
+    <Compile Include="Core\LockViewModel.cs" />
     <Compile Include="Core\MainViewModel.cs" />
     <Compile Include="Core\PowerHelper.cs" />
     <Compile Include="Core\PowerViewModel.cs" />

@@ -52,6 +52,7 @@ namespace EasyCodeword.Core
 
         private PowerViewModel()
         {
+            _description = _descriptions[_operation];
             _okCommand = new DelegateCommand(OK);
         }
 

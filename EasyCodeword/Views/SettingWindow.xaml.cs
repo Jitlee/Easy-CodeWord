@@ -7,10 +7,12 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using EasyCodeword.Core;
+using EasyCodeword.Utilities;
 
 namespace EasyCodeword.Views
 {
@@ -23,6 +25,13 @@ namespace EasyCodeword.Views
         {
             InitializeComponent();
             this.DataContext = SettingViewModel.Instance;
+            this.Loaded += SettingWindow_Loaded;
+        }
+
+        private void SettingWindow_Loaded(object sender, EventArgs e)
+        {
+            var hWnd = new WindowInteropHelper(this).Handle;
+            Common.DisableMinmize(hWnd);
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
@@ -55,6 +64,13 @@ namespace EasyCodeword.Views
                 }
                 e.Handled = false;
             }
+            else if (e.Key == Key.Back
+                || e.Key == Key.Delete
+                || e.Key == Key.Left
+                || e.Key == Key.Right)
+            {
+                e.Handled = false;
+            }
             else
             {
                 e.Handled = true;
@@ -64,8 +80,6 @@ namespace EasyCodeword.Views
         private void MusicBrowser_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog();
-
-            dlg.Description = "选择包含相关图片的文件夹";
 
             if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
