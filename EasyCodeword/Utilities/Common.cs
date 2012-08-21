@@ -15,6 +15,11 @@ namespace EasyCodeword.Utilities
             return Path.Combine(ApplicationDataPath, path);
         }
 
+        public static string GetAppPath(string path1, string path2)
+        {
+            return Path.Combine(Path.Combine(ApplicationDataPath, path1), path2);
+        }
+
         [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
         private static extern int GetWindowLong(IntPtr hwnd, int nIndex);
         [DllImport("user32.dll", EntryPoint = "SetWindowLong")]

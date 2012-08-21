@@ -53,9 +53,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\ColorPicker.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Core\DelegateCommand.cs" />
     <Compile Include="Core\EntityObject.cs" />
-    <Compile Include="Core\HotKey.cs" />
     <Compile Include="Core\KeyboardHook.cs" />
     <Compile Include="Core\LockViewModel.cs" />
     <Compile Include="Core\MainViewModel.cs" />
@@ -65,6 +65,11 @@
     <Compile Include="Core\SoundPlayerViewModel.cs" />
     <Compile Include="Utilities\Common.cs" />
     <Compile Include="Utilities\Converter.cs" />
+    <Compile Include="Utilities\Logger\ILogger.cs" />
+    <Compile Include="Utilities\Logger\Logger.cs" />
+    <Compile Include="Utilities\Logger\LoggerFactory.cs" />
+    <Compile Include="Utilities\Logger\LoggerLevel.cs" />
+    <Compile Include="Utilities\Logger\WriteFileLogger.cs" />
     <Compile Include="Utilities\RWReg.cs" />
     <Compile Include="Utilities\WinformHelper.cs" />
     <Compile Include="Views\PowerWindow.xaml.cs">

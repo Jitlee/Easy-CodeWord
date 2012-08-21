@@ -4,12 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Media;
+using EasyCodeword.Utilities;
 
 namespace EasyCodeword.Core
 {
     public class SoundPlayerViewModel
     {
         #region 变量
+
+        private ILogger _logger = LoggerFactory.GetLogger(typeof(SoundPlayerViewModel).FullName);
 
         private static SoundPlayerViewModel _instance = new SoundPlayerViewModel();
 
@@ -92,24 +95,31 @@ namespace EasyCodeword.Core
 
         public void Play(string folder)
         {
-            if(Directory.Exists(folder))
+            try
             {
-                _files = Directory.GetFiles(folder, "*.mp3").Union(Directory.GetFiles(folder, "*.wav")).ToList();
-                _index = -1;
-                if (_files.Count > 0)
+                if (Directory.Exists(folder))
                 {
-                    if (null == _soundPlayer)
+                    _files = Directory.GetFiles(folder, "*.mp3").Union(Directory.GetFiles(folder, "*.wav")).ToList();
+                    _index = -1;
+                    if (_files.Count > 0)
                     {
-                        _soundPlayer = new MediaPlayer();
-                        _soundPlayer.MediaEnded += SoundPlayer_MediaEnded;
-                        _soundPlayer.MediaFailed += SoundPlayer_MediaFailed;
+                        if (null == _soundPlayer)
+                        {
+                            _soundPlayer = new MediaPlayer();
+                            _soundPlayer.MediaEnded += SoundPlayer_MediaEnded;
+                            _soundPlayer.MediaFailed += SoundPlayer_MediaFailed;
+                        }
+                        else
+                        {
+                            _soundPlayer.Stop();
+                        }
+                        AutoPlay();
                     }
-                    else
-                    {
-                        _soundPlayer.Stop();
-                    }
-                    AutoPlay();
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug("[Play] Exception : {0}", ex.Message);
             }
         }
 
@@ -125,7 +135,10 @@ namespace EasyCodeword.Core
                     _soundPlayer = null;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                _logger.Debug("[Stop] Exception : {0}", ex.Message);
+            }
         }
 
         #endregion

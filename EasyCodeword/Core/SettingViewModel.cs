@@ -7,6 +7,7 @@ using EasyCodeword.Utilities;
 using System.Windows;
 using System.Windows.Markup;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
 
 namespace EasyCodeword.Core
 {
@@ -225,21 +226,61 @@ namespace EasyCodeword.Core
         private _FontSize _fontSize = _fontSizes.FirstOrDefault(f => f.FontSize == Converter.ToDouble(RWReg.GetValue(SUB_NAME, "FontSize", 14d)))
             ?? new _FontSize() { DisplayName = "14", FontSize = 14d };
 
-        private bool _autoSave = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSave", 1)) > 0; // 退出时否自动保存
+        private bool _autoSave = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSave", 1)) != 0; // 退出时否自动保存
 
         private int _autoSaveInterval = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSaveInterval", 3)); // 分钟
 
-        private bool _autoPlayMusic = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoPlayMusic", 1)) > 0; // 播放背景音乐
+        private bool _autoPlayMusic = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoPlayMusic", 1)) != 0; // 播放背景音乐
 
         private string _musicFolder = RWReg.GetValue(SUB_NAME, "MusicFolder", string.Empty).ToString();
 
+        private bool _isViolenceLock = Converter.ToInt(RWReg.GetValue(SUB_NAME, "LockType", 0)) == 0; // 暴力锁
+
+        private bool _isTenderLock = Converter.ToInt(RWReg.GetValue(SUB_NAME, "LockType", 0)) != 0; // 暴力锁
+
+        const string TENDERLOCK_MESSAGE = "今天又没能够有完成任务。";// 温柔锁发送的模板消息
+
+        private string _tenderLockMessage = RWReg.GetValue(SUB_NAME, "TenderLockMessage", TENDERLOCK_MESSAGE).ToString(); // 温柔锁发送的模板消息
+
         private readonly DelegateCommand _saveCommand;
+
+        #region 保存是否修改属性的变量值
+
+        private bool _hasBootChanged = false;
+
+        private bool _hasForegroundChanged = false;
+
+        private bool _hasBackgroundChanged = false;
+
+        private bool _hasFontFamilyChanged = false;
+
+        private bool _hasFontStyleChanged = false;
+
+        private bool _hasFontSizeChanged = false;
+
+        private bool _hasAutoSaveChanged = false;
+
+        private bool _hasAutoSaveIntervalChanged = false;
+
+        private bool _hasAutoPlayMusicChanged = false;
+
+        private bool _hasMusicFolderChanged = false;
+
+        private bool _hasLockChanged = false;
+
+        private bool _hasLockTypeChanged = false;
+
+        private bool _hasTenderLockMessageChanged = false;
+
+        #endregion
 
         #endregion
 
         #region 属性
 
         public static SettingViewModel Instance { get { return _instance; } }
+
+        public LockViewModel Lock { get { return LockViewModel.Insatance; } } 
 
         public string RecentFile
         {
@@ -280,6 +321,7 @@ namespace EasyCodeword.Core
             {
                 _boot = value;
                 RaisePropertyChanged("Boot");
+                _hasBootChanged = HasBootChanged();
                 _saveCommand.RaiseCanExecuteChanged();
             }
         }
@@ -294,6 +336,7 @@ namespace EasyCodeword.Core
             {
                 _foreground = value;
                 RaisePropertyChanged("Foreground");
+                _hasForegroundChanged = HasForegroundChanged();
                 _saveCommand.RaiseCanExecuteChanged();
             }
         }
@@ -308,6 +351,7 @@ namespace EasyCodeword.Core
             {
                 _background = value;
                 RaisePropertyChanged("Background");
+                _hasBackgroundChanged = HasBackgroundChanged();
                 _saveCommand.RaiseCanExecuteChanged();
             }
         }
@@ -335,6 +379,7 @@ namespace EasyCodeword.Core
                 _fontFamily = value; RaisePropertyChanged("__FontFamily");
                 if (null != value)
                 {
+                    _hasBackgroundChanged = HasBackgroundChanged();
                     _saveCommand.RaiseCanExecuteChanged();
                 }
             }
@@ -348,6 +393,7 @@ namespace EasyCodeword.Core
                 _fontStyle = value; RaisePropertyChanged("__FontStyle");
                 if (null != value)
                 {
+                    _hasFontStyleChanged = HasFontStyleChanged();
                     _saveCommand.RaiseCanExecuteChanged();
                 }
             }
@@ -361,6 +407,7 @@ namespace EasyCodeword.Core
                 _fontSize = value; RaisePropertyChanged("__FontSize");
                 if (null != value)
                 {
+                    _hasFontSizeChanged = HasFontSizeChanged();
                     _saveCommand.RaiseCanExecuteChanged();
                 }
             }
@@ -376,6 +423,7 @@ namespace EasyCodeword.Core
             {
                 _autoSave = value;
                 RaisePropertyChanged("AutoSave");
+                _hasAutoSaveChanged = HasAutoSaveChanged();
                 _saveCommand.RaiseCanExecuteChanged();
             }
         }
@@ -386,6 +434,7 @@ namespace EasyCodeword.Core
             set
             {
                 _autoSaveInterval = value; RaisePropertyChanged("AutoSaveInterval");
+                _hasAutoSaveIntervalChanged = HasAutoSaveIntervalChanged();
                 _saveCommand.RaiseCanExecuteChanged();
             }
         }
@@ -400,6 +449,7 @@ namespace EasyCodeword.Core
             {
                 _autoPlayMusic = value;
                 RaisePropertyChanged("AutoPlayMusic");
+                _hasAutoPlayMusicChanged = HasAutoPlayMusicChanged();
                 _saveCommand.RaiseCanExecuteChanged();
             }
         }
@@ -410,6 +460,52 @@ namespace EasyCodeword.Core
             set
             {
                 _musicFolder = value; RaisePropertyChanged("MusicFolder");
+                _hasMusicFolderChanged = HasMusicFolderChanged();
+                _saveCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        /// <summary>
+        /// 暴力锁
+        /// </summary>
+        public bool IsViolenceLock
+        {
+            get { return _isViolenceLock; }
+            set
+            {
+                if (_isViolenceLock != value)
+                {
+                    _isViolenceLock = value; RaisePropertyChanged("IsViolenceLock");
+                    IsTenderLock = !value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 温柔锁
+        /// </summary>
+        public bool IsTenderLock
+        {
+            get { return _isTenderLock; }
+            set
+            {
+                if (_isTenderLock != value)
+                {
+                    _isTenderLock = value; RaisePropertyChanged("IsTenderLock");
+                    IsViolenceLock = !value;
+                    _hasLockTypeChanged = HasLockTypeChanged();
+                    _saveCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public string TenderLockMessage
+        {
+            get { return _tenderLockMessage; }
+            set
+            {
+                _tenderLockMessage = value; RaisePropertyChanged("TenderLockMessage");
+                _hasTenderLockMessageChanged = HasTenderLockMessageChanged();
                 _saveCommand.RaiseCanExecuteChanged();
             }
         }
@@ -428,6 +524,8 @@ namespace EasyCodeword.Core
                     boot, true) == 0;
 
             _saveCommand = new DelegateCommand(Save, CanSave);
+
+            Lock.PropertyChanged += Lock_PropertyChanged;
         }
 
         #endregion
@@ -445,59 +543,57 @@ namespace EasyCodeword.Core
                 RWReg.RemoveKey(BOOT_NAME, "EasyCodeword");
             }
 
-            if (HasBackgroundChanged())
+            if (_hasBackgroundChanged)
             {
                 MainWindow.Instance.SetBackground(_background);
                 RWReg.SetValue(SUB_NAME, "Background", _background.ToString());
             }
 
-            if (HashForegroundChanged())
+            if (_hasForegroundChanged)
             {
                 MainWindow.Instance.SetForeground(_foreground);
                 RWReg.SetValue(SUB_NAME, "Foreground", _foreground.ToString());
             }
 
-            if (HasFontFamilyChanged())
+            if (_hasFontFamilyChanged)
             {
                 MainWindow.Instance.SetFontFamily(_fontFamily.FontFamily);
                 RWReg.SetValue(SUB_NAME, "FontFamily", _fontFamily.ToString());
             }
 
-            if (HasFontStyleChanged())
+            if (_hasFontStyleChanged)
             {
                 MainWindow.Instance.SetFontStyle(_fontStyle);
                 RWReg.SetValue(SUB_NAME, "FontStyle", _fontStyle.ID);
             }
 
-            if (HasFontSizeChanged())
+            if (_hasFontSizeChanged)
             {
                 MainWindow.Instance.SetFontSize(_fontSize.FontSize);
                 RWReg.SetValue(SUB_NAME, "FontSize", _fontSize.FontSize);
             }
 
-            if (HasAutoSaveIntervalChanged())
+            if (_hasAutoSaveIntervalChanged)
             {
                 RWReg.SetValue(SUB_NAME, "AutoSaveInterval", _autoSaveInterval);
             }
 
-            if (HasAutoSaveChanged())
+            if (_hasAutoSaveChanged)
             {
                 RWReg.SetValue(SUB_NAME, "AutoSave", _autoSave ? 1 : 0);
             }
 
-            var hasAutoPlayMusicChanged = HasAutoPlayMusicChanged();
-            if (hasAutoPlayMusicChanged)
+            if (_hasAutoPlayMusicChanged)
             {
                 RWReg.SetValue(SUB_NAME, "AutoPlayMusic", _autoPlayMusic ? 1 : 0);
             }
 
-            var hasMusicFolderChanged = HasMusicFolderChanged();
-            if (hasAutoPlayMusicChanged)
+            if (_hasMusicFolderChanged)
             {
                 RWReg.SetValue(SUB_NAME, "MusicFolder", _musicFolder);
             }
 
-            if (hasAutoPlayMusicChanged)
+            if (_hasAutoPlayMusicChanged)
             {
                 if (_autoPlayMusic)
                 {
@@ -508,22 +604,53 @@ namespace EasyCodeword.Core
                     SoundPlayerViewModel.Instance.Stop();
                 }
             }
-            else if (hasMusicFolderChanged && _autoPlayMusic)
+            else if (_hasMusicFolderChanged && _autoPlayMusic)
             {
                 SoundPlayerViewModel.Instance.Play(SettingViewModel.Instance.MusicFolder);
+            }
+
+            if (_hasLockChanged)
+            {
+                Lock.Lock();
+            }
+
+            if (_hasLockTypeChanged)
+            {
+                RWReg.SetValue(SUB_NAME, "LockType", _isTenderLock ? 1 : 0);
+            }
+
+            if (_hasTenderLockMessageChanged)
+            {
+                RWReg.SetValue(SUB_NAME, "TenderLockMessage", _tenderLockMessage);
             }
         }
 
         private bool CanSave()
         {
-            return HasBootChanged() || HashForegroundChanged() || HasBackgroundChanged()
-                || HasFontFamilyChanged()
-                || HasFontStyleChanged()
-                || HasFontSizeChanged()
-                || HasAutoSaveIntervalChanged()
-                || HasAutoSaveChanged()
-                || HasAutoPlayMusicChanged()
-                || HasMusicFolderChanged();
+            return _hasBootChanged
+                || _hasForegroundChanged
+                || _hasBackgroundChanged
+                || _hasFontFamilyChanged
+                || _hasFontStyleChanged
+                || _hasFontSizeChanged
+                || _hasAutoSaveIntervalChanged
+                || _hasAutoSaveChanged
+                || _hasAutoPlayMusicChanged
+                || _hasMusicFolderChanged
+                || _hasLockChanged
+                || _hasLockTypeChanged
+                || _hasTenderLockMessageChanged;
+        }
+
+        private void Lock_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "LockWords"
+                || e.PropertyName == "LockMinutes"
+                || e.PropertyName == "IsUnlocked")
+            {
+                _hasLockChanged = HasLockChanged();
+                _saveCommand.RaiseCanExecuteChanged();
+            }
         }
 
         private bool HasBootChanged()
@@ -534,7 +661,7 @@ namespace EasyCodeword.Core
                     boot, true) == 0) != _boot;
         }
 
-        private bool HashForegroundChanged()
+        private bool HasForegroundChanged()
         {
             return !string.Equals(
                 RWReg.GetValue(SUB_NAME, "Foreground", "#FF00FF00").ToString(),
@@ -574,7 +701,7 @@ namespace EasyCodeword.Core
 
         private bool HasAutoSaveChanged()
         {
-            return !double.Equals(
+            return !int.Equals(
                 Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSave", 1)),
                 _autoSave ? 1 : 0);
         }
@@ -588,7 +715,7 @@ namespace EasyCodeword.Core
 
         private bool HasAutoPlayMusicChanged()
         {
-            return !double.Equals(
+            return !int.Equals(
                 Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoPlayMusic", 1)),
                 _autoPlayMusic ? 1 : 0);
         }
@@ -600,23 +727,26 @@ namespace EasyCodeword.Core
                 _musicFolder, StringComparison.CurrentCultureIgnoreCase);
         }
 
-        //private bool HasAllowControlChanged()
-        //{
-        //    var allowControl = Converter.ToInt(RWReg.GetValue(SUB_NAME, "Tcp_Client_AllowControl", 1)) != 0;
-        //    return allowControl != _allowControl;
-        //}
+        private bool HasLockChanged()
+        {
+            var lockWords = Converter.ToInt(Lock.LockWords);
+            var lockMinutes = Converter.ToInt(Lock.LockMinutes);
+            return Lock.IsUnlocked && (lockWords > 0 || lockMinutes > 0);
+        }
 
-        //private bool HasAllowBroadcastChanged()
-        //{
-        //    var allowBroadcast = Converter.ToInt(RWReg.GetValue(SUB_NAME, "Tcp_Client_AllowBroadcast", 1)) != 0;
-        //    return _allowBroadcast != allowBroadcast;
-        //}
+        private bool HasLockTypeChanged()
+        {
+            return !int.Equals(
+                Converter.ToInt(RWReg.GetValue(SUB_NAME, "LockType", 0)),
+                _isTenderLock ? 1 : 0);
+        }
 
-        //private bool HasServerAddressChanged()
-        //{
-        //    var serverAddress = (string)RWReg.GetValue(SUB_NAME, "Server_Address", string.Empty);
-        //    return string.Compare(serverAddress, _serverAddress, true) != 0;
-        //}
+        private bool HasTenderLockMessageChanged()
+        {
+            return !string.Equals(
+                RWReg.GetValue(SUB_NAME, "TenderLockMessage", TENDERLOCK_MESSAGE).ToString(),
+                _tenderLockMessage);
+        }
 
         #endregion
     }

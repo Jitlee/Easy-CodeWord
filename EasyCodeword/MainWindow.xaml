@@ -6,8 +6,9 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         xmlns:ctrls="clr-namespace:EasyCodeword.Controls"
-        xmlns:winform="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms">
+        xmlns:converters="clr-namespace:EasyCodeword.Converters">
 	<Window.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 		<Storyboard x:Key="ShowMessageStoryboard">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MessageTextBlock">
 				<SplineDoubleKeyFrame KeyTime="0" Value="0"/>
@@ -101,49 +102,32 @@
                     </StackPanel>
                 </GroupBox>
 
-                <Grid
+                <GroupBox
                     x:Name="LockGrid"
-                    Grid.Column="3">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <GroupBox
-                        Header="锁定字数(字)"
-                        HorizontalAlignment="Center"
-                        Padding="22,0">
-                        <StackPanel
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center">
-                            <TextBox
-                                Width="68"
-                                Text="{Binding LockLength, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Button
-                                Content="确定"
-                                Width="36"
-                                Command="{Binding LockLengthCommand}"
-                                Style="{DynamicResource NormalButtonStyle}"/>
-                        </StackPanel>
-                    </GroupBox>
-                    <GroupBox
-                        HorizontalAlignment="Center"
-                        Padding="22,0"
-                        Header="锁定分钟(分)"
-                        Grid.Row="1">
-                        <StackPanel
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center">
-                            <TextBox
-                                Width="68"
-                                Text="{Binding LockMinute, UpdateSourceTrigger=PropertyChanged}" />
-                            <Button
-                                Content="确定"
-                                Width="36"
-                                Command="{Binding LockMinuteCommand}"
-                                Style="{DynamicResource NormalButtonStyle}"/>
-                        </StackPanel>
-                    </GroupBox>
-                </Grid>
+                    IsEnabled="{Binding IsUnlocked}"
+                    Header="锁定"
+                    Grid.Column="3"
+                    HorizontalAlignment="Center"
+                    Padding="22,0">
+                    <StackPanel>
+                        <TextBlock
+                            Text="锁定字数：(数字)"/>
+                        <TextBox
+                            VerticalAlignment="Center"
+                            Text="{Binding LockWords, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock
+                            Margin="3,8,3,3"
+                            Text="锁定时间：(分钟)"/>
+                        <TextBox
+                            VerticalAlignment="Center"
+                            Text="{Binding LockMinutes, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button
+                            Margin="3,8,3,3"
+                            Content="锁定"
+                            Style="{DynamicResource NormalButtonStyle}"
+                            Command="{Binding LockCommand}"/>
+                    </StackPanel>
+                </GroupBox>
 
                 <GroupBox
                     HorizontalAlignment="Center"
@@ -162,5 +146,23 @@
         </Popup>
         <TextBlock x:Name="MessageTextBlock" Grid.Row="3" VerticalAlignment="Center" Margin="5" Opacity="0"/>
         <TextBlock x:Name="CharacterCountTextBlock" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5"/>
+        <StackPanel
+            x:Name="LockInfoTextBlock"
+            Grid.Row="3"
+            VerticalAlignment="Center"
+            Margin="5"
+            HorizontalAlignment="Center"
+            Visibility="{Binding IsUnlocked,Converter={StaticResource BooleanToVisibilityConverter}}"
+            Orientation="Horizontal">
+            <TextBlock FontFamily="Webdings" Text="Ï"/>
+            <TextBlock Text="{Binding SurplusWords, Mode=OneWay}"/>
+            <TextBlock
+                Margin="15,3,3,3"
+                FontSize="14"
+                FontFamily="Wingdings"
+                Text="¸"/>
+            <TextBlock
+                Text="{Binding SurplusMinutes, Mode=OneWay}"/>
+        </StackPanel>
     </Grid>
 </Window>

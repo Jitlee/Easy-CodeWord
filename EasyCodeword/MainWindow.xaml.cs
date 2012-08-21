@@ -29,6 +29,8 @@ namespace EasyCodeword
     {
         #region 变量
 
+        private ILogger _logger = LoggerFactory.GetLogger(typeof(MainWindow).FullName);
+
         private SearchWindow _searchWindow = null;
 
         private ReplaceWindow _replaceWindow = null;
@@ -51,10 +53,18 @@ namespace EasyCodeword
 
         public MainWindow()
         {
+
+#if DEBUG
+            LoggerFactory.SetLoggerLevel(LoggerLevel.Trance);
+#else
+            LoggerFactory.SetLoggerInstance(typeof(WriteFileLogger));
+#endif
+
             InitializeComponent();
             _showMessageStoryboard = Resources["ShowMessageStoryboard"] as Storyboard;
             _autoSaveTimer = new Timer(AutoSaveCallback);
             this.LockGrid.DataContext = LockViewModel.Insatance;
+            this.LockInfoTextBlock.DataContext = LockViewModel.Insatance;
             this.DataContext = MainViewModel.Instance;
             this.Loaded += MainWindow_Loaded;
             Instance = this;

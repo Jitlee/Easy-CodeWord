@@ -113,6 +113,10 @@ namespace EasyCodeword.Core
                 {
                     return 1;
                 }
+                else
+                {
+                    KeyMaskStop();
+                }
             }
             return CallNextHookEx(hKeyboardHook, nCode, wParam, lParam);
         }
@@ -154,7 +158,7 @@ namespace EasyCodeword.Core
             }
             if (!(retKeyboard))
             {
-                //throw new Exception("UnhookWindowsHookEx  failed.");
+                throw new Exception("UnhookWindowsHookEx  failed.");
             }
         }
     }
