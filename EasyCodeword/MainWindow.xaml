@@ -101,7 +101,9 @@
                     </StackPanel>
                 </GroupBox>
 
-                <Grid Grid.Column="3">
+                <Grid
+                    x:Name="LockGrid"
+                    Grid.Column="3">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -113,8 +115,14 @@
                         <StackPanel
                             Orientation="Horizontal"
                             VerticalAlignment="Center">
-                            <TextBox Width="68" />
-                            <Button Content="确定" Width="36" Style="{DynamicResource NormalButtonStyle}"/>
+                            <TextBox
+                                Width="68"
+                                Text="{Binding LockLength, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button
+                                Content="确定"
+                                Width="36"
+                                Command="{Binding LockLengthCommand}"
+                                Style="{DynamicResource NormalButtonStyle}"/>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox
@@ -125,8 +133,14 @@
                         <StackPanel
                             Orientation="Horizontal"
                             VerticalAlignment="Center">
-                            <TextBox Width="68" />
-                            <Button Content="确定" Width="36" Style="{DynamicResource NormalButtonStyle}"/>
+                            <TextBox
+                                Width="68"
+                                Text="{Binding LockMinute, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button
+                                Content="确定"
+                                Width="36"
+                                Command="{Binding LockMinuteCommand}"
+                                Style="{DynamicResource NormalButtonStyle}"/>
                         </StackPanel>
                     </GroupBox>
                 </Grid>

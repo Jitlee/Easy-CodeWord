@@ -27,18 +27,19 @@
                     <GroupBox
                         Margin="5"
                         Height="80"
-                        Header="锁定时间:(分钟)" >
+                        Header="锁定字数：(数字)" 
+                        Grid.Column="0">
                         <TextBox
-                            Text="{Binding LockMinute}"
+                            Text="{Binding LockLength, UpdateSourceTrigger=PropertyChanged}"
                             PreviewKeyDown="Digital_KeyDown"/>
                     </GroupBox>
                     <GroupBox
                         Margin="5"
                         Height="80"
-                        Header="锁定时间:(分钟)" 
+                        Header="锁定时间：(分钟)" 
                         Grid.Column="1">
                         <TextBox
-                            Text="{Binding LockLength}"
+                            Text="{Binding LockMinute, UpdateSourceTrigger=PropertyChanged}"
                             PreviewKeyDown="Digital_KeyDown"/>
                     </GroupBox>
                     <GroupBox
@@ -70,8 +71,7 @@
                                 AcceptsTab="True"
                                 TextWrapping="Wrap"
                                 VerticalAlignment="Stretch"
-                                Text="今天又没有能完成指定的任务"
-                                />
+                                Text="今天又没有能完成指定的任务"/>
                         </Grid>
                     </GroupBox>
                 </Grid>

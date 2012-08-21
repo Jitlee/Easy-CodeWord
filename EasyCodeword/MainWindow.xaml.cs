@@ -54,6 +54,7 @@ namespace EasyCodeword
             InitializeComponent();
             _showMessageStoryboard = Resources["ShowMessageStoryboard"] as Storyboard;
             _autoSaveTimer = new Timer(AutoSaveCallback);
+            this.LockGrid.DataContext = LockViewModel.Insatance;
             this.DataContext = MainViewModel.Instance;
             this.Loaded += MainWindow_Loaded;
             Instance = this;
@@ -483,7 +484,7 @@ namespace EasyCodeword
             if (MainTextBox.Text.Length > 0)
             {
                 CharacterCountTextBlock.Text = string.Format("{0}\\{1}",
-                    Regex.Matches(MainTextBox.Text, "[\u4e00-\u9fff]").Count
+                    MainViewModel.Instance.CountWords(MainTextBox.Text)
                     , MainTextBox.Text.Length);
             }
             else

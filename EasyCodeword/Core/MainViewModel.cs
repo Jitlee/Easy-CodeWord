@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Media;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 
@@ -59,6 +60,25 @@ namespace EasyCodeword.Core
             {
                 Application.Current.Dispatcher.Invoke(new Action(() => { RaisePropertyChanged("Now"); }));
             }
+        }
+
+        #endregion
+
+        #region 公共方法
+
+        /// <summary>
+        /// 计算字数
+        /// </summary>
+        /// <param name="text">输入文本</param>
+        /// <param name="startIndex">开始索引</param>
+        /// <returns></returns>
+        public int CountWords(string text, int startIndex = 0)
+        {
+            if (startIndex > 0)
+            {
+                return Regex.Matches(text.Substring(startIndex), @"\w").Count;
+            }
+            return Regex.Matches(text, @"\w").Count;
         }
 
         #endregion
