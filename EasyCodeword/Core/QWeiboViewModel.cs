@@ -20,6 +20,8 @@ namespace EasyCodeword.Core
 
         private ILogger _logger = LoggerFactory.GetLogger(typeof(QWeiboApiBase).FullName);
 
+        private const string UNAUTHORIZED = "用户未授权";
+
         private readonly string AppKey = "801222750";
 
         private readonly string AppSecret = "73779ac0cee5631fad2fcdad172baaab";
@@ -82,7 +84,7 @@ namespace EasyCodeword.Core
             }
             else
             {
-                _nickname = "还未授权";
+                _nickname = UNAUTHORIZED;
             }
         }
 
@@ -112,12 +114,16 @@ namespace EasyCodeword.Core
                 var xElment = XElement.Parse(info);
                 if (null != xElment)
                 {
-                    var nick = xElment.XPathSelectElement("/nick");
-                    if (null != nick)
+                    var nick = xElment.XPathSelectElement("//nick");
+                    var favnum = xElment.XPathSelectElement("//favnum");
+                    var fansnum = xElment.XPathSelectElement("//fansnum");
+                    if (null != nick &&
+                        null != favnum &&
+                        null != fansnum)
                     {
                         Application.Current.Dispatcher.Invoke(new Action(() =>
                         {
-                            Nickname = info;
+                            Nickname = string.Format("{0}[收听{1};听众:{2}]", nick.Value, favnum.Value, fansnum.Value);
                         }));
                     }
                 }
@@ -222,26 +228,60 @@ namespace EasyCodeword.Core
             if (qWeiboAuthorizeWindow.ShowDialog() == true)
             {
                 var oauthVerify = qWeiboAuthorizeWindow.OauthVerifier;
-                if (GetAccessToken(AppKey, AppSecret, _tokenKey, _tokenSecret, oauthVerify) == false)
+                if (string.IsNullOrEmpty(oauthVerify))
                 {
-                    _logger.Error("[Authorize] : 获取 acesskey 失败!");
-                    return;
+                    MainWindow.Instance.ShowMessage("你选择拒绝授权！");
                 }
+                else
+                {
+                    if (GetAccessToken(AppKey, AppSecret, _tokenKey, _tokenSecret, oauthVerify) == false)
+                    {
+                        _logger.Error("[Authorize] : 获取 acesskey 失败!");
+                        return;
+                    }
 
-                _accessKey = _tokenKey;
-                _accessSecret = _tokenSecret;
+                    _accessKey = _tokenKey;
+                    _accessSecret = _tokenSecret;
 
-                HasChanged = !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "QAccessKey", string.Empty).ToString(),
-                        _accessKey)
-                    || !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "QAccessSecret", string.Empty).ToString(),
-                        _accessSecret);
+                    UpdateHasChanged();
 
-                RaisePropertyChanged("IsAuthorized");
+                    RaisePropertyChanged("IsAuthorized");
 
-                SettingViewModel.Instance.SaveCommand.RaiseCanExecuteChanged();
+                    SettingViewModel.Instance.SaveCommand.RaiseCanExecuteChanged();
 
-                GetNickname();
+                    GetNickname();
+
+                    MainWindow.Instance.ShowMessage("恭喜你的腾讯微博已成功授权本应用！");
+                }
             }
+        }
+
+        private void UpdateHasChanged()
+        {
+            HasChanged = !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "QAccessKey", string.Empty).ToString(),
+                    _accessKey)
+                || !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "QAccessSecret", string.Empty).ToString(),
+                    _accessSecret);
+        }
+
+        /// <summary>
+        /// 取消用户授权
+        /// </summary>
+        internal void Deauthorize()
+        {
+            _accessKey = string.Empty;
+
+            _accessSecret = string.Empty;
+
+            UpdateHasChanged();
+
+            RaisePropertyChanged("IsAuthorized");
+
+            SettingViewModel.Instance.SaveCommand.RaiseCanExecuteChanged();
+
+            Nickname = UNAUTHORIZED;
+
+            MainWindow.Instance.ShowMessage("你已成功取消腾讯微博对本应用的授权！");
         }
 
         /// <summary>

@@ -689,7 +689,13 @@ namespace EasyCodeword.Core
             }
             else if (type == 1)
             {
+                // 用户授权
                 QWeibo.Authorize();
+            }
+            else if (type == -1)
+            {
+                // 取消授权
+                QWeibo.Deauthorize();
             }
         }
 

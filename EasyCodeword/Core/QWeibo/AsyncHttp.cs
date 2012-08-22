@@ -83,9 +83,9 @@ namespace QWeiboSDK
         public bool HttpPost(string url, string queryString, AsyncHttpCallback callback)
         {
             StreamWriter requestWriter = null;
-            StreamReader responseReader = null;
+            //StreamReader responseReader = null;
 
-            string responseData = null;
+            //string responseData = null;
 
             HttpWebRequest webRequest = WebRequest.Create(url) as HttpWebRequest;
             webRequest.Method = "POST";

@@ -71,6 +71,8 @@ namespace EasyCodeword.Views
             else if ((match = Regex.Match(url, "&checkType=error")).Success)
             {
                 // 决绝授权
+                OauthVerifier = string.Empty;
+                this.DialogResult = true;
                 this.Close();
             }
         }
