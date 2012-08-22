@@ -13,17 +13,24 @@ namespace EasyCodeword.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
 
-            return Convert(value);
+            return Convert(value, parameter);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return Convert(value);
+            return Convert(value, parameter);
         }
 
-        private object Convert(object value)
+        private object Convert(object value, object parameter)
         {
-            return (bool)value ? Visibility.Collapsed : Visibility.Visible;
+            if (null == parameter)
+            {
+                return (bool)value ? Visibility.Collapsed : Visibility.Visible;
+            }
+            else
+            {
+                return !(bool)value ? Visibility.Collapsed : Visibility.Visible;
+            }
         }
     }
 }

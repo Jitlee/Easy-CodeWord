@@ -8,7 +8,7 @@ namespace EasyCodeword.Utilities
     {
         public readonly static string ApplicationDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EasyCodeword");
 
-        public readonly static string TempFile = GetAppPath("tmp");
+        public readonly static string TempFile = GetAppPath("tmp.tmp");
 
         public static string GetAppPath(string path)
         {

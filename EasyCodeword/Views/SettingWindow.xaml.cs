@@ -21,11 +21,13 @@ namespace EasyCodeword.Views
     /// </summary>
     public partial class SettingWindow : Window
     {
+        public static SettingWindow Instance { get; private set; }
         public SettingWindow()
         {
             InitializeComponent();
             this.DataContext = SettingViewModel.Instance;
             this.Loaded += SettingWindow_Loaded;
+            Instance = this;
         }
 
         private void SettingWindow_Loaded(object sender, EventArgs e)

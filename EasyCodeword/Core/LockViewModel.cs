@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 using EasyCodeword.Utilities;
+using EasyCodeword.Views;
 
 namespace EasyCodeword.Core
 {
@@ -160,7 +161,23 @@ namespace EasyCodeword.Core
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            e.Cancel = IsLock;
+            if (IsLock)
+            {
+                if (SettingViewModel.Instance.IsTenderLock)
+                {
+                    var addWeiboWindow = new AddWeiboWindow();
+                    addWeiboWindow.Owner = MainWindow.Instance;
+                    if (addWeiboWindow.ShowDialog() == true)
+                    {
+                        var weibo = addWeiboWindow.Weibo;
+                        var ret = QWeiboViewModel.Instance.Add(weibo);
+                        MessageBox.Show(ret);
+                        e.Cancel = false;
+                        return;
+                    }
+                }
+                e.Cancel = true;
+            }
         }
 
         private void UnLock()
@@ -190,15 +207,27 @@ namespace EasyCodeword.Core
                 _lockOriginLength = MainWindow.Instance.MainTextBox.Text.Length;
                 _lockOriginTime = DateTime.Now;
 
-                App.Current.MainWindow.Topmost = true;
                 MainWindow.Instance.Closing -= MainWindow_Closing;
                 MainWindow.Instance.Closing += MainWindow_Closing;
 
                 IsUnlocked = false;
-                if (_hook == null)
+
+                if (SettingViewModel.Instance.IsViolenceLock)
                 {
-                    _hook = new KeyboardHook();
-                    _hook.KeyMaskStart(LockCallback);
+                    App.Current.MainWindow.Topmost = true;
+                    if (_hook == null)
+                    {
+                        _hook = new KeyboardHook();
+                        _hook.KeyMaskStart(LockCallback);
+                    }
+                }
+                else if (SettingViewModel.Instance.IsTenderLock)
+                {
+                    if (null != _hook)
+                    {
+                        _hook.KeyMaskStop();
+                        _hook = null;
+                    }
                 }
 
                 if (lockMinutes > 0)

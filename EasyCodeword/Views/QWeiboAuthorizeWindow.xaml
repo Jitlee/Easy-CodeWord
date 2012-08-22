@@ -1,0 +1,11 @@
+﻿<Window x:Class="EasyCodeword.Views.QWeiboAuthorizeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="授权使用腾讯微博帐号" Height="679" Width="848"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <WebBrowser
+            x:Name="AuthorizeWebBrower"
+            Navigated="AuthorizeWebBrower_Navigated"/>
+    </Grid>
+</Window>

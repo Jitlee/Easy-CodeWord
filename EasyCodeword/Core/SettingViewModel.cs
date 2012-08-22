@@ -209,7 +209,7 @@ namespace EasyCodeword.Core
 
         static SettingViewModel _instance = new SettingViewModel();
 
-        const string SUB_NAME = "Software\\EasyCodeword";
+        public const string SUB_NAME = "Software\\EasyCodeword";
 
         const string BOOT_NAME = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
 
@@ -238,11 +238,13 @@ namespace EasyCodeword.Core
 
         private bool _isTenderLock = Converter.ToInt(RWReg.GetValue(SUB_NAME, "LockType", 0)) != 0; // 暴力锁
 
-        const string TENDERLOCK_MESSAGE = "今天又没能够有完成任务。";// 温柔锁发送的模板消息
+        const string TENDERLOCK_MESSAGE = "我在用码字宝强制码字软件，真心太狠了，今天任务又没完成！";// 温柔锁强制发送的内容
 
-        private string _tenderLockMessage = RWReg.GetValue(SUB_NAME, "TenderLockMessage", TENDERLOCK_MESSAGE).ToString(); // 温柔锁发送的模板消息
+        private string _tenderLockMessage = RWReg.GetValue(SUB_NAME, "TenderLockMessage", TENDERLOCK_MESSAGE).ToString(); // 温柔锁强制发送的内容
 
         private readonly DelegateCommand _saveCommand;
+
+        private readonly DelegateCommand<object> _authorizeCommand;
 
         #region 保存是否修改属性的变量值
 
@@ -280,7 +282,9 @@ namespace EasyCodeword.Core
 
         public static SettingViewModel Instance { get { return _instance; } }
 
-        public LockViewModel Lock { get { return LockViewModel.Insatance; } } 
+        public LockViewModel Lock { get { return LockViewModel.Insatance; } }
+
+        public QWeiboViewModel QWeibo { get { return QWeiboViewModel.Instance; } }
 
         public string RecentFile
         {
@@ -475,7 +479,8 @@ namespace EasyCodeword.Core
             {
                 if (_isViolenceLock != value)
                 {
-                    _isViolenceLock = value; RaisePropertyChanged("IsViolenceLock");
+                    _isViolenceLock = value;
+                    RaisePropertyChanged("IsViolenceLock");
                     IsTenderLock = !value;
                 }
             }
@@ -491,10 +496,11 @@ namespace EasyCodeword.Core
             {
                 if (_isTenderLock != value)
                 {
-                    _isTenderLock = value; RaisePropertyChanged("IsTenderLock");
-                    IsViolenceLock = !value;
+                    _isTenderLock = value;
+                    RaisePropertyChanged("IsTenderLock");
                     _hasLockTypeChanged = HasLockTypeChanged();
                     _saveCommand.RaiseCanExecuteChanged();
+                    IsViolenceLock = !value;
                 }
             }
         }
@@ -512,6 +518,8 @@ namespace EasyCodeword.Core
 
         public DelegateCommand SaveCommand { get { return _saveCommand; } }
 
+        public DelegateCommand<object> AuthorizeCommand { get { return _authorizeCommand; } }
+
         #endregion
 
         #region 构造方法
@@ -524,6 +532,7 @@ namespace EasyCodeword.Core
                     boot, true) == 0;
 
             _saveCommand = new DelegateCommand(Save, CanSave);
+            _authorizeCommand = new DelegateCommand<object>(Authorize);
 
             Lock.PropertyChanged += Lock_PropertyChanged;
         }
@@ -623,6 +632,13 @@ namespace EasyCodeword.Core
             {
                 RWReg.SetValue(SUB_NAME, "TenderLockMessage", _tenderLockMessage);
             }
+
+            if (QWeiboViewModel.Instance.HasChanged)
+            {
+                QWeiboViewModel.Instance.Save();
+            }
+
+            Reset();
         }
 
         private bool CanSave()
@@ -639,7 +655,42 @@ namespace EasyCodeword.Core
                 || _hasMusicFolderChanged
                 || _hasLockChanged
                 || _hasLockTypeChanged
-                || _hasTenderLockMessageChanged;
+                || _hasTenderLockMessageChanged
+                || QWeiboViewModel.Instance.HasChanged;
+        }
+
+        private void Reset()
+        {
+            _hasBootChanged = false;
+            _hasForegroundChanged = false;
+            _hasBackgroundChanged = false;
+            _hasFontFamilyChanged = false;
+            _hasFontStyleChanged = false;
+            _hasFontSizeChanged = false;
+            _hasAutoSaveIntervalChanged = false;
+            _hasAutoSaveChanged = false;
+            _hasAutoPlayMusicChanged = false;
+            _hasMusicFolderChanged = false;
+            _hasLockChanged = false;
+            _hasLockTypeChanged = false;
+            _hasTenderLockMessageChanged = false;
+            QWeiboViewModel.Instance.Reset();
+        }
+
+        /// <summary>
+        /// 微博授权 0: 新浪 1: 腾讯
+        /// </summary>
+        private void Authorize(object state)
+        {
+            var type = Converter.ToInt(state);
+            if (type == 0)
+            {
+                
+            }
+            else if (type == 1)
+            {
+                QWeibo.Authorize();
+            }
         }
 
         private void Lock_PropertyChanged(object sender, PropertyChangedEventArgs e)

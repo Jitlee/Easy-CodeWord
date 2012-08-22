@@ -61,6 +61,28 @@
     <Compile Include="Core\MainViewModel.cs" />
     <Compile Include="Core\PowerHelper.cs" />
     <Compile Include="Core\PowerViewModel.cs" />
+    <Compile Include="Core\QWeiboViewModel.cs" />
+    <Compile Include="Core\QWeibo\ApiType.cs" />
+    <Compile Include="Core\QWeibo\AsyncHttp.cs" />
+    <Compile Include="Core\QWeibo\fav.cs" />
+    <Compile Include="Core\QWeibo\friends.cs" />
+    <Compile Include="Core\QWeibo\ht.cs" />
+    <Compile Include="Core\QWeibo\HttpUtil.cs" />
+    <Compile Include="Core\QWeibo\info.cs" />
+    <Compile Include="Core\QWeibo\Oauth.cs" />
+    <Compile Include="Core\QWeibo\OauthKey.cs" />
+    <Compile Include="Core\QWeibo\other.cs" />
+    <Compile Include="Core\QWeibo\Parameter.cs" />
+    <Compile Include="Core\QWeibo\private.cs" />
+    <Compile Include="Core\QWeibo\QWeiboApiBase.cs" />
+    <Compile Include="Core\QWeibo\QWeiboRequest.cs" />
+    <Compile Include="Core\QWeibo\search.cs" />
+    <Compile Include="Core\QWeibo\statuses.cs" />
+    <Compile Include="Core\QWeibo\SyncHttp.cs" />
+    <Compile Include="Core\QWeibo\t.cs" />
+    <Compile Include="Core\QWeibo\tag.cs" />
+    <Compile Include="Core\QWeibo\trends.cs" />
+    <Compile Include="Core\QWeibo\user.cs" />
     <Compile Include="Core\SettingViewModel.cs" />
     <Compile Include="Core\SoundPlayerViewModel.cs" />
     <Compile Include="Utilities\Common.cs" />
@@ -72,8 +94,14 @@
     <Compile Include="Utilities\Logger\WriteFileLogger.cs" />
     <Compile Include="Utilities\RWReg.cs" />
     <Compile Include="Utilities\WinformHelper.cs" />
+    <Compile Include="Views\AddWeiboWindow.xaml.cs">
+      <DependentUpon>AddWeiboWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PowerWindow.xaml.cs">
       <DependentUpon>PowerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QWeiboAuthorizeWindow.xaml.cs">
+      <DependentUpon>QWeiboAuthorizeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReferenceWindow.xaml.cs">
       <DependentUpon>ReferenceWindow.xaml</DependentUpon>
@@ -111,7 +139,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\AddWeiboWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PowerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QWeiboAuthorizeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -158,6 +194,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\qweibo.png" />
+    <Resource Include="Images\sweibo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

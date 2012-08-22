@@ -7,7 +7,11 @@
         Width="400"
         ShowInTaskbar="False"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        xmlns:converters="clr-namespace:EasyCodeword.Converters">
+    <Window.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -223,40 +227,107 @@
             	<Grid Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem Header="锁定级别">
-                <Grid Background="#FFE5E5E5">
+                <Grid Background="#FFE5E5E5"
+                      IsEnabled="{Binding Lock.IsUnlocked}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox
+                        Header="                    "
+                        Margin="5"
+                        IsEnabled="{Binding IsViolenceLock, UpdateSourceTrigger=PropertyChanged}">
+                        <CheckBox
+                            Margin="15,5,5,15"
+                            Content="锁定 Ctrl + Alt + Delete 键"/>
+                    </GroupBox>
+                    <RadioButton
+                        VerticalAlignment="Top"
+                        Margin="15,8,5,15"
+                        Content="暴力锁"
+                        GroupName="LockType1"
+                        IsThreeState="False"
+                        IsChecked="{Binding IsViolenceLock, UpdateSourceTrigger=PropertyChanged}"/>
                     <GroupBox
                         Grid.Row="1"
-                        Grid.ColumnSpan="2"
+                        Header="                    "
                         Margin="5"
-                        Header="锁定级别"
-                        IsEnabled="{Binding Lock.IsUnlocked}">
-                        <Grid>
+                        IsEnabled="{Binding IsTenderLock, UpdateSourceTrigger=PropertyChanged}">
+                        <Grid
+                            Margin="3,10,3,3"
+                            Background="White">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <RadioButton
-                                Margin="3,5"
-                                Content="暴力锁"
-                                GroupName="IsViolenceLock"
-                                IsChecked="{Binding IsViolenceLock, UpdateSourceTrigger=PropertyChanged}"/>
-                            <RadioButton
-                                Margin="3,5"
+                            <Image
+                                Height="32"
+                                Width="32"
+                                Margin="5"
+                                Source="../Images/sweibo.png"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                FontWeight="Bold"
+                                Foreground="Silver"
+                                Text="新浪微博"/>
+                            <TextBlock
+                                Grid.Column="2"
+                                Text="还未绑定"/>
+                            <Button
+                                Grid.Column="3"
+                                Content="绑定"
+                                Command="{Binding AuthorizeCommand}"
+                                CommandParameter="0"
+                                Style="{DynamicResource NormalButtonStyle}"/>
+                            <Image
                                 Grid.Row="1"
-                                Content="温柔锁"
-                                GroupName="IsTenderLock"
-                                IsChecked="{Binding IsTenderLock, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBox
-                                Grid.Row="2"
-                                AcceptsReturn="True"
-                                AcceptsTab="True"
-                                TextWrapping="Wrap"
-                                VerticalAlignment="Stretch"
-                                IsEnabled="{Binding IsTenderLock}"
-                                Text="{Binding TenderLockMessage}"/>
+                                Height="32"
+                                Width="32"
+                                Margin="5"
+                                Source="../Images/qweibo.png"/>
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                FontWeight="Bold"
+                                Foreground="Silver"
+                                Text="腾讯微博"/>
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Text="{Binding Nickname, Mode=OneWay}"/>
+                            <Button
+                                Grid.Row="1"
+                                Grid.Column="3"
+                                Content="绑定"
+                                Visibility="{Binding IsAuthorized, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=1}"
+                                Command="{Binding AuthorizeCommand}"
+                                CommandParameter="1"
+                                Style="{DynamicResource NormalButtonStyle}"/>
+                            <Button
+                                Grid.Row="1"
+                                Grid.Column="3"
+                                Content="取消授权"
+                                Visibility="{Binding IsAuthorized, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Command="{Binding AuthorizeCommand}"
+                                CommandParameter="-1"
+                                Style="{DynamicResource NormalButtonStyle}"/>
                         </Grid>
                     </GroupBox>
+                    <RadioButton
+                        VerticalAlignment="Top"
+                        Grid.Row="1"
+                        Margin="15,8,5,15"
+                        Content="温柔锁"
+                        IsThreeState="False"
+                        GroupName="LockType"
+                        IsChecked="{Binding IsTenderLock, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </TabItem>
         </TabControl>
