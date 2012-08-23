@@ -46,6 +46,16 @@ namespace EasyCodeword
         #region 属性
         
         public static MainWindow Instance { get; private set; }
+
+        /// <summary>
+        /// 原始字数
+        /// </summary>
+        public int OriginWords { get; private set; }
+
+        /// <summary>
+        /// 当时字数
+        /// </summary>
+        public int Words { get; private set; }
         
         #endregion
         
@@ -117,7 +127,7 @@ namespace EasyCodeword
             var recentFile = SettingViewModel.Instance.RecentFile;
             if (File.Exists(recentFile))
             {
-                OpenFile(recentFile);
+                OpenFile(recentFile, false);
                 
                 if (File.Exists(Common.TempFile))
                 {
@@ -156,7 +166,7 @@ namespace EasyCodeword
                 MessageBoxButton.OKCancel,
                 MessageBoxImage.Question) == MessageBoxResult.OK)
             {
-                OpenFile(Common.TempFile);
+                OpenFile(Common.TempFile, false);
                 File.Delete(Common.TempFile);
             }
             else
@@ -188,10 +198,16 @@ namespace EasyCodeword
 
         private void MainTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Return)
             {
-                MainTextBox.AppendText("\r\n\r\n　　");
-                MainTextBox.Select(MainTextBox.Text.Length, 0);
+                if (SettingViewModel.Instance.AutoSaveReturn)
+                {
+                    SaveFile();
+                }
+                var index = MainTextBox.SelectionStart;
+                MainTextBox.Text = MainTextBox.Text.Insert(MainTextBox.SelectionStart, "\r\n\r\n　　");
+                MainTextBox.SelectionStart = index + "\r\n\r\n　　".Length;
+                e.Handled = true;
             }
         }
 
@@ -213,26 +229,44 @@ namespace EasyCodeword
             }
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             SettingViewModel.Instance.RecentFile = MainViewModel.Instance.FileName;
-
             try
             {
                 if (string.IsNullOrEmpty(MainViewModel.Instance.FileName))
                 {
-                    SaveFile();
+                    if (Words > 0)
+                    {
+                        SaveFileAs();
+                    }
                 }
                 else
                 {
-                    File.WriteAllText(MainViewModel.Instance.FileName, this.MainTextBox.Text, Encoding.Default);
+                    if (!SettingViewModel.Instance.AutoSaveExit)
+                    {
+                        var confirmWindow = new ConfirmWindow();
+                        confirmWindow.Title = "提示";
+                        confirmWindow.MessageTextBlock.Text = string.Concat(GetSaveCaption(), "\r\n\r\n是否保存当前文档？");
+                        confirmWindow.RemeberCheckedBox.Content = "以后退出时自动保存当前文件";
+                        confirmWindow.Topmost = true;
+                        var result = confirmWindow.ShowDialog();
+                        if (result != true)
+                        {
+                            base.OnClosing(e);
+                            return;
+                        }
+                        SettingViewModel.Instance.AutoSaveExit = confirmWindow.RemeberCheckedBox.IsChecked == true;
+                        SettingViewModel.Instance.SaveAutoSaveExit();
+                    }
+                    SaveFileTo(MainViewModel.Instance.FileName);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "文件保存异常", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessage("保存文件出现异常：", ex.Message);
             }
-            base.OnClosed(e);
+            base.OnClosing(e);
         }
 
         #region 文件
@@ -242,6 +276,7 @@ namespace EasyCodeword
             this.MainTextBox.Text = string.Empty;
             MenuPopup.IsOpen = false;
             MainViewModel.Instance.FileName = string.Empty;
+            OriginWords = 0;
             New();
         }
 
@@ -255,29 +290,71 @@ namespace EasyCodeword
             }
         }
 
-        private void OpenFile(string fileName)
+        private void OpenFile(string fileName, bool confirm = true)
         {
-            this.MainTextBox.Text = File.ReadAllText(fileName, Encoding.Default);
-            MainViewModel.Instance.FileName = fileName;
-            SetFocus(true);
+            try
+            {
+                var text = string.Empty;
+                if (Regex.IsMatch(fileName, "\\.txt$", RegexOptions.IgnoreCase))
+                {
+                    text = File.ReadAllText(fileName, Encoding.Default);
+                }
+                else if (Regex.IsMatch(fileName, "\\.rtf$", RegexOptions.IgnoreCase))
+                {
+                    if (confirm && !SettingViewModel.Instance.RemeberRTF)
+                    {
+                        var confirmWindow = new ConfirmWindow();
+                        confirmWindow.Title = "提示";
+                        confirmWindow.MessageTextBlock.Text = "打开 RTF 格式的文件将丢失原有格式信息、和图片等对象，是否需要继续？";
+                        confirmWindow.RemeberCheckedBox.Content = "下次不再提示";
+                        confirmWindow.Owner = this;
+                        var result = confirmWindow.ShowDialog();
+                        SettingViewModel.Instance.RemeberRTF = confirmWindow.RemeberCheckedBox.IsChecked == true;
+                        SettingViewModel.Instance.SaveRememberRTF();
+
+                        if (result != true)
+                        {
+                            return;
+                        }
+                    }
+                    text = RtfHelper.Read(fileName);
+                }
+                else // 其他
+                {
+                    text = File.ReadAllText(fileName, Encoding.Default);
+                }
+                this.MainTextBox.Text = text; ;
+                MainViewModel.Instance.FileName = fileName;
+                OriginWords = MainViewModel.Instance.CountWords(MainTextBox.Text);
+                SetFocus(true);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("打开文件({0})出现异常：{1}", fileName, ex.Message);
+            }
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFile();
+        }
+
+        private void SaveFile()
         {
             try
             {
                 if (string.IsNullOrEmpty(MainViewModel.Instance.FileName))
                 {
-                    SaveFile();
+                    SaveFileAs();
                 }
                 else
                 {
-                    File.WriteAllText(MainViewModel.Instance.FileName, this.MainTextBox.Text, Encoding.Default);
+                    SaveFileTo(MainViewModel.Instance.FileName);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "文件保存异常", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessage("文件保存时出现异常：", ex.Message);
             }
         }
 
@@ -285,28 +362,50 @@ namespace EasyCodeword
         {
             try
             {
-                SaveFile();
+                SaveFileAs();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "文件另存为异常", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessage("文件另存为时出现异常：", ex.Message);
             }
         }
 
-        private void SaveFile()
+        private void SaveFileAs()
         {
             var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "文本文件(*.txt)|*.txt|RFT文件(*.rft)|*.rft";
+            saveFileDialog.Title = GetSaveCaption();
+            saveFileDialog.Filter = "文本文件(*.txt)|*.txt|RTF文件(*.rtf)|*.rtf";
             if (saveFileDialog.ShowDialog() == true)
             {
-                File.WriteAllText(saveFileDialog.FileName, this.MainTextBox.Text, Encoding.Default);
-                MainViewModel.Instance.FileName = saveFileDialog.FileName;
+                var fileName = saveFileDialog.FileName;
+                SaveFileTo(fileName);
+                MainViewModel.Instance.FileName = fileName;
+                OriginWords = MainViewModel.Instance.CountWords(MainTextBox.Text);
                 try
                 {
                     File.Delete(Common.TempFile);
                 }
                 catch{}
             }
+        }
+
+        private string GetSaveCaption()
+        {
+            return string.Format("这次不计空格和符号共计码字{0}个，亲，一定记得要保存哦(*^_^*)",
+                Words - OriginWords);
+        }
+
+        private void SaveFileTo(string fileName)
+        {
+            if (Regex.IsMatch(fileName, "\\.txt$", RegexOptions.IgnoreCase))
+            {
+                File.WriteAllText(fileName, this.MainTextBox.Text, Encoding.Default);
+            }
+            else if (Regex.IsMatch(fileName, "\\.rtf$", RegexOptions.IgnoreCase))
+            {
+                RtfHelper.Write(fileName, this.MainTextBox.Text);
+            }
+            OriginWords = Words;
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -486,15 +585,17 @@ namespace EasyCodeword
             this.MainTextBox.Text =
                 Regex.Replace(this.MainTextBox.Text,
                     @"([\s]*[\r\n]+[\s]*)|([\s]{5,})",
-                    "\r\n\r\n　　");
+                    "\r\n\r\n　　").TrimStart('\r', '\n', ' ', '　').Insert(0, "　　");
+            SetFocus(true);
         }
 
         private void MainTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (MainTextBox.Text.Length > 0)
             {
+                Words = MainViewModel.Instance.CountWords(MainTextBox.Text);
                 CharacterCountTextBlock.Text = string.Format("{0}\\{1}",
-                    MainViewModel.Instance.CountWords(MainTextBox.Text)
+                    Words
                     , MainTextBox.Text.Length);
             }
             else

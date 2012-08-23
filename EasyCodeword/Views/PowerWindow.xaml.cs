@@ -14,13 +14,7 @@ namespace EasyCodeword.Views
         {
             InitializeComponent();
             this.DataContext = PowerViewModel.Instance;
-            this.Loaded += PowerWindow_Loaded;
-        }
-
-        private void PowerWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            var hWnd = new WindowInteropHelper(this).Handle;
-            Common.DisableMinmize(hWnd);
+            this.HideIcon();
         }
     }
 }

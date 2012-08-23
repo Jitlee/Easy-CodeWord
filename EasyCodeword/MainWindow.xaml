@@ -39,6 +39,7 @@
                 x:Name="MainTextBox"
                 Style="{DynamicResource MainTextBoxStyle}"
                 TextChanged="MainTextBox_TextChanged"
+                AcceptsReturn="True"
                 PreviewKeyDown="MainTextBox_PreviewKeyDown">
             </TextBox>
         </Border>

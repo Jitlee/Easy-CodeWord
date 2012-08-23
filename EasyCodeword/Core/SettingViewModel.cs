@@ -242,6 +242,12 @@ namespace EasyCodeword.Core
 
         private string _tenderLockMessage = RWReg.GetValue(SUB_NAME, "TenderLockMessage", TENDERLOCK_MESSAGE).ToString(); // 温柔锁强制发送的内容
 
+        private bool _remeberRTF = Converter.ToInt(RWReg.GetValue(SUB_NAME, "RemeberRTF", 0)) != 0; //  打开 RTF 文档不再提示
+
+        private bool _autoSaveExit = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSaveExit", 1)) != 0; //  退出时自动保存
+
+        private bool _autoSaveReturn = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSaveReturn", 1)) != 0; //  回车时自动保存
+
         private readonly DelegateCommand _saveCommand;
 
         private readonly DelegateCommand<object> _authorizeCommand;
@@ -273,6 +279,12 @@ namespace EasyCodeword.Core
         private bool _hasLockTypeChanged = false;
 
         private bool _hasTenderLockMessageChanged = false;
+
+        private bool _hasRemeberRTFChanged = false;
+
+        private bool _hasAutoSaveExitChanged = false;
+
+        private bool _hasAutoSaveReturnChanged = false;
 
         #endregion
 
@@ -518,6 +530,51 @@ namespace EasyCodeword.Core
             }
         }
 
+        public bool RemeberRTF
+        {
+            get { return _remeberRTF; }
+            set
+            {
+                if (_remeberRTF != value)
+                {
+                    _remeberRTF = value;
+                    RaisePropertyChanged("RemeberRTF");
+                    _hasRemeberRTFChanged = HasRemeberRTFChanged();
+                    _saveCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool AutoSaveExit
+        {
+            get { return _autoSaveExit; }
+            set
+            {
+                if (_autoSaveExit != value)
+                {
+                    _autoSaveExit = value;
+                    RaisePropertyChanged("AutoSaveExit");
+                    _hasAutoSaveExitChanged = HasAutoSaveExitChanged();
+                    _saveCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool AutoSaveReturn
+        {
+            get { return _autoSaveReturn; }
+            set
+            {
+                if (_autoSaveReturn != value)
+                {
+                    _autoSaveReturn = value;
+                    RaisePropertyChanged("AutoSaveReturn");
+                    _hasAutoSaveReturnChanged = HasAutoSaveReturnChanged();
+                    _saveCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public DelegateCommand SaveCommand { get { return _saveCommand; } }
 
         public DelegateCommand<object> AuthorizeCommand { get { return _authorizeCommand; } }
@@ -640,7 +697,34 @@ namespace EasyCodeword.Core
                 QWeiboViewModel.Instance.Save();
             }
 
+            if (_hasRemeberRTFChanged)
+            {
+                SaveRememberRTF();
+            }
+
+            if (_hasAutoSaveExitChanged)
+            {
+                SaveAutoSaveExit();
+            }
+
+            if (_hasAutoSaveReturnChanged)
+            {
+                RWReg.SetValue(SUB_NAME, "AutoSaveReturn", _autoSaveReturn ? 1 : 0);
+            }
+
             Reset();
+        }
+
+        public void SaveAutoSaveExit()
+        {
+            RWReg.SetValue(SUB_NAME, "AutoSaveExit", _autoSaveExit ? 1 : 0);
+            _hasAutoSaveExitChanged = false;
+        }
+
+        public void SaveRememberRTF()
+        {
+            RWReg.SetValue(SUB_NAME, "RemeberRTF", _remeberRTF ? 1 : 0);
+            _hasRemeberRTFChanged = false;
         }
 
         private bool CanSave()
@@ -658,7 +742,10 @@ namespace EasyCodeword.Core
                 || _hasLockChanged
                 || _hasLockTypeChanged
                 || _hasTenderLockMessageChanged
-                || QWeiboViewModel.Instance.HasChanged;
+                || QWeiboViewModel.Instance.HasChanged
+                || _hasRemeberRTFChanged
+                || _hasAutoSaveExitChanged
+                || _hasAutoSaveReturnChanged;
         }
 
         private void Reset()
@@ -677,6 +764,9 @@ namespace EasyCodeword.Core
             _hasLockTypeChanged = false;
             _hasTenderLockMessageChanged = false;
             QWeiboViewModel.Instance.Reset();
+            _hasRemeberRTFChanged = false;
+            _hasAutoSaveExitChanged = false;
+            _hasAutoSaveReturnChanged = false;
         }
 
         /// <summary>
@@ -805,6 +895,27 @@ namespace EasyCodeword.Core
             return !string.Equals(
                 RWReg.GetValue(SUB_NAME, "TenderLockMessage", TENDERLOCK_MESSAGE).ToString(),
                 _tenderLockMessage);
+        }
+
+        private bool HasRemeberRTFChanged()
+        {
+            return !int.Equals(
+                Converter.ToInt(RWReg.GetValue(SUB_NAME, "RemeberRTF", 0)),
+                _remeberRTF ? 1 : 0);
+        }
+        
+        private bool HasAutoSaveExitChanged()
+        {
+            return !int.Equals(
+                Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSaveExit", 1)),
+                _autoSaveExit ? 1 : 0);
+        }
+
+        private bool HasAutoSaveReturnChanged()
+        {
+            return !int.Equals(
+                Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSaveReturn", 1)),
+                _autoSaveReturn ? 1 : 0);
         }
 
         #endregion

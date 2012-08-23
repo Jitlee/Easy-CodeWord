@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using EasyCodeword.Core;
-using EasyCodeword.Utilities;
 
 namespace EasyCodeword.Views
 {
@@ -26,18 +15,13 @@ namespace EasyCodeword.Views
         {
             InitializeComponent();
             this.DataContext = SettingViewModel.Instance;
-            this.Loaded += SettingWindow_Loaded;
             Instance = this;
-        }
-
-        private void SettingWindow_Loaded(object sender, EventArgs e)
-        {
-            var hWnd = new WindowInteropHelper(this).Handle;
-            Common.DisableMinmize(hWnd);
+            this.HideButton();
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
+            this.DialogResult = true;
             this.Close();
         }
 
@@ -91,7 +75,8 @@ namespace EasyCodeword.Views
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            if (SettingViewModel.Instance.SaveCommand.CanExecute(null))
+            if (this.DialogResult != true
+                && SettingViewModel.Instance.SaveCommand.CanExecute(null))
             {
                 var result = MessageBox.Show(this,
                         "设置已更改，是否需要保存？",

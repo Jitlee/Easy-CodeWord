@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Interop;
-using EasyCodeword.Utilities;
 
 namespace EasyCodeword.Views
 {
@@ -15,14 +13,12 @@ namespace EasyCodeword.Views
         public AddWeiboWindow()
         {
             InitializeComponent();
+            this.HideButton();
             this.Loaded += SettingWindow_Loaded;
         }
 
         private void SettingWindow_Loaded(object sender, EventArgs e)
         {
-            var hWnd = new WindowInteropHelper(this).Handle;
-            Common.DisableMinmize(hWnd);
-
             WeiboTextBox.Focus();
         }
 

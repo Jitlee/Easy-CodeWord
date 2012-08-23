@@ -191,11 +191,6 @@
             </TabItem>
             <TabItem Header="常规">
                 <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -203,24 +198,58 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     
-                    <TextBlock
-	                    Grid.Row="0"
-	                    Text="自动保存："/>
-                    <StackPanel
-                        Orientation="Horizontal"
-	                    Grid.Column="0"
-                        Grid.ColumnSpan="3"
-	                    Grid.Row="1">
-                        <CheckBox
-                            Content="保存自动恢复信息时间间隔"
-	                        IsChecked="{Binding AutoSave}"/>
-                        <TextBox
-                            Width="50"
-                            IsEnabled="{Binding AutoSave}"
-                            KeyDown="Digital_KeyDown"
-                            Text="{Binding AutoSaveInterval, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock Text="分钟"/>
-                    </StackPanel>
+                    <GroupBox
+                        Margin="8"
+                        Padding="8"
+                        Header="自动保存">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel
+                                Orientation="Horizontal"
+	                            Grid.Column="0"
+	                            Grid.Row="0">
+                                <CheckBox
+                                Content="保存自动恢复信息时间间隔"
+	                            IsChecked="{Binding AutoSave}"/>
+                                <TextBox
+                                Width="50"
+                                IsEnabled="{Binding AutoSave}"
+                                KeyDown="Digital_KeyDown"
+                                Text="{Binding AutoSaveInterval, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="分钟"/>
+                            </StackPanel>
+                            <CheckBox
+                                Grid.Row="1"
+                                Content="退出时自动保存当前文件"
+                                IsChecked="{Binding AutoSaveExit}"/>
+                            <CheckBox
+                                Grid.Row="2"
+                                Content="回车时自动保存文档"
+                                IsChecked="{Binding AutoSaveReturn}"/>
+                        </Grid>
+                    </GroupBox>
+                    
+                    <GroupBox
+                        Grid.Row="1"
+                        Margin="8"
+                        Padding="8"
+                        Header="其他">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <CheckBox
+                                Grid.Row="0"
+                                Content="打开 RTF 文件不再提示"
+                                IsChecked="{Binding RemeberRTF}"/>
+                        </Grid>
+                    </GroupBox>
                 </Grid>
             </TabItem>
             <TabItem Header="网络设置">

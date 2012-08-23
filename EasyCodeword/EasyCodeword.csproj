@@ -63,6 +63,7 @@
     <Compile Include="Core\PowerHelper.cs" />
     <Compile Include="Core\PowerViewModel.cs" />
     <Compile Include="Core\QWeiboViewModel.cs" />
+    <Compile Include="Core\RtfHelper.cs" />
     <Compile Include="Core\SWeiboViewModel.cs" />
     <Compile Include="Core\Weibo\AsyncHttp.cs" />
     <Compile Include="Core\Weibo\CallbackInfo.cs" />
@@ -97,9 +98,12 @@
     <Compile Include="Utilities\Logger\LoggerLevel.cs" />
     <Compile Include="Utilities\Logger\WriteFileLogger.cs" />
     <Compile Include="Utilities\RWReg.cs" />
-    <Compile Include="Utilities\WinformHelper.cs" />
+    <Compile Include="Utilities\WindowIconHelper.cs" />
     <Compile Include="Views\AddWeiboWindow.xaml.cs">
       <DependentUpon>AddWeiboWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfirmWindow.xaml.cs">
+      <DependentUpon>ConfirmWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PowerWindow.xaml.cs">
       <DependentUpon>PowerWindow.xaml</DependentUpon>
@@ -144,6 +148,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AddWeiboWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfirmWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

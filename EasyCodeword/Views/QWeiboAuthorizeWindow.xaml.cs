@@ -1,20 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using EasyCodeword.Utilities;
 
 namespace EasyCodeword.Views
 {
@@ -29,14 +16,12 @@ namespace EasyCodeword.Views
         {
             InitializeComponent();
             _url = url;
+            this.HideButton();
             this.ContentRendered += QWeiboAuthorizeWindow_ContentRendered;
-            this.Loaded += SettingWindow_Loaded;
         }
 
         private void SettingWindow_Loaded(object sender, EventArgs e)
         {
-            var hWnd = new WindowInteropHelper(this).Handle;
-            Common.DisableMinmize(hWnd);
             AuthorizeWebBrower.Focus();
         }
 

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="EasyCodeword.Views.PowerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PowerWindow"
+        Title="操作计算机"
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize">

@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Interop;
-using EasyCodeword.Utilities;
 using System.Windows.Media.Animation;
-using System.IO;
-using Microsoft.Win32;
 using EasyCodeword.Core;
+using Microsoft.Win32;
+using System.Text.RegularExpressions;
 
 namespace EasyCodeword.Views
 {
@@ -30,6 +20,7 @@ namespace EasyCodeword.Views
         {
             InitializeComponent();
             _showMessageStoryboard = Resources["ShowMessageStoryboard"] as Storyboard;
+            this.HideButton();
             this.Loaded += ReferenceWindow_Loaded;
         }
 
@@ -42,8 +33,6 @@ namespace EasyCodeword.Views
 
         private void ReferenceWindow_Loaded(object sender, EventArgs e)
         {
-            var hWnd = new WindowInteropHelper(this).Handle;
-            Common.DisableMinmize(hWnd);
 
             var rect = SettingViewModel.Instance.ReferenceLocation;
             this.Left = rect.Left;
@@ -132,9 +121,29 @@ namespace EasyCodeword.Views
 
         private void OpenFile(string fileName)
         {
-            this.ReferenceTextBox.Text = File.ReadAllText(fileName, Encoding.Default);
-            this.ReferenceTextBox.Focus();
-            SettingViewModel.Instance.ReferenceFile = fileName;
+            try
+            {
+                var text = string.Empty;
+                if (Regex.IsMatch(fileName, "\\.txt$", RegexOptions.IgnoreCase))
+                {
+                    text = File.ReadAllText(fileName, Encoding.Default);
+                }
+                else if (Regex.IsMatch(fileName, "\\.rtf$", RegexOptions.IgnoreCase))
+                {
+                    text = RtfHelper.Read(fileName);
+                }
+                else // 其他
+                {
+                    text = File.ReadAllText(fileName, Encoding.Default);
+                }
+                this.ReferenceTextBox.Text = text; ;
+                SettingViewModel.Instance.ReferenceFile = fileName;
+                this.ReferenceTextBox.Focus();
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("打开文件({0})出现异常：{1}", fileName, ex.Message);
+            }
         }
     }
 }
