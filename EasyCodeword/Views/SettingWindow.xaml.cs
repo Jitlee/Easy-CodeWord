@@ -88,5 +88,27 @@ namespace EasyCodeword.Views
                 SettingViewModel.Instance.MusicFolder = dlg.SelectedPath;
             }
         }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            if (SettingViewModel.Instance.SaveCommand.CanExecute(null))
+            {
+                var result = MessageBox.Show(this,
+                        "设置已更改，是否需要保存？",
+                        "询问",
+                        MessageBoxButton.YesNoCancel,
+                        MessageBoxImage.None,
+                        MessageBoxResult.Yes);
+                if (result == MessageBoxResult.Yes)
+                {
+                    SettingViewModel.Instance.SaveCommand.Execute(null);
+                }
+                else if(result == MessageBoxResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+            }
+            base.OnClosing(e);
+        }
     }
 }

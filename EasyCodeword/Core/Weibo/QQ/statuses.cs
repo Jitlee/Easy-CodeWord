@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QWeiboSDK
+namespace WeiboSDK.QQ
 {
     //时间线相关接口
     public class statuses : QWeiboApiBase

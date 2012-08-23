@@ -5,7 +5,7 @@ using System.Web;
 using System.IO;
 using Microsoft.Win32;
 
-namespace QWeiboSDK
+namespace WeiboSDK
 {
     public static class HttpUtil
     {
@@ -51,6 +51,26 @@ namespace QWeiboSDK
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// format parameter data to query string
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public static string FormatQueryString(List<Parameter> parameters)
+        {
+            if (null == parameters || parameters.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            var sb = new StringBuilder();
+            foreach (var parameter in parameters)
+            {
+                sb.AppendFormat("&{0}={1}", parameter.Name, parameter.Value);
+            }
+            return sb.ToString().TrimStart('&');
         }
     }
 }

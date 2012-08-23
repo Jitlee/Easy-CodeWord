@@ -2,19 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace QWeiboSDK
+namespace WeiboSDK.QQ
 {
-    public delegate void AsyncRequestCallback(int key, string content);
-
-    
-   
-    //回调信息
-    class CallbackInfo
-    {
-        public int key = 0;
-        public AsyncRequestCallback callback = null;
-    }
-
     //微博请求
     public class QWeiboRequest
     {

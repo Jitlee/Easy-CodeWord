@@ -63,29 +63,32 @@
     <Compile Include="Core\PowerHelper.cs" />
     <Compile Include="Core\PowerViewModel.cs" />
     <Compile Include="Core\QWeiboViewModel.cs" />
-    <Compile Include="Core\QWeibo\ApiType.cs" />
-    <Compile Include="Core\QWeibo\AsyncHttp.cs" />
-    <Compile Include="Core\QWeibo\fav.cs" />
-    <Compile Include="Core\QWeibo\friends.cs" />
-    <Compile Include="Core\QWeibo\ht.cs" />
-    <Compile Include="Core\QWeibo\HttpUtil.cs" />
-    <Compile Include="Core\QWeibo\info.cs" />
-    <Compile Include="Core\QWeibo\Oauth.cs" />
-    <Compile Include="Core\QWeibo\OauthKey.cs" />
-    <Compile Include="Core\QWeibo\other.cs" />
-    <Compile Include="Core\QWeibo\Parameter.cs" />
-    <Compile Include="Core\QWeibo\private.cs" />
-    <Compile Include="Core\QWeibo\QWeiboApiBase.cs" />
-    <Compile Include="Core\QWeibo\QWeiboRequest.cs" />
-    <Compile Include="Core\QWeibo\search.cs" />
-    <Compile Include="Core\QWeibo\statuses.cs" />
-    <Compile Include="Core\QWeibo\SyncHttp.cs" />
-    <Compile Include="Core\QWeibo\t.cs" />
-    <Compile Include="Core\QWeibo\tag.cs" />
-    <Compile Include="Core\QWeibo\trends.cs" />
-    <Compile Include="Core\QWeibo\user.cs" />
+    <Compile Include="Core\SWeiboViewModel.cs" />
+    <Compile Include="Core\Weibo\AsyncHttp.cs" />
+    <Compile Include="Core\Weibo\CallbackInfo.cs" />
+    <Compile Include="Core\Weibo\HttpUtil.cs" />
+    <Compile Include="Core\Weibo\Parameter.cs" />
+    <Compile Include="Core\Weibo\QQ\ApiType.cs" />
+    <Compile Include="Core\Weibo\QQ\fav.cs" />
+    <Compile Include="Core\Weibo\QQ\friends.cs" />
+    <Compile Include="Core\Weibo\QQ\ht.cs" />
+    <Compile Include="Core\Weibo\QQ\info.cs" />
+    <Compile Include="Core\Weibo\QQ\Oauth.cs" />
+    <Compile Include="Core\Weibo\QQ\OauthKey.cs" />
+    <Compile Include="Core\Weibo\QQ\other.cs" />
+    <Compile Include="Core\Weibo\QQ\private.cs" />
+    <Compile Include="Core\Weibo\QQ\QWeiboApiBase.cs" />
+    <Compile Include="Core\Weibo\QQ\QWeiboRequest.cs" />
+    <Compile Include="Core\Weibo\QQ\search.cs" />
+    <Compile Include="Core\Weibo\QQ\statuses.cs" />
+    <Compile Include="Core\Weibo\QQ\t.cs" />
+    <Compile Include="Core\Weibo\QQ\tag.cs" />
+    <Compile Include="Core\Weibo\QQ\trends.cs" />
+    <Compile Include="Core\Weibo\QQ\user.cs" />
     <Compile Include="Core\SettingViewModel.cs" />
     <Compile Include="Core\SoundPlayerViewModel.cs" />
+    <Compile Include="Core\Weibo\Sina\SWeiboRequest.cs" />
+    <Compile Include="Core\Weibo\SyncHttp.cs" />
     <Compile Include="Utilities\Common.cs" />
     <Compile Include="Utilities\Converter.cs" />
     <Compile Include="Utilities\Logger\ILogger.cs" />
@@ -187,16 +190,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Views\app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\SWeibo\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\qweibo.png" />
     <Resource Include="Images\sweibo.png" />

@@ -12,11 +12,19 @@ namespace EasyCodeword.Utilities
 
         public static string GetAppPath(string path)
         {
+            if (!Directory.Exists(ApplicationDataPath))
+            {
+                Directory.CreateDirectory(ApplicationDataPath);
+            }
             return Path.Combine(ApplicationDataPath, path);
         }
 
         public static string GetAppPath(string path1, string path2)
         {
+            if (!Directory.Exists(ApplicationDataPath))
+            {
+                Directory.CreateDirectory(ApplicationDataPath);
+            }
             return Path.Combine(Path.Combine(ApplicationDataPath, path1), path2);
         }
 

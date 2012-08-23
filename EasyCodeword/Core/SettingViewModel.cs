@@ -286,6 +286,8 @@ namespace EasyCodeword.Core
 
         public QWeiboViewModel QWeibo { get { return QWeiboViewModel.Instance; } }
 
+        public SWeiboViewModel SWeibo { get { return SWeiboViewModel.Instance; } }
+
         public string RecentFile
         {
             get { return RWReg.GetValue(SUB_NAME, "RecentFile", string.Empty).ToString(); }
@@ -685,7 +687,7 @@ namespace EasyCodeword.Core
             var type = Converter.ToInt(state);
             if (type == 0)
             {
-                
+                SWeibo.Authorize();
             }
             else if (type == 1)
             {

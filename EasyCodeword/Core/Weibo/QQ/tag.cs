@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QWeiboSDK
+namespace WeiboSDK.QQ
 {
     /// <summary>标签相关
     /// 

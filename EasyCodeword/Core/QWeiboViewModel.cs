@@ -8,7 +8,8 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using EasyCodeword.Utilities;
 using EasyCodeword.Views;
-using QWeiboSDK;
+using WeiboSDK;
+using WeiboSDK.QQ;
 
 namespace EasyCodeword.Core
 {
@@ -18,7 +19,7 @@ namespace EasyCodeword.Core
 
         private static QWeiboViewModel _instance = new QWeiboViewModel();
 
-        private ILogger _logger = LoggerFactory.GetLogger(typeof(QWeiboApiBase).FullName);
+        private ILogger _logger = LoggerFactory.GetLogger(typeof(QWeiboViewModel).FullName);
 
         private const string UNAUTHORIZED = "用户未授权";
 

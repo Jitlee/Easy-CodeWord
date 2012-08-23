@@ -6,7 +6,7 @@ using System.Web;
 using System.Security.Cryptography;
 
 
-namespace QWeiboSDK
+namespace WeiboSDK.QQ
 {
     /// <summary>
     /// 
