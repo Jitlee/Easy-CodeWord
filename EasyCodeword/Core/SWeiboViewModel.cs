@@ -23,9 +23,13 @@ namespace EasyCodeword.Core
 
         private const string UNAUTHORIZED = "用户未授权";
 
-        private readonly string AppKey = "3905834229";
+        private readonly string AppKey = "858273299";
 
-        private readonly string AppSecret = "d6dacf5f0dc2d3c298edea2aac3a51a0";
+        private readonly string AppSecret = "3fae75eb725ca4e5a356352d73904536";
+
+        //private readonly string AppKey = "858273299";
+
+        //private readonly string AppSecret = "3fae75eb725ca4e5a356352d73904536";
 
         private string _tokenKey = null;
 
