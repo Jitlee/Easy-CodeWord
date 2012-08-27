@@ -7,7 +7,7 @@ using Microsoft.Win32;
 using System.Collections.Specialized;
 using System.Web;
 
-namespace WeiboSDK
+namespace WeiboSDK.QQ
 {
     public class SyncHttp
     {

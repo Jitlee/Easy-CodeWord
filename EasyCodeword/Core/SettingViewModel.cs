@@ -327,8 +327,8 @@ namespace EasyCodeword.Core
         /// </summary>
         public string ReferenceFile
         {
-            get { return RWReg.GetValue(BOOT_NAME, "ReferenceFile", string.Empty).ToString(); }
-            set { RWReg.SetValue(BOOT_NAME, "ReferenceFile", value); }
+            get { return RWReg.GetValue(SUB_NAME, "ReferenceFile", string.Empty).ToString(); }
+            set { RWReg.SetValue(SUB_NAME, "ReferenceFile", value); }
         }
 
         public bool Boot

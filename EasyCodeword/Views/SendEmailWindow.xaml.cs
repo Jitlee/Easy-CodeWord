@@ -64,7 +64,7 @@ namespace EasyCodeword.Views
 
         private void ChangeFrom_Click(object sender, RoutedEventArgs e)
         {
-            var inputAccoutWindow = new InputAccoutWindow();
+            var inputAccoutWindow = new EmailInputAccoutWindow();
             inputAccoutWindow.Owner = this;
             inputAccoutWindow.Title = "输入发件人信息";
             inputAccoutWindow.UsernameTextBlock.Text = "发送人邮箱地址：";

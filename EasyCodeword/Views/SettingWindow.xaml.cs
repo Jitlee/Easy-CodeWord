@@ -17,6 +17,7 @@ namespace EasyCodeword.Views
             this.DataContext = SettingViewModel.Instance;
             Instance = this;
             this.HideButton();
+            EmailPasswordTextBox.Password = EmailViewModel.Instance.EmailPassword;
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
@@ -104,6 +105,11 @@ namespace EasyCodeword.Views
                 e.Cancel = true;
             }
             base.OnClosing(e);
+        }
+
+        private void EmailPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            EmailViewModel.Instance.EmailPassword = EmailPasswordTextBox.Password;
         }
     }
 }

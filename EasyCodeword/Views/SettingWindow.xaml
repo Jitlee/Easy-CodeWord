@@ -253,7 +253,61 @@
                 </Grid>
             </TabItem>
             <TabItem Header="网络设置">
-            	<Grid Background="#FFE5E5E5"/>
+            	<Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox
+                        Header="邮件设置"
+                        Margin="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Text="发件人邮箱地址："
+                                Grid.Row="0"/>
+                            <TextBox
+                                x:Name="UsernameTextBox"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Text="{Binding Email.EmailFrom}"/>
+                            <TextBlock
+                                Text="发件人邮箱密码："
+                                Grid.Row="1"/>
+                            <PasswordBox
+                                x:Name="EmailPasswordTextBox"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Margin="3"
+                                PasswordChanged="EmailPassword_PasswordChanged"/>
+                            <TextBlock
+                                Text="发送 SMTP 服务器："
+                                Grid.Row="2"/>
+                            <TextBox
+                                x:Name="SMTPTextBox"
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Text="{Binding Email.SMTP}"/>
+                            <TextBlock
+                                Text="收件人邮箱地址"
+                                Grid.Row="3"/>
+                            <TextBox
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Text="{Binding Email.EmailTo}"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
             </TabItem>
             <TabItem Header="锁定级别">
                 <Grid Background="#FFE5E5E5"

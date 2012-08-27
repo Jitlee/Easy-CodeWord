@@ -8,7 +8,6 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using EasyCodeword.Utilities;
 using EasyCodeword.Views;
-using WeiboSDK;
 using WeiboSDK.QQ;
 
 namespace EasyCodeword.Core

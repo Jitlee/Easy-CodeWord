@@ -10,7 +10,6 @@ using EasyCodeword.Utilities;
 using EasyCodeword.Views;
 using NetDimension.Weibo;
 using WeiboSDK;
-using WeiboSDK.Sina;
 
 namespace EasyCodeword.Core
 {
@@ -144,34 +143,6 @@ namespace EasyCodeword.Core
             catch (Exception ex)
             {
                 _logger.Error("[GetNicknameCallback] : Exception ： {0}", ex.Message);
-            }
-        }
-
-        private bool GetAccessToken(string customKey, string customSecret, string requestToken, string requestTokenSecrect, string verify)
-        {
-            string url = "https://open.t.qq.com/cgi-bin/access_token";
-            List<Parameter> parameters = new List<Parameter>();
-            SWeiboRequest request = new SWeiboRequest();
-            return ParseToken(request.SyncRequest(url, "GET", parameters, null));
-        }
-
-        private bool GetRequestToken(string customKey, string customSecret)
-        {
-            try
-            {
-                string url = AUTHORIZE_URL;
-                List<Parameter> parameters = new List<Parameter>();
-                parameters.Add(new Parameter("client_id", customKey));
-                parameters.Add(new Parameter("client_secret", customSecret));
-                parameters.Add(new Parameter("grant_type", "password"));
-                parameters.Add(new Parameter("username", "www.wpj@163.com"));
-                parameters.Add(new Parameter("password", "a123456"));
-                var request = new SWeiboRequest();
-                return ParseToken(request.SyncRequest(url, "POST", parameters, null));
-            }
-            catch 
-            {
-                return false;
             }
         }
 

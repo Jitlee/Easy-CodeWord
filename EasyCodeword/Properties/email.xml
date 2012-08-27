@@ -6,6 +6,7 @@
     <SMTP>smtp.qq.com</SMTP>
     <IMAP>imap.qq.com</IMAP>
     <Port>143</Port>
+    <SameName>0</SameName>
   </EmailHost>
   <EmailHost>
     <Server>vip.qq.com</Server>
@@ -13,127 +14,152 @@
     <SMTP>smtp.qq.com</SMTP>
     <IMAP>imap.qq.com</IMAP>
     <Port>143</Port>
+    <SameName>0</SameName>
   </EmailHost>
   <EmailHost>
     <Server>qqmail.com</Server>
     <POP3>pop.qqmail.com</POP3>
     <SMTP>smtp.qqmail.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>foxmail.com.cn</Server>
     <POP3>pop.foxmail.com.cn</POP3>
     <SMTP>smtp.foxmail.com.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>foxmail.com</Server>
     <POP3>pop.foxmail.com</POP3>
     <SMTP>smtp.foxmail.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>139.com</Server>
     <POP3>pop.139.com</POP3>
     <SMTP>smtp.139.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>189.cn</Server>
     <POP3>pop.189.cn</POP3>
     <SMTP>smtp.189.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>wo.com.cn</Server>
     <POP3>pop.wo.com.cn</POP3>
     <SMTP>smtp.wo.com.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>ruyi.com</Server>
     <POP3>pop.ruyi.com</POP3>
     <SMTP>smtp.ruyi.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>51.com</Server>
     <POP3>210.77.145.189</POP3>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>21cn.com</Server>
     <POP3>pop.21cn.com</POP3>
     <SMTP>smtp.21cn.com</SMTP>
     <IMAP>imap.21cn.com</IMAP>
+    <SameName>1</SameName>
     <Port>143</Port>
   </EmailHost>
   <EmailHost>
     <Server>sina.com</Server>
     <POP3>pop3.sina.com.cn</POP3>
     <SMTP>smtp.sina.com.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>263.sina.com</Server>
     <POP3>pop3.263.sina.com</POP3>
     <SMTP>smtp.263.sina.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>vip.sina.com</Server>
     <POP3>pop3.vip.sina.com</POP3>
     <SMTP>smtp.vip.sina.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>sina.cn</Server>
     <POP3>pop3.vip.sina.com</POP3>
     <SMTP>smtp.vip.sina.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>my3ia.sina.com</Server>
     <POP3>pop3.my3ia.sina.com</POP3>
     <SMTP>smtp.my3ia.sina.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>sina100.com</Server>
     <POP3>pop3.sina100.com</POP3>
     <SMTP>smtp.sina100.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>163.net</Server>
     <POP3>pop.163.net</POP3>
     <SMTP>smtp.163.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>tom.com</Server>
     <POP3>pop.tom.com</POP3>
     <SMTP>smtp.tom.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>163.com</Server>
     <POP3>pop.163.com</POP3>
     <SMTP>smtp.163.com</SMTP>
+    <SameName>0</SameName>
   </EmailHost>
   <EmailHost>
     <Server>vip.163.com</Server>
     <POP3>pop.vip.163.com</POP3>
     <SMTP>smtp.vip.163.com</SMTP>
+    <SameName>0</SameName>
   </EmailHost>
   <EmailHost>
     <Server>126.com</Server>
     <POP3>pop3.126.com</POP3>
     <SMTP>smtp.126.com</SMTP>
+    <SameName>0</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yeah.net</Server>
     <POP3>pop.yeah.net</POP3>
     <SMTP>smtp.yeah.net</SMTP>
+    <SameName>0</SameName>
   </EmailHost>
   <EmailHost>
     <Server>netease.com</Server>
     <POP3>pop.netease.com</POP3>
     <SMTP>smtp.netease.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>56.com</Server>
     <POP3>pop3.56.com</POP3>
     <SMTP>smtp.56.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>188.com</Server>
     <POP3>pop.188.com</POP3>
     <SMTP>smtp.188.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>gmail.com</Server>
@@ -141,105 +167,126 @@
     <SMTP>smtp.gmail.com</SMTP>
     <IMAP>imap.gmail.com</IMAP>
     <Port>995</Port>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>fm365.com</Server>
     <POP3>mail.fm365.com</POP3>
     <SMTP>mail.fm365.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>263.net</Server>
     <POP3>263.net</POP3>
     <SMTP>smtp.263.net</SMTP>
+    <SameName>0</SameName>
   </EmailHost>
   <EmailHost>
     <Server>x263.net</Server>
     <POP3>pop.x263.net</POP3>
     <SMTP>smtp.x263.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>263.net.cn</Server>
     <POP3>263.net.cn</POP3>
     <SMTP>263.net.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>elong.com</Server>
     <POP3>pop3.elong.com</POP3>
     <SMTP>smtp.elong.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>chinaren.com</Server>
     <POP3>pop.chinaren.com</POP3>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>km169.net</Server>
     <POP3>EmailHost.km169.net</POP3>
     <SMTP>EmailHost.km169.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>cmmail.com</Server>
     <POP3>pop3.cmmail.com</POP3>
     <SMTP>smtp.cmmail.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>china.com</Server>
     <POP3>pop.china.com</POP3>
     <SMTP>smtp.china.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>cww.com</Server>
     <POP3>pop.china.com</POP3>
     <SMTP>smtp.china.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>eazier.com</Server>
     <POP3>pop.easier.com</POP3>
     <SMTP>smtp.eazier.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>sohu.com</Server>
     <POP3>pop3.sohu.com</POP3>
     <SMTP>smtp.sohu.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>vip.sohu.com</Server>
     <POP3>pop3.vip.sohu.com</POP3>
     <SMTP>smtp.vip.sohu.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>sohu.net</Server>
     <POP3>pop3.sohu.net</POP3>
     <SMTP>smtp.sohu.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>fd21.com</Server>
     <POP3>pop.fd21.com</POP3>
     <SMTP>smtp.fd21.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>online.sh.cn</Server>
     <POP3>pop.citiz.net</POP3>
     <SMTP>smtp.citiz.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>etang.com</Server>
     <POP3>pop.free.etang.com</POP3>
     <SMTP>smtp.free.etang.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>myrice.com</Server>
     <POP3>pop.myrice.com</POP3>
     <SMTP>smtp.myrice.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>wx88.net</Server>
     <POP3>mail.wx88.net</POP3>
     <SMTP>mail.wx88.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>EmailHost.com.cn</Server>
     <POP3>www.EmailHost.com.cn</POP3>
     <SMTP>www.EmailHost.com.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>cn99.com</Server>
@@ -249,53 +296,64 @@
     <Server>tonghua.com.cn</Server>
     <POP3>pop3.tonghua.com.cn</POP3>
     <SMTP>smtp.tonghua.com.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>china1mail.com</Server>
     <POP3>mail.china1mail.com</POP3>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>371.net</Server>
     <POP3>371.net</POP3>
     <SMTP>smtp.371.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>kali.com.cn</Server>
     <POP3>pop.kali.com.cn</POP3>
     <SMTP>smtp.kali.com.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>focus.com.cn</Server>
     <POP3>pop3.focus.com.cn</POP3>
     <SMTP>smtp.focus.com.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>8848.net</Server>
     <POP3>pop.8848.net</POP3>
     <SMTP>smtp.8848.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>ucs.com.tw</Server>
     <POP3>210.66.17.1</POP3>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>mailbox.com.cn</Server>
     <POP3>EmailHost.com.cn</POP3>
     <SMTP>EmailHost.com.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>990.net</Server>
     <POP3>pop.990.net</POP3>
     <SMTP>990.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>88998.com</Server>
     <POP3>202.100.222.86</POP3>
     <SMTP>202.100.222.86</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>ctn.com.cn</Server>
     <POP3>mail.ctn.com.cn</POP3>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>2911.net</Server>
@@ -306,109 +364,131 @@
     <Server>soim.net</Server>
     <POP3>freEmailHost.soim.com</POP3>
     <SMTP>freEmailHost.soim.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>sh.soim.com</Server>
     <POP3>sh.soim.com</POP3>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>777.net.cn</Server>
     <POP3>mail.777.net.cn</POP3>
     <SMTP>mail.777.net.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>telekbird.com.cn</Server>
     <POP3>pop.telekbird.com.cn</POP3>
     <SMTP>smtp.telekbird.com.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>btamail.net.cn</Server>
     <POP3>btamail.net.cn</POP3>
     <SMTP>btamail.net.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>chinanew.com</Server>
     <POP3>chinanew.com</POP3>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>gzyp21.net</Server>
     <POP3>gzyp21.net</POP3>
     <SMTP>gzyp21.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>freEmailHost.online.tj.cn</Server>
     <POP3>freEmailHost.online.tj.cn</POP3>
     <SMTP>freEmailHost.online.tj.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>363.net</Server>
     <POP3>363.net</POP3>
     <SMTP>smtp.363.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>w4f.com</Server>
     <POP3>pop.EmailHost.com.cn</POP3>
     <SMTP>smtp.EmailHost.com.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>dl163.com</Server>
     <POP3>www.dl163.com</POP3>
     <SMTP>www.dl163.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>chinaxian.com</Server>
     <POP3>www.EmailHost.com.cn</POP3>
     <SMTP>www.EmailHost.com.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>2888.com</Server>
     <POP3>2888.com</POP3>
     <SMTP>2888.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yes100.com</Server>
     <POP3>pop.yes100.com</POP3>
     <SMTP>smtp.yes100.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>chinese.com</Server>
     <POP3>pop.chinese.com</POP3>
     <SMTP>smtp.chinese.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yifan.net</Server>
     <POP3>yifan.net</POP3>
     <SMTP>yifan.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>china183.com</Server>
     <POP3>mail.china183.com</POP3>
     <SMTP>mail.china183.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>20520.com</Server>
     <POP3>pop.20520.com</POP3>
     <SMTP>smtp.20520.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>elawchina.com</Server>
     <POP3>pop3.elawchina.com</POP3>
     <SMTP>smtp.elawchina.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>fugao.net</Server>
     <POP3>pop.EmailHost.com.cn</POP3>
     <SMTP>smtp.EmailHost.com.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>mybada.net</Server>
     <POP3>pop.mybada.net</POP3>
     <SMTP>smtp.mybada.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>gz168.net</Server>
     <POP3>EmailHost.gz168.net</POP3>
     <SMTP>EmailHost.gz168.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>kzinfo.net</Server>
@@ -614,111 +694,132 @@
     <Server>yahoo.com.hk</Server>
     <POP3>pop.mail.yahoo.com.hk</POP3>
     <SMTP>smtp.mail.yahoo.com.hk</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.com.mx</Server>
     <POP3>pop.mail.yahoo.com.mx</POP3>
     <SMTP>smtp.mail.yahoo.com.mx</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.com.br</Server>
     <POP3>pop.mail.yahoo.com.br</POP3>
     <SMTP>smtp.mail.yahoo.com.br</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.com.ar</Server>
     <POP3>pop.mail.yahoo.com.ar</POP3>
     <SMTP>smtp.mail.yahoo.com.ar</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.com.au</Server>
     <POP3>pop.mail.yahoo.com.au</POP3>
     <SMTP>smtp.mail.yahoo.com.au</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.co.kr</Server>
     <POP3>pop.mail.yahoo.co.kr</POP3>
-    <SMTP>smtp.mail.yahoo.co.kr</SMTP>
+    <SMTP>smtp.mail.yahoo.co.kr</SMTP>v
   </EmailHost>
   <EmailHost>
     <Server>yahoo.co.uk</Server>
     <POP3>pop.mail.yahoo.co.uk</POP3>
     <SMTP>smtp.mail.yahoo.co.uk</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.co.jp</Server>
     <POP3>pop.mail.yahoo.co.jp</POP3>
     <SMTP>smtp.mail.yahoo.co.jp</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.ca</Server>
     <POP3>pop.mail.yahoo.ca</POP3>
     <SMTP>smtp.mail.yahoo.ca</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.dk</Server>
     <POP3>pop.mail.yahoo.dk</POP3>
     <SMTP>smtp.mail.yahoo.dk</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.de</Server>
     <POP3>pop.mail.yahoo.de</POP3>
     <SMTP>smtp.mail.yahoo.de</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.fr</Server>
     <POP3>pop.mail.yahoo.fr</POP3>
     <SMTP>smtp.mail.yahoo.fr</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.es</Server>
     <POP3>pop.mail.yahoo.es</POP3>
     <SMTP>smtp.mail.yahoo.es</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.it</Server>
     <POP3>pop.mail.yahoo.it</POP3>
     <SMTP>smtp.mail.yahoo.it</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.se</Server>
     <POP3>pop.mail.yahoo.se</POP3>
     <SMTP>smtp.mail.yahoo.se</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yahoo.no</Server>
     <POP3>pop.mail.yahoo.no</POP3>
     <SMTP>smtp.mail.yahoo.no</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>mailandnews.com</Server>
     <POP3>mailandnews.com</POP3>
     <SMTP>mailandnews.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>campusall.com</Server>
     <POP3>pop3.campusall.com</POP3>
     <SMTP>smtp.campusall.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>39.net</Server>
     <POP3>pop3.39.net</POP3>
     <SMTP>smtp.39.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>yimeier.net</Server>
     <POP3>pop.www.yimeier.net</POP3>
     <SMTP>smtp.www.yimeier.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>citiz.net</Server>
     <POP3>pop.citiz.net</POP3>
     <SMTP>smtp.citiz.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>vip.citiz.net</Server>
     <POP3>vip.citiz.net</POP3>
     <SMTP>vip.citiz.net</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>stedu.cn</Server>
@@ -729,74 +830,90 @@
     <Server>stu.edu.cn</Server>
     <POP3>pop.stu.edu.cn</POP3>
     <SMTP>smtp.stu.edu.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>zj.com</Server>
     <POP3>pop.zj.com</POP3>
     <SMTP>smtp.zj.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>pku.edu.cn</Server>
     <POP3>water.pku.edu.cn</POP3>
     <SMTP>water.pku.edu.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
-    <Server>51uc.com</Server><POP3>pop3.51uc.comSMTP</POP3>    ：smtp.51uc.com
+    <Server>51uc.com</Server>
+    <POP3>pop3.51uc.com</POP3>
+    <SMTP>smtp.51uc.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>hzdtv.com</Server>
     <POP3>mail.hzdtv.com</POP3>
     <SMTP>mail.hzdtv.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>hotmail.com</Server>
     <POP3>pop3.live.com</POP3>
     <SMTP>smtp.live.com</SMTP>
     <Port>995</Port>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>live.com</Server>
     <POP3>pop3.live.com</POP3>
     <SMTP>smtp.live.com</SMTP>
     <Port>995</Port>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>live.cn</Server>
     <POP3>pop3.live.com</POP3>
     <SMTP>smtp.live.com</SMTP>
     <Port>995</Port>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>msn.com</Server>
     <POP3>pop3.live.com</POP3>
     <SMTP>smtp.live.com</SMTP>
     <Port>995</Port>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>w.cn</Server>
     <POP3>pop3.live.com</POP3>
     <SMTP>smtp.live.com</SMTP>
     <Port>995</Port>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>9.cn</Server>
     <POP3>pop3.live.com</POP3>
     <SMTP>smtp.live.com</SMTP>
     <Port>995</Port>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>Sogou.com</Server>
     <POP3>pop3.mail.sogou.com</POP3>
     <SMTP>smtp.mail.sogou.com</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>tianya.cn</Server>
     <POP3>pop3.tianya.cn</POP3>
     <SMTP>smtp.tianya.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
   <EmailHost>
     <Server>ce.cn</Server>
     <POP3>freEmailHost.ce.cn</POP3>
     <SMTP>freEmailHost.ce.cn</SMTP>
+    <SameName>1</SameName>
   </EmailHost>
 </EmailHosts>

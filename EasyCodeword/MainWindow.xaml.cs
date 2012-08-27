@@ -37,6 +37,10 @@ namespace EasyCodeword
 
         private ReferenceWindow _referenceWindow = null;
 
+        private AbountWindow _abountWindow = null;
+
+        private TotalWindow _totalWindow = null;
+
         private readonly Storyboard _showMessageStoryboard = null;
 
         private readonly Timer _autoSaveTimer;
@@ -112,6 +116,7 @@ namespace EasyCodeword
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            TypingSpeedViewModel.Init(MainTextBox);
             if (SettingViewModel.Instance.AutoSave)
             {
                 var interval = SettingViewModel.Instance.AutoSaveInterval * 60 * 1000;
@@ -293,6 +298,15 @@ namespace EasyCodeword
             base.OnClosing(e);
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            TypingSpeedViewModel.Instance.Total();
+            _autoSaveTimer.Dispose();
+            base.OnClosed(e);
+
+            System.Environment.Exit(System.Environment.ExitCode); 
+        }
+
         #region 文件
 
         private void New_Click(object sender, RoutedEventArgs e)
@@ -302,14 +316,17 @@ namespace EasyCodeword
 
         private void NewCommand()
         {
-            if (MessageBox.Show(this, "当前文档还未保存，是否需要保存？", "询问", MessageBoxButton.YesNo, MessageBoxImage.Asterisk) == MessageBoxResult.Yes)
+            if (!(string.IsNullOrEmpty(MainViewModel.Instance.FileName) && MainViewModel.Instance.CountWords(MainTextBox.Text) == 0)
+                 && MessageBox.Show(this, "当前文档还未保存，是否需要保存？", "询问", MessageBoxButton.YesNo, MessageBoxImage.Asterisk) == MessageBoxResult.Yes)
             {
                 SaveCommand();
             }
 
+            TypingSpeedViewModel.Instance.Total();
             this.MainTextBox.Text = string.Empty;
             MenuPopup.IsOpen = false;
             MainViewModel.Instance.FileName = string.Empty;
+            TypingSpeedViewModel.Instance.Refresh();
             OriginWords = 0;
             New();
         }
@@ -321,7 +338,8 @@ namespace EasyCodeword
 
         private void OpenCommand()
         {
-            if (MessageBox.Show(this, "当前文档还未保存，是否需要保存？", "询问", MessageBoxButton.YesNo, MessageBoxImage.Asterisk) == MessageBoxResult.Yes)
+            if (!(string.IsNullOrEmpty(MainViewModel.Instance.FileName) &&  MainViewModel.Instance.CountWords(MainTextBox.Text) == 0)
+                 && MessageBox.Show(this, "当前文档还未保存，是否需要保存？", "询问", MessageBoxButton.YesNo, MessageBoxImage.Asterisk) == MessageBoxResult.Yes)
             {
                 SaveCommand();
             }
@@ -367,8 +385,13 @@ namespace EasyCodeword
                 {
                     text = File.ReadAllText(fileName, Encoding.Default);
                 }
-                this.MainTextBox.Text = text; ;
-                MainViewModel.Instance.FileName = fileName;
+                TypingSpeedViewModel.Instance.Total();
+                this.MainTextBox.Text = text;
+                TypingSpeedViewModel.Instance.Refresh();
+                if (string.Compare(fileName, Common.TempFile, true) != 0)
+                {
+                    MainViewModel.Instance.FileName = fileName;
+                }
                 OriginWords = MainViewModel.Instance.CountWords(MainTextBox.Text);
                 SetFocus(true);
             }
@@ -685,9 +708,44 @@ namespace EasyCodeword
 
         private void AboutCommand()
         {
-            var abountWindow = new AbountWindow();
-            abountWindow.Owner = this;
-            abountWindow.Show();
+            if (null == _abountWindow)
+            {
+                _abountWindow = new AbountWindow();
+                _abountWindow.Owner = this;
+                _abountWindow.Closed += (o, e) => { _abountWindow = null; };
+                _abountWindow.Show();
+            }
         }
+
+        private void MainTextBox_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            if (MainTextBox.SelectionLength > 0)
+            {
+                ImmediateTotalGroupBox.Visibility = Visibility.Visible;
+                ImmediateWordsTextBlock.Text = MainViewModel.Instance.CountWords(MainTextBox.Text, MainTextBox.SelectionStart).ToString();
+                ImmediateLengthTextBlock.Text = MainTextBox.SelectionLength.ToString();
+            }
+            else
+            {
+                ImmediateTotalGroupBox.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void Total_Click(object sender, RoutedEventArgs e)
+        {
+            TotalCommand();
+        }
+
+        private void TotalCommand()
+        {
+            if (null == _totalWindow)
+            {
+                _totalWindow = new TotalWindow();
+                _totalWindow.Owner = this;
+                _totalWindow.Closed += (o, e) => { _totalWindow = null; };
+                _totalWindow.Show();
+            }
+        }
+
     }
 }

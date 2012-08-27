@@ -13,10 +13,5 @@ namespace EasyCodeword
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnExit(ExitEventArgs e)
-        {
-            SoundPlayerViewModel.Instance.Stop();
-            base.OnExit(e);
-        }
     }
 }

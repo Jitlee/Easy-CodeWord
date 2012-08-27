@@ -35,13 +35,29 @@
             x:Name="MainTextBoxBorder"
             Grid.Row="1"
             Background="Transparent">
-            <TextBox
-                x:Name="MainTextBox"
-                Style="{DynamicResource MainTextBoxStyle}"
-                TextChanged="MainTextBox_TextChanged"
-                AcceptsReturn="True"
-                PreviewKeyDown="MainTextBox_PreviewKeyDown">
-            </TextBox>
+            <Grid>
+                <TextBox
+                    x:Name="MainTextBox"
+                    Style="{DynamicResource MainTextBoxStyle}"
+                    TextChanged="MainTextBox_TextChanged"
+                    AcceptsReturn="True"
+                    SelectionChanged="MainTextBox_SelectionChanged"
+                    PreviewKeyDown="MainTextBox_PreviewKeyDown">
+                </TextBox>
+                <GroupBox
+                    x:Name="ImmediateTotalGroupBox"
+                    Header="即时统计"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock
+                            x:Name="ImmediateWordsTextBlock"/>
+                        <TextBlock
+                            x:Name="ImmediateLengthTextBlock"/>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
         </Border>
         <Popup x:Name="MenuPopup"
                Placement="AbsolutePoint"
@@ -137,7 +153,7 @@
                     Grid.Column="4">
                     <StackPanel>
                         <Button Content="一键排版" Style="{DynamicResource NormalButtonStyle}" Click="AutoTypeSetting_Click"/>
-                        <Button Content="统计窗口" Style="{DynamicResource NormalButtonStyle}" Visibility="Hidden"/>
+                        <Button Content="统计窗口" Style="{DynamicResource NormalButtonStyle}" Click="Total_Click"/>
                         <Button Content="邮件窗口" Style="{DynamicResource NormalButtonStyle}" Click="SendEmail_Click"/>
                         <Button Content="帮助卡片" Style="{DynamicResource NormalButtonStyle}" Click="About_Click"/>
                         <Button Content="操作计算机" Style="{DynamicResource NormalButtonStyle}" Click="Operation_Click"/>

@@ -24,6 +24,8 @@ namespace EasyCodeword.Core
 
         private string _emailTo = RWReg.GetValue(SettingViewModel.SUB_NAME, "EmailTo", string.Empty).ToString();
 
+        private string _smtp = RWReg.GetValue(SettingViewModel.SUB_NAME, "SMTP", string.Empty).ToString();
+
         private const string HOST = "smtp.163.com";
         private const string FROM = "icodeword@163.com";
         private const string ACCOUNT = "icodeword";
@@ -46,6 +48,12 @@ namespace EasyCodeword.Core
             set
             {
                 _emailFrom = value.Trim(); RaisePropertyChanged("EmailFrom");
+                var emailHost = EmailProvider.GetEmailHost(_emailFrom);
+                if (null != emailHost)
+                {
+                    _smtp = emailHost.SMTP;
+                    RaisePropertyChanged("SMTP");
+                }
                 UpdateHasChanged();
                 SettingViewModel.Instance.SaveCommand.RaiseCanExecuteChanged();
             }
@@ -79,6 +87,20 @@ namespace EasyCodeword.Core
             }
         }
 
+        /// <summary>
+        /// 邮件服务器
+        /// </summary>
+        public string SMTP
+        {
+            get { return _smtp; }
+            set
+            {
+                _smtp = value.Trim(); RaisePropertyChanged("SMTP");
+                UpdateHasChanged();
+                SettingViewModel.Instance.SaveCommand.RaiseCanExecuteChanged();
+            }
+        }
+
         #endregion
 
         #region 构造方法
@@ -96,6 +118,7 @@ namespace EasyCodeword.Core
         {
             RWReg.SetValue(SettingViewModel.SUB_NAME, "EmailF", _emailFrom);
             RWReg.SetValue(SettingViewModel.SUB_NAME, "EmailP", _emailPassword);
+            RWReg.SetValue(SettingViewModel.SUB_NAME, "SMTP", _smtp);
             if (saveAll)
             {
                 RWReg.SetValue(SettingViewModel.SUB_NAME, "EmailTo", _emailTo);
@@ -122,30 +145,35 @@ namespace EasyCodeword.Core
                     && !string.IsNullOrEmpty(emailHost.SMTP))
                 {
                     var account = _emailFrom;
-                    account = Regex.Match(_emailFrom, "^[_.-A-Za-z0-9]+(?=@)").Value;
-                    var smtp = new SmtpClient();
-                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    smtp.Host = emailHost.SMTP;
-                    smtp.Credentials = new System.Net.NetworkCredential(account, _emailPassword);
-                    if (emailHost.Port > 0)
+                    if (!emailHost.SameName)
                     {
-                        smtp.Port = emailHost.Port;
+                        account = Regex.Match(_emailFrom, "^[_.-A-Za-z0-9]+(?=@)").Value;
                     }
+                    if (!string.IsNullOrEmpty(emailHost.SMTP))
+                    {
+                        var smtp = new SmtpClient();
+                        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        smtp.Host = emailHost.SMTP;
+                        smtp.Credentials = new System.Net.NetworkCredential(account, _emailPassword);
+                        if (emailHost.Port > 0)
+                        {
+                            smtp.Port = emailHost.Port;
+                        }
 
-                    var Mail = new MailMessage(_emailFrom, _emailTo);
+                        var Mail = new MailMessage(_emailFrom, _emailTo);
 
-                    Mail.Subject = subject;
-                    Mail.Body = content;
-                    Mail.BodyEncoding = System.Text.Encoding.UTF8;
-                    Mail.IsBodyHtml = false;
-                    Mail.Priority = MailPriority.Normal;
-                    smtp.SendAsync(Mail, null);
+                        Mail.Subject = subject;
+                        Mail.Body = content;
+                        Mail.BodyEncoding = System.Text.Encoding.UTF8;
+                        Mail.IsBodyHtml = false;
+                        Mail.Priority = MailPriority.Normal;
+                        smtp.SendAsync(Mail, null);
 
-                    Save();
-                    Reset();
-                    SettingViewModel.Instance.SaveCommand.RaiseCanExecuteChanged();
-
-                    return true;
+                        Save();
+                        Reset();
+                        SettingViewModel.Instance.SaveCommand.RaiseCanExecuteChanged();
+                        return true;
+                    }
                 }
 
             }
@@ -155,6 +183,16 @@ namespace EasyCodeword.Core
                 return true;
             }
             return false;
+        }
+
+        public string GetSMTP(string email)
+        {
+            var emailHost = EmailProvider.GetEmailHost(email);
+            if (null != emailHost)
+            {
+                return emailHost.SMTP;
+            }
+            return null;
         }
 
         #endregion
@@ -168,7 +206,9 @@ namespace EasyCodeword.Core
                 || !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "EmailTo", string.Empty).ToString(),
                     _emailTo)
                 || !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "EmailP", string.Empty).ToString(),
-                    _emailPassword);
+                    _emailPassword)
+                || !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "SMTP", string.Empty).ToString(),
+                    _smtp);
         }
 
         #endregion
@@ -181,6 +221,7 @@ namespace EasyCodeword.Core
         public string SMTP { get; set; }
         public string IMAP { get; set; }
         public int Port { get; set; }
+        public bool SameName { get; set; } // 账号和邮箱同名
     }
 
     static class EmailProvider
@@ -214,6 +255,7 @@ namespace EasyCodeword.Core
                             emailHost.SMTP = emailHostElement.ElementValue("SMTP");
                             emailHost.IMAP = emailHostElement.ElementValue("IMAP");
                             emailHost.Port = Converter.ToInt(emailHostElement.ElementValue("Port"));
+                            emailHost.SameName = Converter.ToInt(emailHostElement.ElementValue("SameName")) != 0;
                             return emailHost;
                         }
                     }

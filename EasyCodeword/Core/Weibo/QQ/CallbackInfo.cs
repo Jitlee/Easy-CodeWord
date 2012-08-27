@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WeiboSDK
+namespace WeiboSDK.QQ
 {
     public delegate void AsyncRequestCallback(int key, string content);
 

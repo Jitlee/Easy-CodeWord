@@ -4,9 +4,11 @@
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
+        ShowInTaskbar="False"
         Width="400"
         Height="300"
-        FontSize="14" Opacity="0">
+        FontSize="14" Opacity="0"
+        AllowsTransparency="True">
 	<Window.Resources>
 		<Storyboard x:Key="LoadStoryboard">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
@@ -21,11 +23,11 @@
 		<Storyboard x:Key="UnLoadStoryboard">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
 				<SplineDoubleKeyFrame KeyTime="0" Value="1"/>
-				<SplineDoubleKeyFrame KeyTime="0:0:0.8" Value="0" KeySpline="0,0,1,0.18"/>
+				<SplineDoubleKeyFrame KeyTime="0:0:0.7" Value="0" KeySpline="0,0,0,0.92"/>
 			</DoubleAnimationUsingKeyFrames>
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="grid">
 				<SplineDoubleKeyFrame KeyTime="0" Value="0"/>
-				<SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="44" KeySpline="0,0,0.27,1"/>
+				<SplineDoubleKeyFrame KeyTime="0:0:0.4" Value="44" KeySpline="0,0,0.19,0.62"/>
 			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
 	</Window.Resources>

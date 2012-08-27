@@ -9,7 +9,7 @@ using System.Web;
 using System.Threading;
 
 
-namespace WeiboSDK
+namespace WeiboSDK.QQ
 {
     public delegate void AsyncHttpCallback(AsyncHttp http, string content);
 

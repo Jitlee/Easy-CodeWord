@@ -74,9 +74,14 @@ namespace EasyCodeword.Core
         /// <returns></returns>
         public int CountWords(string text, int startIndex = 0)
         {
+
             if (startIndex > 0)
             {
-                return Regex.Matches(text.Substring(startIndex), @"\w").Count;
+                if (startIndex < text.Length)
+                {
+                    return Regex.Matches(text.Substring(startIndex), @"\w").Count;
+                }
+                return 0;
             }
             return Regex.Matches(text, @"\w").Count;
         }

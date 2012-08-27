@@ -55,7 +55,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -71,6 +70,7 @@
     </ApplicationDefinition>
     <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Core\TypingSpeedViewModel.cs" />
     <Compile Include="Core\DelegateCommand.cs" />
     <Compile Include="Core\EmailViewModel.cs" />
     <Compile Include="Core\EntityObject.cs" />
@@ -82,10 +82,10 @@
     <Compile Include="Core\QWeiboViewModel.cs" />
     <Compile Include="Core\RtfHelper.cs" />
     <Compile Include="Core\SWeiboViewModel.cs" />
-    <Compile Include="Core\Weibo\AsyncHttp.cs" />
-    <Compile Include="Core\Weibo\CallbackInfo.cs" />
-    <Compile Include="Core\Weibo\HttpUtil.cs" />
-    <Compile Include="Core\Weibo\Parameter.cs" />
+    <Compile Include="Core\Weibo\QQ\AsyncHttp.cs" />
+    <Compile Include="Core\Weibo\QQ\CallbackInfo.cs" />
+    <Compile Include="Core\Weibo\QQ\HttpUtil.cs" />
+    <Compile Include="Core\Weibo\QQ\Parameter.cs" />
     <Compile Include="Core\Weibo\QQ\ApiType.cs" />
     <Compile Include="Core\Weibo\QQ\fav.cs" />
     <Compile Include="Core\Weibo\QQ\friends.cs" />
@@ -349,11 +349,10 @@
     <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\ValidationUtils.cs" />
     <Compile Include="Core\Weibo\Sina\NetDimenison.Json\WriteState.cs" />
     <Compile Include="Core\Weibo\Sina\OAuth.cs" />
-    <Compile Include="Core\Weibo\Sina\SWeiboRequest.cs" />
     <Compile Include="Core\Weibo\Sina\Utility.cs" />
     <Compile Include="Core\Weibo\Sina\WeiboException.cs" />
     <Compile Include="Core\Weibo\Sina\WeiboParameter.cs" />
-    <Compile Include="Core\Weibo\SyncHttp.cs" />
+    <Compile Include="Core\Weibo\QQ\SyncHttp.cs" />
     <Compile Include="Utilities\AES.cs" />
     <Compile Include="Utilities\Common.cs" />
     <Compile Include="Utilities\Converter.cs" />
@@ -396,6 +395,12 @@
     </Compile>
     <Compile Include="Views\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EmalInputAccoutWindow.xaml.cs">
+      <DependentUpon>EmalInputAccoutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TotalWindow.xaml.cs">
+      <DependentUpon>TotalWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -462,6 +467,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EmalInputAccoutWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TotalWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

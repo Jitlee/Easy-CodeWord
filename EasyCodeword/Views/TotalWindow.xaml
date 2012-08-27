@@ -1,0 +1,164 @@
+﻿<Window 
+    x:Name="window"
+    x:Class="EasyCodeword.Views.TotalWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    WindowStyle="None"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    SizeToContent="WidthAndHeight"
+    FontSize="14"
+    Opacity="0"
+    AllowsTransparency="True">
+    <Window.Resources>
+        <Storyboard x:Key="LoadStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
+                <SplineDoubleKeyFrame KeyTime="0" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:0.7" Value="1" KeySpline="0,0,0.33,1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="grid">
+                <SplineDoubleKeyFrame KeyTime="0" Value="-44"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:0.6" Value="0" KeySpline="0,0,0,1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="UnLoadStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
+                <SplineDoubleKeyFrame KeyTime="0" Value="1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:0.7" Value="0" KeySpline="0,0,0,0.92"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="grid">
+                <SplineDoubleKeyFrame KeyTime="0" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:0.4" Value="44" KeySpline="0,0,0.19,0.62"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource LoadStoryboard}"/>
+        </EventTrigger>
+    </Window.Triggers>
+    <Window.Background>
+        <ImageBrush ImageSource="../Images/about.png" Stretch="UniformToFill"/>
+    </Window.Background>
+    <Grid x:Name="grid" RenderTransformOrigin="0.5,0.5">
+        <Grid.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform/>
+                <SkewTransform/>
+                <RotateTransform/>
+                <TranslateTransform/>
+            </TransformGroup>
+        </Grid.RenderTransform>
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="本次字数："/>
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                Text="{Binding CurrentWords, StringFormat=\{0\}字}"/>
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Text="本次时长："/>
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="1">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0:D2}小时{1:D2}分钟">
+                        <Binding Path="CurrentHours.Hours" />
+                        <Binding Path="CurrentHours.Minutes" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="0"
+                Text="今日字数："/>
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="1"
+                Text="{Binding TodayWords, StringFormat=\{0\}字}"/>
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                Text="今日时长："/>
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="1">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0:D2}小时{1:D2}分钟">
+                        <Binding Path="TodayHours.Hours" />
+                        <Binding Path="TodayHours.Minutes" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="0"
+                Text="历史最快速度："/>
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="1"
+                Text="{Binding MaximumTypingSpeed, StringFormat=\{0\}字/分钟}"/>
+            <TextBlock
+                Grid.Row="7"
+                Grid.Column="0"
+                Text="最高日产量："/>
+            <TextBlock
+                Grid.Row="7"
+                Grid.Column="1"
+                Text="{Binding MaximumDailyWords, StringFormat=\{0\}字}"/>
+            <TextBlock
+                Grid.Row="8"
+                Grid.Column="0"
+                Text="最长日用时："/>
+            <TextBlock
+                Grid.Row="8"
+                Grid.Column="1">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0:D2}小时{1:D2}分钟">
+                        <Binding Path="MaximumDailyHours.Hours" />
+                        <Binding Path="MaximumDailyHours.Minutes" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock
+                Grid.Row="10"
+                Grid.Column="0"
+                Text="总字数："/>
+            <TextBlock
+                Grid.Row="10"
+                Grid.Column="1"
+                Text="{Binding TotalWords, StringFormat=\{0\}字}"/>
+            <TextBlock
+                Grid.Row="11"
+                Grid.Column="0"
+                Text="总时长："/>
+            <TextBlock
+                Grid.Row="11"
+                Grid.Column="1"
+                Text="{Binding TotalHours.Hours, StringFormat=\{0\}小时}"/>
+        </Grid>
+    </Grid>
+</Window>
