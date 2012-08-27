@@ -14,6 +14,21 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <PublishUrl>发布\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -21,7 +36,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -30,7 +45,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -40,6 +55,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -56,6 +72,7 @@
     <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Core\DelegateCommand.cs" />
+    <Compile Include="Core\EmailViewModel.cs" />
     <Compile Include="Core\EntityObject.cs" />
     <Compile Include="Core\KeyboardHook.cs" />
     <Compile Include="Core\LockViewModel.cs" />
@@ -88,8 +105,256 @@
     <Compile Include="Core\Weibo\QQ\user.cs" />
     <Compile Include="Core\SettingViewModel.cs" />
     <Compile Include="Core\SoundPlayerViewModel.cs" />
+    <Compile Include="Core\Weibo\Sina\AccessToken.cs" />
+    <Compile Include="Core\Weibo\Sina\AsyncCallback.cs" />
+    <Compile Include="Core\Weibo\Sina\Client.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\comment\Collection.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\comment\Entity.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\EntityBase.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\favorite\Collection.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\favorite\Entity.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\favorite\IDCollection.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\favorite\IDEntity.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\favorite\TagEntity.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\friendship\Entity.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\friendship\Result.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\GeoEntity.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\PrivacyEntity.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\RateLimitStatus.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\repost\Collection.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\SchoolEntity.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\search\App.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\search\AtUser.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\search\School.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\search\Status.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\search\User.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\shortUrl\Clicks.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\shortUrl\CommentComments.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\shortUrl\CommentCount.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\shortUrl\Info.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\shortUrl\Location.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\shortUrl\Locations.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\shortUrl\Referers.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\shortUrl\RefererUrl.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\shortUrl\ShareCounts.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\shortUrl\ShareStatuses.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\shortUrl\Url.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\status\Collection.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\status\Count.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\status\Emotion.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\status\Entity.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\status\IDs.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\tag\Tag.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\trend\HotTrends.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\trend\IsFollow.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\trend\Keyword.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\trend\Trend.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\UnreadCountResult.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\user\Collection.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\user\Count.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\user\Entity.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\user\IDCollection.cs" />
+    <Compile Include="Core\Weibo\Sina\Entities\VerifyNickNameResult.cs" />
+    <Compile Include="Core\Weibo\Sina\Error.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\AccountAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\CommentAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\CommonAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\EntityInterfaces.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\Entity\AccountInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\Entity\CommentInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\Entity\CommonInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\Entity\FavoriteInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\Entity\FriendshipInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\Entity\SearchInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\Entity\ShortUrlInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\Entity\StatusInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\Entity\SuggestionInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\Entity\TagInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\Entity\TrendInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\Entity\UserInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\FavoriteAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\FriendshipAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\LocationAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\PlaceAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\SearchAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\ShortUrlAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\StatusAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\SuggestionAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\TagAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\TrendAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\UserAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\WeiboAPI.cs" />
+    <Compile Include="Core\Weibo\Sina\Interface\WeiboInterface.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Bson\BsonBinaryType.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Bson\BsonBinaryWriter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Bson\BsonObjectId.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Bson\BsonReader.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Bson\BsonToken.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Bson\BsonType.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Bson\BsonWriter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\ConstructorHandling.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\BinaryConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\BsonObjectIdConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\CustomCreationConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\DataSetConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\DataTableConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\DateTimeConverterBase.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\EntityKeyMemberConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\ExpandoObjectConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\IsoDateTimeConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\JavaScriptDateTimeConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\KeyValuePairConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\RegexConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\StringEnumConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\VersionConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Converters\XmlNodeConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\DateFormatHandling.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\DateParseHandling.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\DateTimeZoneHandling.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\DefaultValueHandling.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\FormatterAssemblyStyle.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Formatting.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\IJsonLineInfo.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonArrayAttribute.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonConstructorAttribute.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonContainerAttribute.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonConvert.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonConverterAttribute.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonConverterCollection.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonDictionaryAttribute.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonException.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonIgnoreAttribute.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonObjectAttribute.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonPosition.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonPropertyAttribute.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonReader.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonReaderException.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonSerializationException.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonSerializer.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonSerializerSettings.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonTextReader.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonTextWriter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonToken.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonValidatingReader.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonWriter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\JsonWriterException.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\Extensions.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\IJEnumerable.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JArray.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JConstructor.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JContainer.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JEnumerable.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JObject.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JPath.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JProperty.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JPropertyDescriptor.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JPropertyKeyedCollection.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JRaw.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JToken.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JTokenEqualityComparer.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JTokenReader.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JTokenType.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JTokenWriter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Linq\JValue.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\MemberSerialization.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\MissingMemberHandling.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\NullValueHandling.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\ObjectCreationHandling.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\PreserveReferencesHandling.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\ReferenceLoopHandling.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Required.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\Extensions.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\JsonSchema.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\JsonSchemaBuilder.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\JsonSchemaConstants.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\JsonSchemaException.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\JsonSchemaGenerator.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\JsonSchemaModel.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\JsonSchemaModelBuilder.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\JsonSchemaNode.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\JsonSchemaNodeCollection.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\JsonSchemaResolver.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\JsonSchemaType.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\JsonSchemaWriter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\UndefinedSchemaIdHandling.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\ValidationEventArgs.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Schema\ValidationEventHandler.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\SerializationBinder.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\CachedAttributeGetter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\CamelCasePropertyNamesContractResolver.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\DefaultContractResolver.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\DefaultReferenceResolver.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\DefaultSerializationBinder.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\DynamicValueProvider.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\ErrorContext.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\ErrorEventArgs.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\IContractResolver.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\IReferenceResolver.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\IValueProvider.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonArrayContract.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonContainerContract.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonContract.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonDictionaryContract.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonDynamicContract.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonFormatterConverter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonISerializableContract.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonLinqContract.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonObjectContract.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonPrimitiveContract.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonProperty.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonPropertyCollection.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonSerializerInternalBase.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonSerializerInternalReader.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonSerializerInternalWriter.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonSerializerProxy.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonStringContract.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\JsonTypeReflector.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\LateBoundMetadataTypeAttribute.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\ObjectConstructor.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\OnErrorAttribute.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Serialization\ReflectionValueProvider.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\StreamingContext.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\TypeNameHandling.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\Base64Encoder.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\BidirectionalDictionary.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\CollectionUtils.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\CollectionWrapper.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\ConvertUtils.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\DateTimeUtils.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\DictionaryWrapper.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\DynamicProxy.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\DynamicProxyMetaObject.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\DynamicReflectionDelegateFactory.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\DynamicUtils.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\DynamicWrapper.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\EnumUtils.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\EnumValue.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\EnumValues.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\ILGeneratorExtensions.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\JavaScriptUtils.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\LateBoundReflectionDelegateFactory.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\LinqBridge.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\ListWrapper.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\MathUtils.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\MethodCall.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\MiscellaneousUtils.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\ReflectionDelegateFactory.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\ReflectionUtils.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\StringBuffer.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\StringReference.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\StringUtils.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\ThreadSafeStore.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\TypeExtensions.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\Utilities\ValidationUtils.cs" />
+    <Compile Include="Core\Weibo\Sina\NetDimenison.Json\WriteState.cs" />
+    <Compile Include="Core\Weibo\Sina\OAuth.cs" />
     <Compile Include="Core\Weibo\Sina\SWeiboRequest.cs" />
+    <Compile Include="Core\Weibo\Sina\Utility.cs" />
+    <Compile Include="Core\Weibo\Sina\WeiboException.cs" />
+    <Compile Include="Core\Weibo\Sina\WeiboParameter.cs" />
     <Compile Include="Core\Weibo\SyncHttp.cs" />
+    <Compile Include="Utilities\AES.cs" />
     <Compile Include="Utilities\Common.cs" />
     <Compile Include="Utilities\Converter.cs" />
     <Compile Include="Utilities\Logger\ILogger.cs" />
@@ -99,11 +364,17 @@
     <Compile Include="Utilities\Logger\WriteFileLogger.cs" />
     <Compile Include="Utilities\RWReg.cs" />
     <Compile Include="Utilities\WindowIconHelper.cs" />
+    <Compile Include="Views\AbountWindow.xaml.cs">
+      <DependentUpon>AbountWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddWeiboWindow.xaml.cs">
       <DependentUpon>AddWeiboWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfirmWindow.xaml.cs">
       <DependentUpon>ConfirmWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InputAccoutWindow.xaml.cs">
+      <DependentUpon>InputAccoutWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PowerWindow.xaml.cs">
       <DependentUpon>PowerWindow.xaml</DependentUpon>
@@ -119,6 +390,9 @@
     </Compile>
     <Compile Include="Views\SearchWindow.xaml.cs">
       <DependentUpon>SearchWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SendEmailWindow.xaml.cs">
+      <DependentUpon>SendEmailWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
@@ -147,11 +421,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\AbountWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddWeiboWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConfirmWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InputAccoutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -172,6 +454,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SearchWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SendEmailWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -198,16 +484,37 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\qweibo.png" />
     <Resource Include="Images\sweibo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Weibo\Sina\Entities\account\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Properties\email.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\about.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

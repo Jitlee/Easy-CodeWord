@@ -98,7 +98,7 @@
                         <Button Content="查找" Style="{DynamicResource NormalButtonStyle}" Click="Search_Click"/>
                         <Button Content="替换" Style="{DynamicResource NormalButtonStyle}" Click="Replace_Click"/>
                         <Button Content="设置窗口" Style="{DynamicResource NormalButtonStyle}" Click="Setting_Click"/>
-                        <Button Content="日记窗口" Style="{DynamicResource NormalButtonStyle}"/>
+                        <Button Content="日记窗口" Style="{DynamicResource NormalButtonStyle}" Visibility="Hidden"/>
                         <Button Content="资料窗口" Style="{DynamicResource NormalButtonStyle}" Click="Refrence_Click"/>
                     </StackPanel>
                 </GroupBox>
@@ -137,9 +137,9 @@
                     Grid.Column="4">
                     <StackPanel>
                         <Button Content="一键排版" Style="{DynamicResource NormalButtonStyle}" Click="AutoTypeSetting_Click"/>
-                        <Button Content="统计窗口" Style="{DynamicResource NormalButtonStyle}"/>
-                        <Button Content="邮件窗口" Style="{DynamicResource NormalButtonStyle}"/>
-                        <Button Content="帮助卡片" Style="{DynamicResource NormalButtonStyle}"/>
+                        <Button Content="统计窗口" Style="{DynamicResource NormalButtonStyle}" Visibility="Hidden"/>
+                        <Button Content="邮件窗口" Style="{DynamicResource NormalButtonStyle}" Click="SendEmail_Click"/>
+                        <Button Content="帮助卡片" Style="{DynamicResource NormalButtonStyle}" Click="About_Click"/>
                         <Button Content="操作计算机" Style="{DynamicResource NormalButtonStyle}" Click="Operation_Click"/>
                     </StackPanel>
                 </GroupBox>
@@ -155,7 +155,10 @@
             HorizontalAlignment="Center"
             Visibility="{Binding IsUnlocked,Converter={StaticResource BooleanToVisibilityConverter}}"
             Orientation="Horizontal">
-            <TextBlock FontFamily="Webdings" Text="Ï"/>
+            <TextBlock
+                FontFamily="Webdings" 
+                FontSize="14"
+                Text="Ï"/>
             <TextBlock Text="{Binding SurplusWords, Mode=OneWay}"/>
             <TextBlock
                 Margin="15,3,3,3"

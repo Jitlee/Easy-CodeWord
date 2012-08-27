@@ -59,5 +59,33 @@ namespace EasyCodeword.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;EmailHosts&gt;
+        ///  &lt;EmailHost&gt;
+        ///    &lt;Server&gt;qq.com&lt;/Server&gt;
+        ///    &lt;POP3&gt;pop.qq.com&lt;/POP3&gt;
+        ///    &lt;SMTP&gt;smtp.qq.com&lt;/SMTP&gt;
+        ///    &lt;IMAP&gt;imap.qq.com&lt;/IMAP&gt;
+        ///    &lt;Port&gt;143&lt;/Port&gt;
+        ///  &lt;/EmailHost&gt;
+        ///  &lt;EmailHost&gt;
+        ///    &lt;Server&gt;vip.qq.com&lt;/Server&gt;
+        ///    &lt;POP3&gt;pop.qq.com&lt;/POP3&gt;
+        ///    &lt;SMTP&gt;smtp.qq.com&lt;/SMTP&gt;
+        ///    &lt;IMAP&gt;imap.qq.com&lt;/IMAP&gt;
+        ///    &lt;Port&gt;143&lt;/Port&gt;
+        ///  &lt;/EmailHost&gt;
+        ///  &lt;EmailHost&gt;
+        ///    &lt;Server&gt;qqmail.com&lt;/Server&gt;
+        ///    &lt;POP3&gt;pop.qqmail.com&lt;/POP3&gt;
+        ///    &lt;SMTP&gt;smtp.qqmail.com&lt;/SMT [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string email {
+            get {
+                return ResourceManager.GetString("email", resourceCulture);
+            }
+        }
     }
 }

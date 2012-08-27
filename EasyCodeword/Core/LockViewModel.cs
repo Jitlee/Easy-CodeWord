@@ -170,8 +170,9 @@ namespace EasyCodeword.Core
                     if (addWeiboWindow.ShowDialog() == true)
                     {
                         var weibo = addWeiboWindow.Weibo;
-                        var ret = QWeiboViewModel.Instance.Add(weibo);
-                        MessageBox.Show(ret);
+                        QWeiboViewModel.Instance.Add(weibo);
+                        SWeiboViewModel.Instance.Add(weibo);
+                        //MessageBox.Show(ret);
                         e.Cancel = false;
                         return;
                     }

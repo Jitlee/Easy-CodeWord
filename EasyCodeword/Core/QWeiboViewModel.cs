@@ -292,19 +292,27 @@ namespace EasyCodeword.Core
         /// <returns></returns>
         public string Add(string weibo)
         {
-            OauthKey oauthKey = new OauthKey();
-            oauthKey.customKey = AppKey;
-            oauthKey.customSecret = AppSecret;
-            oauthKey.tokenKey = _accessKey;
-            oauthKey.tokenSecret = _accessSecret;
+            try
+            {
+                OauthKey oauthKey = new OauthKey();
+                oauthKey.customKey = AppKey;
+                oauthKey.customSecret = AppSecret;
+                oauthKey.tokenKey = _accessKey;
+                oauthKey.tokenSecret = _accessSecret;
 
-            t twit = new t(oauthKey, "json");
+                t twit = new t(oauthKey, "json");
 
-            var ret = twit.add(string.Concat(weibo,"  ", SettingViewModel.Instance.TenderLockMessage),
-                          "",
-                          "",
-                          "");
-            return ret;
+                var ret = twit.add(string.Concat(weibo, "  ", SettingViewModel.Instance.TenderLockMessage),
+                              "",
+                              "",
+                              "");
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("[Add] Exception : {0}", ex.Message);
+            }
+            return string.Empty;
         }
     }
 }

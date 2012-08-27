@@ -21,8 +21,11 @@ namespace EasyCodeword.Views
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
-            this.Close();
+            if (SettingViewModel.Instance.Verify())
+            {
+                this.DialogResult = true;
+                this.Close();
+            }
         }
 
         private void Digital_KeyDown(object sender, KeyEventArgs e)
@@ -75,23 +78,30 @@ namespace EasyCodeword.Views
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            if (this.DialogResult != true
-                && SettingViewModel.Instance.SaveCommand.CanExecute(null))
+            if (SettingViewModel.Instance.Verify())
             {
-                var result = MessageBox.Show(this,
-                        "设置已更改，是否需要保存？",
-                        "询问",
-                        MessageBoxButton.YesNoCancel,
-                        MessageBoxImage.None,
-                        MessageBoxResult.Yes);
-                if (result == MessageBoxResult.Yes)
+                if (this.DialogResult != true
+                    && SettingViewModel.Instance.SaveCommand.CanExecute(null))
                 {
-                    SettingViewModel.Instance.SaveCommand.Execute(null);
+                    var result = MessageBox.Show(this,
+                            "设置已更改，是否需要保存？",
+                            "询问",
+                            MessageBoxButton.YesNoCancel,
+                            MessageBoxImage.None,
+                            MessageBoxResult.Yes);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        SettingViewModel.Instance.SaveCommand.Execute(null);
+                    }
+                    else if (result == MessageBoxResult.Cancel)
+                    {
+                        e.Cancel = true;
+                    }
                 }
-                else if(result == MessageBoxResult.Cancel)
-                {
-                    e.Cancel = true;
-                }
+            }
+            else
+            {
+                e.Cancel = true;
             }
             base.OnClosing(e);
         }

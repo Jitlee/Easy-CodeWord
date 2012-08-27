@@ -57,9 +57,11 @@ namespace WeiboSDK
 
             HttpWebRequest webRequest = WebRequest.Create(url) as HttpWebRequest;
             webRequest.Method = "POST";
+            //webRequest.ServicePoint.Expect100Continue = false;
+            //webRequest.Timeout = 20000;
             webRequest.ContentType = "application/x-www-form-urlencoded";
-            webRequest.ServicePoint.Expect100Continue = false;
-            webRequest.Timeout = 20000;
+            webRequest.AllowAutoRedirect = true;
+            webRequest.KeepAlive = true;
 
             try
             {             

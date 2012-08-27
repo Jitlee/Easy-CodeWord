@@ -300,6 +300,8 @@ namespace EasyCodeword.Core
 
         public SWeiboViewModel SWeibo { get { return SWeiboViewModel.Instance; } }
 
+        public EmailViewModel Email { get { return EmailViewModel.Instance; } }
+
         public string RecentFile
         {
             get { return RWReg.GetValue(SUB_NAME, "RecentFile", string.Empty).ToString(); }
@@ -602,117 +604,142 @@ namespace EasyCodeword.Core
 
         private void Save()
         {
-            if (_boot)
+            if (Verify())
             {
-                RWReg.SetValue(BOOT_NAME, "EasyCodeword", System.Windows.Forms.Application.ExecutablePath);
-            }
-            else
-            {
-                RWReg.RemoveKey(BOOT_NAME, "EasyCodeword");
-            }
-
-            if (_hasBackgroundChanged)
-            {
-                MainWindow.Instance.SetBackground(_background);
-                RWReg.SetValue(SUB_NAME, "Background", _background.ToString());
-            }
-
-            if (_hasForegroundChanged)
-            {
-                MainWindow.Instance.SetForeground(_foreground);
-                RWReg.SetValue(SUB_NAME, "Foreground", _foreground.ToString());
-            }
-
-            if (_hasFontFamilyChanged)
-            {
-                MainWindow.Instance.SetFontFamily(_fontFamily.FontFamily);
-                RWReg.SetValue(SUB_NAME, "FontFamily", _fontFamily.ToString());
-            }
-
-            if (_hasFontStyleChanged)
-            {
-                MainWindow.Instance.SetFontStyle(_fontStyle);
-                RWReg.SetValue(SUB_NAME, "FontStyle", _fontStyle.ID);
-            }
-
-            if (_hasFontSizeChanged)
-            {
-                MainWindow.Instance.SetFontSize(_fontSize.FontSize);
-                RWReg.SetValue(SUB_NAME, "FontSize", _fontSize.FontSize);
-            }
-
-            if (_hasAutoSaveIntervalChanged)
-            {
-                RWReg.SetValue(SUB_NAME, "AutoSaveInterval", _autoSaveInterval);
-            }
-
-            if (_hasAutoSaveChanged)
-            {
-                RWReg.SetValue(SUB_NAME, "AutoSave", _autoSave ? 1 : 0);
-            }
-
-            if (_hasAutoPlayMusicChanged)
-            {
-                RWReg.SetValue(SUB_NAME, "AutoPlayMusic", _autoPlayMusic ? 1 : 0);
-            }
-
-            if (_hasMusicFolderChanged)
-            {
-                RWReg.SetValue(SUB_NAME, "MusicFolder", _musicFolder);
-            }
-
-            if (_hasAutoPlayMusicChanged)
-            {
-                if (_autoPlayMusic)
+                if (_boot)
                 {
-                    SoundPlayerViewModel.Instance.Play(SettingViewModel.Instance.MusicFolder);
+                    RWReg.SetValue(BOOT_NAME, "EasyCodeword", System.Windows.Forms.Application.ExecutablePath);
                 }
                 else
                 {
-                    SoundPlayerViewModel.Instance.Stop();
+                    RWReg.RemoveKey(BOOT_NAME, "EasyCodeword");
                 }
-            }
-            else if (_hasMusicFolderChanged && _autoPlayMusic)
-            {
-                SoundPlayerViewModel.Instance.Play(SettingViewModel.Instance.MusicFolder);
-            }
 
-            if (_hasLockChanged)
-            {
-                Lock.Lock();
-            }
+                if (_hasBackgroundChanged)
+                {
+                    MainWindow.Instance.SetBackground(_background);
+                    RWReg.SetValue(SUB_NAME, "Background", _background.ToString());
+                }
 
-            if (_hasLockTypeChanged)
-            {
-                RWReg.SetValue(SUB_NAME, "LockType", _isTenderLock ? 1 : 0);
-            }
+                if (_hasForegroundChanged)
+                {
+                    MainWindow.Instance.SetForeground(_foreground);
+                    RWReg.SetValue(SUB_NAME, "Foreground", _foreground.ToString());
+                }
 
-            if (_hasTenderLockMessageChanged)
-            {
-                RWReg.SetValue(SUB_NAME, "TenderLockMessage", _tenderLockMessage);
-            }
+                if (_hasFontFamilyChanged)
+                {
+                    MainWindow.Instance.SetFontFamily(_fontFamily.FontFamily);
+                    RWReg.SetValue(SUB_NAME, "FontFamily", _fontFamily.ToString());
+                }
 
-            if (QWeiboViewModel.Instance.HasChanged)
-            {
-                QWeiboViewModel.Instance.Save();
-            }
+                if (_hasFontStyleChanged)
+                {
+                    MainWindow.Instance.SetFontStyle(_fontStyle);
+                    RWReg.SetValue(SUB_NAME, "FontStyle", _fontStyle.ID);
+                }
 
-            if (_hasRemeberRTFChanged)
-            {
-                SaveRememberRTF();
-            }
+                if (_hasFontSizeChanged)
+                {
+                    MainWindow.Instance.SetFontSize(_fontSize.FontSize);
+                    RWReg.SetValue(SUB_NAME, "FontSize", _fontSize.FontSize);
+                }
 
-            if (_hasAutoSaveExitChanged)
-            {
-                SaveAutoSaveExit();
-            }
+                if (_hasAutoSaveIntervalChanged)
+                {
+                    RWReg.SetValue(SUB_NAME, "AutoSaveInterval", _autoSaveInterval);
+                }
 
-            if (_hasAutoSaveReturnChanged)
-            {
-                RWReg.SetValue(SUB_NAME, "AutoSaveReturn", _autoSaveReturn ? 1 : 0);
-            }
+                if (_hasAutoSaveChanged)
+                {
+                    RWReg.SetValue(SUB_NAME, "AutoSave", _autoSave ? 1 : 0);
+                }
 
-            Reset();
+                if (_hasAutoPlayMusicChanged)
+                {
+                    RWReg.SetValue(SUB_NAME, "AutoPlayMusic", _autoPlayMusic ? 1 : 0);
+                }
+
+                if (_hasMusicFolderChanged)
+                {
+                    RWReg.SetValue(SUB_NAME, "MusicFolder", _musicFolder);
+                }
+
+                if (_hasAutoPlayMusicChanged)
+                {
+                    if (_autoPlayMusic)
+                    {
+                        SoundPlayerViewModel.Instance.Play(SettingViewModel.Instance.MusicFolder);
+                    }
+                    else
+                    {
+                        SoundPlayerViewModel.Instance.Stop();
+                    }
+                }
+                else if (_hasMusicFolderChanged && _autoPlayMusic)
+                {
+                    SoundPlayerViewModel.Instance.Play(SettingViewModel.Instance.MusicFolder);
+                }
+
+                if (_hasLockChanged)
+                {
+                    Lock.Lock();
+                }
+
+                if (_hasLockTypeChanged)
+                {
+                    RWReg.SetValue(SUB_NAME, "LockType", _isTenderLock ? 1 : 0);
+                }
+
+                if (_hasTenderLockMessageChanged)
+                {
+                    RWReg.SetValue(SUB_NAME, "TenderLockMessage", _tenderLockMessage);
+                }
+
+                if (QWeibo.HasChanged)
+                {
+                    QWeibo.Save();
+                }
+
+                if (SWeibo.HasChanged)
+                {
+                    SWeibo.Save();
+                }
+
+                if (Email.HasChanged)
+                {
+                    Email.Save();
+                }
+
+                if (_hasRemeberRTFChanged)
+                {
+                    SaveRememberRTF();
+                }
+
+                if (_hasAutoSaveExitChanged)
+                {
+                    SaveAutoSaveExit();
+                }
+
+                if (_hasAutoSaveReturnChanged)
+                {
+                    RWReg.SetValue(SUB_NAME, "AutoSaveReturn", _autoSaveReturn ? 1 : 0);
+                }
+
+                Reset();
+            }
+        }
+
+        public bool Verify()
+        {
+            if (_hasLockTypeChanged
+                && _isTenderLock && !SWeibo.IsAuthorized
+                && !QWeibo.IsAuthorized)
+            {
+                MainWindow.Instance.ShowMessage("如果选择温柔锁，至少需要授权一个微博账号!");
+                return false;
+            }
+            return true;
         }
 
         public void SaveAutoSaveExit()
@@ -742,7 +769,9 @@ namespace EasyCodeword.Core
                 || _hasLockChanged
                 || _hasLockTypeChanged
                 || _hasTenderLockMessageChanged
-                || QWeiboViewModel.Instance.HasChanged
+                || QWeibo.HasChanged
+                || SWeibo.HasChanged
+                || Email.HasChanged
                 || _hasRemeberRTFChanged
                 || _hasAutoSaveExitChanged
                 || _hasAutoSaveReturnChanged;
@@ -763,7 +792,9 @@ namespace EasyCodeword.Core
             _hasLockChanged = false;
             _hasLockTypeChanged = false;
             _hasTenderLockMessageChanged = false;
-            QWeiboViewModel.Instance.Reset();
+            QWeibo.Reset();
+            SWeibo.Reset();
+            Email.Reset();
             _hasRemeberRTFChanged = false;
             _hasAutoSaveExitChanged = false;
             _hasAutoSaveReturnChanged = false;
@@ -788,6 +819,13 @@ namespace EasyCodeword.Core
             {
                 // 取消授权
                 QWeibo.Deauthorize();
+            }
+            else if (type == -2)
+            {
+                // 取消授权
+                SWeibo.Deauthorize();
+
+                MainWindow.Instance.ShowMessage("你已成功取消新浪微博对本应用的授权！");
             }
         }
 

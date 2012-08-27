@@ -61,5 +61,11 @@ namespace EasyCodeword.Views
                 this.Close();
             }
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            AuthorizeWebBrower.Dispose();
+            base.OnClosed(e);
+        }
     }
 }

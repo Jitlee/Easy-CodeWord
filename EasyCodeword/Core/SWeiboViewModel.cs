@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using EasyCodeword.Utilities;
 using EasyCodeword.Views;
+using NetDimension.Weibo;
 using WeiboSDK;
 using WeiboSDK.Sina;
 
@@ -21,19 +22,27 @@ namespace EasyCodeword.Core
 
         private ILogger _logger = LoggerFactory.GetLogger(typeof(SWeiboViewModel).FullName);
 
+        private const string ACCESS_TOKEN_URL = "https://api.weibo.com/oauth2/access_token";
+
+        private const string AUTHORIZE_URL = "https://api.weibo.com/oauth2/authorize";
+
         private const string UNAUTHORIZED = "用户未授权";
 
-        private readonly string AppKey = "858273299";
+        private readonly string _appKey = "858273299";
 
-        private readonly string AppSecret = "3fae75eb725ca4e5a356352d73904536";
+        private readonly string _appSecret = "3fae75eb725ca4e5a356352d73904536";
+
+        private OAuth _oAuth = null;
+
+        private Client _client = null;
 
         //private readonly string AppKey = "858273299";
 
         //private readonly string AppSecret = "3fae75eb725ca4e5a356352d73904536";
 
-        private string _tokenKey = null;
+        //private string _tokenKey = null;
 
-        private string _tokenSecret = null;
+        //private string _tokenSecret = null;
 
         private string _accessKey = RWReg.GetValue(SettingViewModel.SUB_NAME, "SAccessKey", string.Empty).ToString();
 
@@ -82,6 +91,9 @@ namespace EasyCodeword.Core
 
         private SWeiboViewModel()
         {
+            _oAuth = new OAuth(_appKey, _appSecret);
+            _client = new Client(_oAuth);
+
             if (IsAuthorized)
             {
                 _nickname = "加载中...";
@@ -98,44 +110,36 @@ namespace EasyCodeword.Core
         /// </summary>
         private void GetNickname()
         {
-            Thread thread = new Thread(GetNicknameCallback);
-            thread.IsBackground = true;
-            thread.Start();
+            ThreadPool.QueueUserWorkItem(delegate {
+                GetNicknameCallback();
+            });
         }
 
         private void GetNicknameCallback()
         {
             try
             {
-                //OauthKey oauthKey = new OauthKey();
-                //oauthKey.customKey = AppKey;
-                //oauthKey.customSecret = AppSecret;
-                //oauthKey.tokenKey = _accessKey;
-                //oauthKey.tokenSecret = _accessSecret;
+                    if (string.IsNullOrEmpty(_oAuth.AccessToken))
+                    {
+                        bool result = _oAuth.ClientLogin(_accessKey, _accessSecret);
+                        var tr = _oAuth.VerifierAccessToken();
+                        if (tr != NetDimension.Weibo.TokenResult.Success)
+                        {
+                            Application.Current.Dispatcher.Invoke(new Action(() =>
+                            {
+                                MainWindow.Instance.ShowMessage("获取新浪微博用户信息失败！");
+                            }));
+                            return;
+                        }
+                    }
+                    string userID = _client.API.Account.GetUID();
 
-                //user user = new user(oauthKey, "xml");
+                    NetDimension.Weibo.Entities.user.Entity userInfo = _client.API.Users.Show(userID, null);
 
-                //var info = user.info();
-                //var xElment = XElement.Parse(info);
-                //if (null != xElment)
-                //{
-                //    var nick = xElment.XPathSelectElement("//nick");
-                //    var favnum = xElment.XPathSelectElement("//favnum");
-                //    var fansnum = xElment.XPathSelectElement("//fansnum");
-                //    if (null != nick &&
-                //        null != favnum &&
-                //        null != fansnum)
-                //    {
-                //        Application.Current.Dispatcher.Invoke(new Action(() =>
-                //        {
-                //            Nickname = string.Format("{0}[收听{1};听众:{2}]", nick.Value, favnum.Value, fansnum.Value);
-                //        }));
-                //    }
-                //}
-                //else
-                //{
-                //    _logger.Debug("try parse xelement faild");
-                //}
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
+                        Nickname = string.Format("{0}[收听{1};听众:{2}]", userInfo.ScreenName, userInfo.FriendsCount, userInfo.FollowersCount);
+                    }));
             }
             catch (Exception ex)
             {
@@ -155,7 +159,7 @@ namespace EasyCodeword.Core
         {
             try
             {
-                string url = "https://api.weibo.com/oauth2/access_token";
+                string url = AUTHORIZE_URL;
                 List<Parameter> parameters = new List<Parameter>();
                 parameters.Add(new Parameter("client_id", customKey));
                 parameters.Add(new Parameter("client_secret", customSecret));
@@ -192,25 +196,61 @@ namespace EasyCodeword.Core
         /// </summary>
         public void Authorize()
         {
-            if (GetRequestToken(AppKey, AppSecret) == false)
+            var inputAccountWindow = new InputAccoutWindow();
+            inputAccountWindow.Owner = SettingWindow.Instance;
+            inputAccountWindow.Title = "请输入新浪微博的账号和密码";
+            if (inputAccountWindow.ShowDialog() == true)
             {
-                _logger.Error("[Authorize] : 获取 token key 失败!");
-                MainWindow.Instance.ShowMessage("获取新浪微博应用授权失败！");
-                return;
+                var username = inputAccountWindow.UsernameTextBox.Text;
+                var password = inputAccountWindow.PassowrdTextBox.Password;
+                Login(username, password);
             }
+        }
 
-            _accessKey = _tokenKey;
-            _accessSecret = _tokenSecret;
+        private void Login(string username, string password)
+        {
+            //好吧，上一版的SDK在网络环境差的情况下经常会卡着不动，这次的我们来把操作界面线程和操作线程分开吧
+            Thread thLogin = new Thread(new ThreadStart(delegate()
+            {
+                Application.Current.Dispatcher.Invoke(new Action(() => {
+                    try
+                    {
+                        bool result = _oAuth.ClientLogin(username, password);
+                        var tr = _oAuth.VerifierAccessToken();
 
-            UpdateHasChanged();
+                        if (tr == NetDimension.Weibo.TokenResult.Success)
+                        {
+                            _accessKey = username;
 
-            RaisePropertyChanged("IsAuthorized");
+                            _accessSecret = password;
 
-            SettingViewModel.Instance.SaveCommand.RaiseCanExecuteChanged();
+                            UpdateHasChanged();
 
-            GetNickname();
+                            RaisePropertyChanged("IsAuthorized");
 
-            MainWindow.Instance.ShowMessage("恭喜你的新浪微博已成功授权本应用！");
+                            SettingViewModel.Instance.SaveCommand.RaiseCanExecuteChanged();
+
+                            GetNickname();
+
+                            MainWindow.Instance.ShowMessage("恭喜你的新浪微博已成功授权本应用！");
+
+                        }
+                        else
+                        {
+                            MainWindow.Instance.ShowMessage("获取新浪微博应用授权失败！");
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error("[Authorize] : 获取 token key 失败!");
+                        MainWindow.Instance.ShowMessage("获取新浪微博应用授权出现异常：{0}", ex.Message);
+                    }
+                }));
+            }));
+
+            thLogin.Start();
+
         }
 
         private void UpdateHasChanged()
@@ -237,8 +277,6 @@ namespace EasyCodeword.Core
             SettingViewModel.Instance.SaveCommand.RaiseCanExecuteChanged();
 
             Nickname = UNAUTHORIZED;
-
-            MainWindow.Instance.ShowMessage("你已成功取消新浪微博对本应用的授权！");
         }
 
         /// <summary>
@@ -248,7 +286,27 @@ namespace EasyCodeword.Core
         /// <returns></returns>
         public string Add(string weibo)
         {
-            return null;
+            try
+            {
+                if (string.IsNullOrEmpty(_oAuth.AccessToken))
+                {
+                    bool result = _oAuth.ClientLogin(_accessKey, _accessSecret);
+                    var tr = _oAuth.VerifierAccessToken();
+                    if (tr != NetDimension.Weibo.TokenResult.Success)
+                    {
+                        _accessKey = string.Empty;
+                        _accessSecret = string.Empty;
+                        return string.Empty;
+                    }
+                }
+                _client.API.Statuses.Update(string.Concat(weibo, "  ", SettingViewModel.Instance.TenderLockMessage)
+                    , 0, 0, null);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("[Add] Exception : {0}" , ex.Message);
+            }
+            return string.Empty;
         }
     }
 }

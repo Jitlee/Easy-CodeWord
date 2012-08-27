@@ -202,7 +202,7 @@ namespace EasyCodeword
             {
                 if (SettingViewModel.Instance.AutoSaveReturn)
                 {
-                    SaveFile();
+                    SaveCommand();
                 }
                 var index = MainTextBox.SelectionStart;
                 MainTextBox.Text = MainTextBox.Text.Insert(MainTextBox.SelectionStart, "\r\n\r\n　　");
@@ -226,6 +226,30 @@ namespace EasyCodeword
             else if (e.Key == Key.F3)
             {
                 SearchWindow.Search();
+            }
+            else if (e.Key == Key.F1)
+            {
+                AboutCommand();
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control
+                && e.Key == Key.N)
+            {
+                NewCommand();
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control
+               && e.Key == Key.O)
+            {
+                OpenCommand();
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control
+               && e.Key == Key.S)
+            {
+                SaveCommand();
+            }
+            else if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift)
+               && e.Key == Key.S)
+            {
+                SaveAsCommand();
             }
         }
 
@@ -273,6 +297,16 @@ namespace EasyCodeword
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
+            NewCommand();
+        }
+
+        private void NewCommand()
+        {
+            if (MessageBox.Show(this, "当前文档还未保存，是否需要保存？", "询问", MessageBoxButton.YesNo, MessageBoxImage.Asterisk) == MessageBoxResult.Yes)
+            {
+                SaveCommand();
+            }
+
             this.MainTextBox.Text = string.Empty;
             MenuPopup.IsOpen = false;
             MainViewModel.Instance.FileName = string.Empty;
@@ -282,6 +316,16 @@ namespace EasyCodeword
 
         private void Open_Click(object sender, RoutedEventArgs e)
         {
+            OpenCommand();
+        }
+
+        private void OpenCommand()
+        {
+            if (MessageBox.Show(this, "当前文档还未保存，是否需要保存？", "询问", MessageBoxButton.YesNo, MessageBoxImage.Asterisk) == MessageBoxResult.Yes)
+            {
+                SaveCommand();
+            }
+
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "文件(*.txt;*.rtf)|*.txt;*.rtf|文本文件(*.txt)|*.txt|RTF文件(*.rtf)|*.rtf";
             if (openFileDialog.ShowDialog() == true)
@@ -336,10 +380,10 @@ namespace EasyCodeword
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            SaveFile();
+            SaveCommand();
         }
 
-        private void SaveFile()
+        private void SaveCommand()
         {
             try
             {
@@ -359,6 +403,11 @@ namespace EasyCodeword
         }
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            SaveAsCommand();
+        }
+
+        private void SaveAsCommand()
         {
             try
             {
@@ -609,6 +658,36 @@ namespace EasyCodeword
             var powerWindow = new PowerWindow();
             powerWindow.Owner = this;
             powerWindow.ShowDialog();
+        }
+
+        private void SendEmail_Click(object sender, RoutedEventArgs e)
+        {
+            var sendEmailWindow = new SendEmailWindow();
+            sendEmailWindow.Owner = this;
+            if (sendEmailWindow.ShowDialog() == true)
+            {
+                var result = EmailViewModel.Instance.Send(sendEmailWindow.SubjectTextBox.Text, this.MainTextBox.Text);
+                if (result)
+                {
+                    ShowMessage("邮件发送成功");
+                }
+                else
+                {
+                    ShowMessage("邮件发送失败");
+                }
+            }
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            AboutCommand();
+        }
+
+        private void AboutCommand()
+        {
+            var abountWindow = new AbountWindow();
+            abountWindow.Owner = this;
+            abountWindow.Show();
         }
     }
 }

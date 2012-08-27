@@ -308,12 +308,20 @@
                                 Text="新浪微博"/>
                             <TextBlock
                                 Grid.Column="2"
-                                Text="还未绑定"/>
+                                Text="{Binding SWeibo.Nickname, Mode=OneWay}"/>
                             <Button
                                 Grid.Column="3"
-                                Content="绑定"
+                                Content="授权"
                                 Command="{Binding AuthorizeCommand}"
                                 CommandParameter="0"
+                                Visibility="{Binding SWeibo.IsAuthorized, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Style="{DynamicResource NormalButtonStyle}"/>
+                            <Button
+                                Grid.Column="3"
+                                Content="取消授权"
+                                Command="{Binding AuthorizeCommand}"
+                                CommandParameter="-2"
+                                Visibility="{Binding SWeibo.IsAuthorized, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=1}"
                                 Style="{DynamicResource NormalButtonStyle}"/>
                             <Image
                                 Grid.Row="1"

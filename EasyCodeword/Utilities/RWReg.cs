@@ -8,7 +8,9 @@ namespace EasyCodeword.Utilities
 {
     public class RWReg
     {
-        public static object GetValue(string subName, string keyName, object defualtValue = null)
+        private static readonly string DefaultKey = "件宝密字钥码软的";
+        static ILogger _logger = LoggerFactory.GetLogger(typeof(RWReg).FullName);
+        public static object GetValue(string subName, string keyName, object defualtValue = null, bool unDecrypt = false)
         {
             using (var rootKey = Registry.CurrentUser)
             {
@@ -18,12 +20,24 @@ namespace EasyCodeword.Utilities
                     {
                         return defualtValue;
                     }
-                    return subKey.GetValue(keyName, defualtValue);
+                    if (!unDecrypt)
+                    {
+                        var result = subKey.GetValue(keyName, null);
+                        if (null != result)
+                        {
+                            return AES.Decrypt(result.ToString(), DefaultKey);
+                        }
+                        return defualtValue;
+                    }
+                    else
+                    {
+                        return subKey.GetValue(keyName, defualtValue);
+                    }
                 }
             }
         }
 
-        public static void SetValue(string subName, string keyName, object value)
+        public static void SetValue(string subName, string keyName, object value, bool unEncrypt = false)
         {
             using (var rootKey = Registry.CurrentUser)
             {
@@ -33,33 +47,40 @@ namespace EasyCodeword.Utilities
                     {
                         using (var newSubKey = rootKey.CreateSubKey(subName))
                         {
-                            newSubKey.SetValue(keyName, value);
+                            if (!unEncrypt)
+                            {
+                                if (null != value)
+                                {
+                                    newSubKey.SetValue(keyName, AES.Encrypt(value.ToString(), DefaultKey));
+                                }
+                                else
+                                {
+                                    newSubKey.SetValue(keyName, value);
+                                }
+                            }
+                            else
+                            {
+                                subKey.SetValue(keyName, value);
+                            }
                         }
                     }
                     else
                     {
-                        subKey.SetValue(keyName, value);
-                    }
-                }
-            }
-        }
-
-        public static void SetValue(string subName, string keyName, object value, RegistryValueKind valueKind)
-        {
-            using (var rootKey = Registry.CurrentUser)
-            {
-                using (var subKey = rootKey.OpenSubKey(subName, true))
-                {
-                    if (null == subKey)
-                    {
-                        using (var newSubKey = rootKey.CreateSubKey(subName))
+                        if (!unEncrypt)
                         {
-                            newSubKey.SetValue(keyName, value, valueKind);
+                            if (null != value)
+                            {
+                                subKey.SetValue(keyName, AES.Encrypt(value.ToString(), DefaultKey));
+                            }
+                            else
+                            {
+                                subKey.SetValue(keyName, value);
+                            }
                         }
-                    }
-                    else
-                    {
-                        subKey.SetValue(keyName, value, valueKind);
+                        else
+                        {
+                            subKey.SetValue(keyName, value);
+                        }
                     }
                 }
             }
@@ -75,9 +96,16 @@ namespace EasyCodeword.Utilities
                     {
                         try
                         {
-                            subKey.DeleteValue(keyName);
+                            var key = subKey.OpenSubKey(keyName);
+                            if (null != key)
+                            {
+                                subKey.DeleteValue(keyName);
+                            }
                         }
-                        catch { }
+                        catch (Exception ex)
+                        {
+                            _logger.Debug("[RemoveKey] Exceptio: {0}", ex.Message);
+                        }
                     }
                 }
             }
