@@ -15,17 +15,17 @@ namespace EasyCodeword.Core
 
         private readonly TextBox _textBox = null;
 
-        private readonly Timer _timer;
+        //private readonly Timer _timer;
 
-        private const int INTERVAL = 5 * 1000;
+        //private const int INTERVAL = 5 * 1000;
 
         private ILogger _logger = LoggerFactory.GetLogger(typeof(TypingSpeedViewModel).FullName);
 
-        private bool _isTesting;
+        //private bool _isTesting;
 
-        private int _totalCurrentWords = 0;   // 当前
+        //private int _totalCurrentWords = 0;   // 当前
 
-        private int _beginWords = 0;
+        //private int _beginWords = 0;
 
         private DateTime _appStartDateTime = DateTime.Now;  // 软件启动时间
 
@@ -56,6 +56,11 @@ namespace EasyCodeword.Core
         /// 今日字数
         /// </summary>
         private int _todayWords = 0;
+        
+        /// <summary>
+        /// 今日速度
+        /// </summary>
+        private int _todayTypingSpeed = 0;
 
         /// <summary>
         /// 最高日产量
@@ -112,6 +117,12 @@ namespace EasyCodeword.Core
             set { _todayWords = value; }
         }
 
+        public int TodayTypingSpeed
+        {
+            get { return _todayTypingSpeed; }
+            set { _todayTypingSpeed = value; }
+        }
+
         public int MaximumDailyWords
         {
             get { return _maximumDailyWords; }
@@ -154,17 +165,17 @@ namespace EasyCodeword.Core
             _appStartWords = MainViewModel.Instance.CountWords(_textBox.Text);
         }
 
-        ~TypingSpeedViewModel()
-        {
-            _timer.Dispose();
-        }
+        //~TypingSpeedViewModel()
+        //{
+        //    _timer.Dispose();
+        //}
 
         public TypingSpeedViewModel(TextBox textBox)
         {
-            _timer = new Timer(TypingSpeedTestCallback);
+            //_timer = new Timer(TypingSpeedTestCallback);
             _textBox = textBox;
-            _textBox.PreviewKeyDown += TextBox_PreviewKeyDown;
-            _textBox.PreviewKeyUp += TextBox_PreviewKeyUp;
+            //_textBox.PreviewKeyDown += TextBox_PreviewKeyDown;
+            //_textBox.PreviewKeyUp += TextBox_PreviewKeyUp;
 
             var today = DateTime.Now.ToString("yyyy-MM-dd");
             // 判断是否今天
@@ -184,69 +195,74 @@ namespace EasyCodeword.Core
             Refresh();
         }
 
-        private void TextBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (Keyboard.Modifiers == ModifierKeys.Shift
-                || Keyboard.Modifiers == ModifierKeys.None
-                || (e.Key >= Key.D0 && e.Key <= Key.Z)
-                || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
-            {
-                if (!_isTesting)
-                {
-                    _isTesting = true;
-                    _beginWords = _textBox.Text.Length;
-                    _beginTime = DateTime.Now;
-                }
-                _timer.Change(Timeout.Infinite, Timeout.Infinite);
-            }
-        }
+        //private void TextBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        //{
+        //    if (Keyboard.Modifiers == ModifierKeys.Shift
+        //        || Keyboard.Modifiers == ModifierKeys.None
+        //        || (e.Key >= Key.D0 && e.Key <= Key.Z)
+        //        || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
+        //    {
+        //        if (!_isTesting)
+        //        {
+        //            _isTesting = true;
+        //            _beginWords = _textBox.Text.Length;
+        //            _beginTime = DateTime.Now;
+        //        }
+        //        _timer.Change(Timeout.Infinite, Timeout.Infinite);
+        //    }
+        //}
 
-        private void TextBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            _timer.Change(INTERVAL, INTERVAL);
-        }
+        //private void TextBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        //{
+        //    _timer.Change(INTERVAL, INTERVAL);
+        //}
 
-        private void TypingSpeedTestCallback(object state)
-        {
-            Testing(INTERVAL);
-        }
+        //private void TypingSpeedTestCallback(object state)
+        //{
+        //    Testing(INTERVAL);
+        //}
 
-        private void Testing(double offset)
-        {
-            if (_isTesting)
-            {
-                _isTesting = false;
-                var len = 0;
-                var time = DateTime.Now;
-                _textBox.Dispatcher.Invoke(new Action(() =>
-                {
-                    len = MainViewModel.Instance.CountWords(_textBox.Text) - _beginWords;
-                }));
-                var span = ((time - _beginTime).TotalMilliseconds - offset);
-                _totalCurrentWords += len;
+        //private void Testing(double offset)
+        //{
+        //    if (_isTesting)
+        //    {
+        //        _isTesting = false;
+        //        var len = 0;
+        //        var time = DateTime.Now;
+        //        _textBox.Dispatcher.Invoke(new Action(() =>
+        //        {
+        //            len = MainViewModel.Instance.CountWords(_textBox.Text) - _beginWords;
+        //        }));
+        //        var span = ((time - _beginTime).TotalMilliseconds - offset);
+        //        _totalCurrentWords += len;
 
-                if (len > 5
-                    && span > 30d * 1000d)
-                {
-                    var speed = len * 60d * 1000d / span;
-                    if (speed > MaximumTypingSpeed)
-                    {
-                        _maximumTypingSpeed = (int)speed;
-                    }
-                }
-            }
-        }
+        //        if (len > 5
+        //            && span > 30d * 1000d)
+        //        {
+        //            var speed = len * 60d * 1000d / span;
+        //            if (speed > MaximumTypingSpeed)
+        //            {
+        //                _maximumTypingSpeed = (int)speed;
+        //            }
+        //        }
+        //    }
+        //}
 
         public void Total()
         {
-            Testing(0d);
-            _timer.Change(Timeout.Infinite, Timeout.Infinite);
+            //Testing(0d);
+            //_timer.Change(Timeout.Infinite, Timeout.Infinite);
 
             // 当前时长
             _currentHours = DateTime.Now - _appStartDateTime;
 
             //当前字数
             _currentWords = MainViewModel.Instance.CountWords(_textBox.Text) - _appStartWords;
+
+            if (_currentWords < 0)
+            {
+                _currentWords = 0;
+            }
 
             var today = DateTime.Now.ToString("yyyy-MM-dd");
             // 判断是否今天
@@ -271,6 +287,8 @@ namespace EasyCodeword.Core
 
             _totalHours += _currentHours - _lastTotalDateTime;
             _totalWords += _currentWords - _lastTotalWords;
+
+            _todayTypingSpeed = (int)(_todayWords * 60d * 1000d / _todayHours.TotalMilliseconds);
 
             // 保存当前值
             Save();
@@ -300,6 +318,12 @@ namespace EasyCodeword.Core
             if (_todayWords > _maximumDailyWords)
             {
                 _maximumDailyWords = _todayWords;
+            }
+
+            var typingSpeed = (int)(_todayWords * 60d * 1000d / _todayHours.TotalMilliseconds);
+            if (typingSpeed > _maximumTypingSpeed)
+            {
+                _maximumTypingSpeed = typingSpeed;
             }
         }
     }

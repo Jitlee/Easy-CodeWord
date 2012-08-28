@@ -722,7 +722,7 @@ namespace EasyCodeword
             if (MainTextBox.SelectionLength > 0)
             {
                 ImmediateTotalGroupBox.Visibility = Visibility.Visible;
-                ImmediateWordsTextBlock.Text = MainViewModel.Instance.CountWords(MainTextBox.Text, MainTextBox.SelectionStart).ToString();
+                ImmediateWordsTextBlock.Text = MainViewModel.Instance.CountWords(MainTextBox.SelectedText).ToString();
                 ImmediateLengthTextBlock.Text = MainTextBox.SelectionLength.ToString();
             }
             else

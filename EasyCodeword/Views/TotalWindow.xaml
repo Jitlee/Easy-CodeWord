@@ -64,6 +64,7 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -91,20 +92,29 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
+            
             <TextBlock
                 Grid.Row="3"
                 Grid.Column="0"
-                Text="今日字数："/>
+                Text="今日速度："/>
             <TextBlock
                 Grid.Row="3"
                 Grid.Column="1"
-                Text="{Binding TodayWords, StringFormat=\{0\}字}"/>
+                Text="{Binding TodayTypingSpeed, StringFormat=\{0\}字/分钟}"/>
             <TextBlock
                 Grid.Row="4"
                 Grid.Column="0"
-                Text="今日时长："/>
+                Text="今日字数："/>
             <TextBlock
                 Grid.Row="4"
+                Grid.Column="1"
+                Text="{Binding TodayWords, StringFormat=\{0\}字}"/>
+            <TextBlock
+                Grid.Row="5"
+                Grid.Column="0"
+                Text="今日时长："/>
+            <TextBlock
+                Grid.Row="5"
                 Grid.Column="1">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}{0:D2}小时{1:D2}分钟">
@@ -113,28 +123,29 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
+            
             <TextBlock
-                Grid.Row="6"
+                Grid.Row="7"
                 Grid.Column="0"
                 Text="历史最快速度："/>
             <TextBlock
-                Grid.Row="6"
+                Grid.Row="7"
                 Grid.Column="1"
                 Text="{Binding MaximumTypingSpeed, StringFormat=\{0\}字/分钟}"/>
             <TextBlock
-                Grid.Row="7"
+                Grid.Row="8"
                 Grid.Column="0"
                 Text="最高日产量："/>
             <TextBlock
-                Grid.Row="7"
+                Grid.Row="8"
                 Grid.Column="1"
                 Text="{Binding MaximumDailyWords, StringFormat=\{0\}字}"/>
             <TextBlock
-                Grid.Row="8"
+                Grid.Row="9"
                 Grid.Column="0"
                 Text="最长日用时："/>
             <TextBlock
-                Grid.Row="8"
+                Grid.Row="9"
                 Grid.Column="1">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}{0:D2}小时{1:D2}分钟">
@@ -144,19 +155,19 @@
                 </TextBlock.Text>
             </TextBlock>
             <TextBlock
-                Grid.Row="10"
+                Grid.Row="11"
                 Grid.Column="0"
                 Text="总字数："/>
             <TextBlock
-                Grid.Row="10"
+                Grid.Row="11"
                 Grid.Column="1"
                 Text="{Binding TotalWords, StringFormat=\{0\}字}"/>
             <TextBlock
-                Grid.Row="11"
+                Grid.Row="12"
                 Grid.Column="0"
                 Text="总时长："/>
             <TextBlock
-                Grid.Row="11"
+                Grid.Row="12"
                 Grid.Column="1"
                 Text="{Binding TotalHours.Hours, StringFormat=\{0\}小时}"/>
         </Grid>
