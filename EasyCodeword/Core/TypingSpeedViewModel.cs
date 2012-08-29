@@ -65,27 +65,27 @@ namespace EasyCodeword.Core
         /// <summary>
         /// 最高日产量
         /// </summary>
-        private int _maximumDailyWords = Converter.ToInt(RWReg.GetValue(SettingViewModel.SUB_NAME, "MaximumDailyWords", 0));
+        private int _maximumDailyWords = Converter.ToInt(RWReg.GetValue(Constants.SubName, "MaximumDailyWords", 0));
 
         /// <summary>
         /// 最高日用时
         /// </summary>
-        private TimeSpan _maximumDailyHours = TimeSpan.FromMilliseconds(Converter.ToDouble(RWReg.GetValue(SettingViewModel.SUB_NAME, "MaximumDailyHours", 0)));
+        private TimeSpan _maximumDailyHours = TimeSpan.FromMilliseconds(Converter.ToDouble(RWReg.GetValue(Constants.SubName, "MaximumDailyHours", 0)));
 
         /// <summary>
         /// 最快速度
         /// </summary>
-        private int _maximumTypingSpeed = Converter.ToInt(RWReg.GetValue(SettingViewModel.SUB_NAME, "MaximumTypingSpeed", 0));
+        private int _maximumTypingSpeed = Converter.ToInt(RWReg.GetValue(Constants.SubName, "MaximumTypingSpeed", 0));
 
         /// <summary>
         /// 总用时
         /// </summary>
-        private TimeSpan _totalHours = TimeSpan.FromMilliseconds(Converter.ToDouble(RWReg.GetValue(SettingViewModel.SUB_NAME, "TotalHours", 0)));
+        private TimeSpan _totalHours = TimeSpan.FromMilliseconds(Converter.ToDouble(RWReg.GetValue(Constants.SubName, "TotalHours", 0)));
 
         /// <summary>
         /// 总字数
         /// </summary>
-        private int _totalWords = Converter.ToInt(RWReg.GetValue(SettingViewModel.SUB_NAME, "TotalWords", 0));
+        private int _totalWords = Converter.ToInt(RWReg.GetValue(Constants.SubName, "TotalWords", 0));
 
         #endregion
 
@@ -179,15 +179,15 @@ namespace EasyCodeword.Core
 
             var today = DateTime.Now.ToString("yyyy-MM-dd");
             // 判断是否今天
-            if (string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "Today", string.Empty),
+            if (string.Equals(RWReg.GetValue(Constants.SubName, "Today", string.Empty),
                 today))
             {
-                _todayHours = TimeSpan.FromMilliseconds(Converter.ToDouble(RWReg.GetValue(SettingViewModel.SUB_NAME, "TodayHours", 0)));
-                _todayWords = Converter.ToInt(RWReg.GetValue(SettingViewModel.SUB_NAME, "TodayWords", 0));
+                _todayHours = TimeSpan.FromMilliseconds(Converter.ToDouble(RWReg.GetValue(Constants.SubName, "TodayHours", 0)));
+                _todayWords = Converter.ToInt(RWReg.GetValue(Constants.SubName, "TodayWords", 0));
             }
             else
             {
-                RWReg.SetValue(SettingViewModel.SUB_NAME, "Today", today);
+                RWReg.SetValue(Constants.SubName, "Today", today);
                 _todayHours = new TimeSpan();
                 _todayWords = 0;
             }
@@ -266,7 +266,7 @@ namespace EasyCodeword.Core
 
             var today = DateTime.Now.ToString("yyyy-MM-dd");
             // 判断是否今天
-            if (string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "Today", string.Empty),
+            if (string.Equals(RWReg.GetValue(Constants.SubName, "Today", string.Empty),
                 today))
             {
                 _todayHours += _currentHours - _lastTotalDateTime;
@@ -274,7 +274,7 @@ namespace EasyCodeword.Core
             }
             else
             {
-                RWReg.SetValue(SettingViewModel.SUB_NAME, "Today", today);
+                RWReg.SetValue(Constants.SubName, "Today", today);
 
                 // 检查昨天是否超过记录
                 CheckMaximumDaily();
@@ -299,13 +299,13 @@ namespace EasyCodeword.Core
 
         private void Save()
         {
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "TodayHours", _todayHours.TotalMilliseconds);
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "TodayWords", _todayWords);
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "MaximumDailyHours", _maximumDailyHours.TotalMilliseconds);
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "MaximumDailyWords", _maximumDailyWords);
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "MaximumTypingSpeed", _maximumTypingSpeed);
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "TotalHours", _totalHours.Milliseconds);
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "TotalWords", _totalWords);
+            RWReg.SetValue(Constants.SubName, "TodayHours", _todayHours.TotalMilliseconds);
+            RWReg.SetValue(Constants.SubName, "TodayWords", _todayWords);
+            RWReg.SetValue(Constants.SubName, "MaximumDailyHours", _maximumDailyHours.TotalMilliseconds);
+            RWReg.SetValue(Constants.SubName, "MaximumDailyWords", _maximumDailyWords);
+            RWReg.SetValue(Constants.SubName, "MaximumTypingSpeed", _maximumTypingSpeed);
+            RWReg.SetValue(Constants.SubName, "TotalHours", _totalHours.Milliseconds);
+            RWReg.SetValue(Constants.SubName, "TotalWords", _totalWords);
         }
 
         private void CheckMaximumDaily()

@@ -18,13 +18,13 @@ namespace EasyCodeword.Core
 
         private ILogger _logger = LoggerFactory.GetLogger(typeof(EmailViewModel).FullName);
 
-        private string _emailFrom = RWReg.GetValue(SettingViewModel.SUB_NAME, "EmailF", string.Empty).ToString();
+        private string _emailFrom = RWReg.GetValue(Constants.SubName, "EmailF", string.Empty).ToString();
 
-        private string _emailPassword = RWReg.GetValue(SettingViewModel.SUB_NAME, "EmailP", string.Empty).ToString();
+        private string _emailPassword = RWReg.GetValue(Constants.SubName, "EmailP", string.Empty).ToString();
 
-        private string _emailTo = RWReg.GetValue(SettingViewModel.SUB_NAME, "EmailTo", string.Empty).ToString();
+        private string _emailTo = RWReg.GetValue(Constants.SubName, "EmailTo", string.Empty).ToString();
 
-        private string _smtp = RWReg.GetValue(SettingViewModel.SUB_NAME, "SMTP", string.Empty).ToString();
+        private string _smtp = RWReg.GetValue(Constants.SubName, "SMTP", string.Empty).ToString();
 
         private const string HOST = "smtp.163.com";
         private const string FROM = "icodeword@163.com";
@@ -116,12 +116,12 @@ namespace EasyCodeword.Core
 
         public void Save(bool saveAll = true)
         {
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "EmailF", _emailFrom);
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "EmailP", _emailPassword);
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "SMTP", _smtp);
+            RWReg.SetValue(Constants.SubName, "EmailF", _emailFrom);
+            RWReg.SetValue(Constants.SubName, "EmailP", _emailPassword);
+            RWReg.SetValue(Constants.SubName, "SMTP", _smtp);
             if (saveAll)
             {
-                RWReg.SetValue(SettingViewModel.SUB_NAME, "EmailTo", _emailTo);
+                RWReg.SetValue(Constants.SubName, "EmailTo", _emailTo);
             }
         }
 
@@ -201,13 +201,13 @@ namespace EasyCodeword.Core
 
         private void UpdateHasChanged()
         {
-            HasChanged = !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "EmailF", string.Empty).ToString(),
+            HasChanged = !string.Equals(RWReg.GetValue(Constants.SubName, "EmailF", string.Empty).ToString(),
                     _emailFrom)
-                || !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "EmailTo", string.Empty).ToString(),
+                || !string.Equals(RWReg.GetValue(Constants.SubName, "EmailTo", string.Empty).ToString(),
                     _emailTo)
-                || !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "EmailP", string.Empty).ToString(),
+                || !string.Equals(RWReg.GetValue(Constants.SubName, "EmailP", string.Empty).ToString(),
                     _emailPassword)
-                || !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "SMTP", string.Empty).ToString(),
+                || !string.Equals(RWReg.GetValue(Constants.SubName, "SMTP", string.Empty).ToString(),
                     _smtp);
         }
 

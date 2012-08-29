@@ -43,9 +43,9 @@ namespace EasyCodeword.Core
 
         //private string _tokenSecret = null;
 
-        private string _accessKey = RWReg.GetValue(SettingViewModel.SUB_NAME, "SAccessKey", string.Empty).ToString();
+        private string _accessKey = RWReg.GetValue(Constants.SubName, "SAccessKey", string.Empty).ToString();
 
-        private string _accessSecret = RWReg.GetValue(SettingViewModel.SUB_NAME, "SAccessSecret", string.Empty).ToString();
+        private string _accessSecret = RWReg.GetValue(Constants.SubName, "SAccessSecret", string.Empty).ToString();
 
         private string _nickname;
 
@@ -153,8 +153,8 @@ namespace EasyCodeword.Core
 
         public void Save()
         {
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "SAccessKey", _accessKey);
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "SAccessSecret", _accessSecret);
+            RWReg.SetValue(Constants.SubName, "SAccessKey", _accessKey);
+            RWReg.SetValue(Constants.SubName, "SAccessSecret", _accessSecret);
         }
 
         public void Reset()
@@ -226,9 +226,9 @@ namespace EasyCodeword.Core
 
         private void UpdateHasChanged()
         {
-            HasChanged = !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "SAccessKey", string.Empty).ToString(),
+            HasChanged = !string.Equals(RWReg.GetValue(Constants.SubName, "SAccessKey", string.Empty).ToString(),
                     _accessKey)
-                || !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "SAccessSecret", string.Empty).ToString(),
+                || !string.Equals(RWReg.GetValue(Constants.SubName, "SAccessSecret", string.Empty).ToString(),
                     _accessSecret);
         }
 

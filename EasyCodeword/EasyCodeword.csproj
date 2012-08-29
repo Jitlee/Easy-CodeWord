@@ -53,6 +53,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -70,6 +71,9 @@
     </ApplicationDefinition>
     <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Core\LicenceProvider.cs" />
+    <Compile Include="Utilities\Constants.cs" />
+    <Compile Include="Utilities\MachineCode.cs" />
     <Compile Include="Core\TypingSpeedViewModel.cs" />
     <Compile Include="Core\DelegateCommand.cs" />
     <Compile Include="Core\EmailViewModel.cs" />
@@ -361,6 +365,7 @@
     <Compile Include="Utilities\Logger\LoggerFactory.cs" />
     <Compile Include="Utilities\Logger\LoggerLevel.cs" />
     <Compile Include="Utilities\Logger\WriteFileLogger.cs" />
+    <None Include="Utilities\RSA.cs" />
     <Compile Include="Utilities\RWReg.cs" />
     <Compile Include="Utilities\WindowIconHelper.cs" />
     <Compile Include="Views\AbountWindow.xaml.cs">

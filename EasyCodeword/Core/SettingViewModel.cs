@@ -209,44 +209,42 @@ namespace EasyCodeword.Core
 
         static SettingViewModel _instance = new SettingViewModel();
 
-        public const string SUB_NAME = "Software\\EasyCodeword";
-
-        const string BOOT_NAME = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+       
 
         private bool _boot;
 
-        private SolidColorBrush _foreground = Converter.ToBrush(RWReg.GetValue(SUB_NAME, "Foreground", "#FF00FF00").ToString());
+        private SolidColorBrush _foreground = Converter.ToBrush(RWReg.GetValue(Constants.SubName, "Foreground", "#FF00FF00").ToString());
 
-        private SolidColorBrush _background = Converter.ToBrush(RWReg.GetValue(SUB_NAME, "Background", "#FF000000").ToString());
+        private SolidColorBrush _background = Converter.ToBrush(RWReg.GetValue(Constants.SubName, "Background", "#FF000000").ToString());
 
-        private _FontFamily _fontFamily = new _FontFamily(new FontFamily(RWReg.GetValue(SUB_NAME, "FontFamily", MainWindow.Instance.FontFamily.ToString()).ToString()) ?? MainWindow.Instance.FontFamily);
+        private _FontFamily _fontFamily = new _FontFamily(new FontFamily(RWReg.GetValue(Constants.SubName, "FontFamily", MainWindow.Instance.FontFamily.ToString()).ToString()) ?? MainWindow.Instance.FontFamily);
 
-        private _FontStyle _fontStyle = new _FontStyle(Converter.ToInt(RWReg.GetValue(SUB_NAME, "FontStyle", 0)));
+        private _FontStyle _fontStyle = new _FontStyle(Converter.ToInt(RWReg.GetValue(Constants.SubName, "FontStyle", 0)));
 
-        private _FontSize _fontSize = _fontSizes.FirstOrDefault(f => f.FontSize == Converter.ToDouble(RWReg.GetValue(SUB_NAME, "FontSize", 14d)))
+        private _FontSize _fontSize = _fontSizes.FirstOrDefault(f => f.FontSize == Converter.ToDouble(RWReg.GetValue(Constants.SubName, "FontSize", 14d)))
             ?? new _FontSize() { DisplayName = "14", FontSize = 14d };
 
-        private bool _autoSave = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSave", 1)) != 0; // 退出时否自动保存
+        private bool _autoSave = Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoSave", 1)) != 0; // 退出时否自动保存
 
-        private int _autoSaveInterval = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSaveInterval", 3)); // 分钟
+        private int _autoSaveInterval = Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoSaveInterval", 3)); // 分钟
 
-        private bool _autoPlayMusic = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoPlayMusic", 1)) != 0; // 播放背景音乐
+        private bool _autoPlayMusic = Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoPlayMusic", 1)) != 0; // 播放背景音乐
 
-        private string _musicFolder = RWReg.GetValue(SUB_NAME, "MusicFolder", string.Empty).ToString();
+        private string _musicFolder = RWReg.GetValue(Constants.SubName, "MusicFolder", string.Empty).ToString();
 
-        private bool _isViolenceLock = Converter.ToInt(RWReg.GetValue(SUB_NAME, "LockType", 0)) == 0; // 暴力锁
+        private bool _isViolenceLock = Converter.ToInt(RWReg.GetValue(Constants.SubName, "LockType", 0)) == 0; // 暴力锁
 
-        private bool _isTenderLock = Converter.ToInt(RWReg.GetValue(SUB_NAME, "LockType", 0)) != 0; // 暴力锁
+        private bool _isTenderLock = Converter.ToInt(RWReg.GetValue(Constants.SubName, "LockType", 0)) != 0; // 暴力锁
 
         const string TENDERLOCK_MESSAGE = "我在用码字宝强制码字软件，真心太狠了，今天任务又没完成！";// 温柔锁强制发送的内容
 
-        private string _tenderLockMessage = RWReg.GetValue(SUB_NAME, "TenderLockMessage", TENDERLOCK_MESSAGE).ToString(); // 温柔锁强制发送的内容
+        private string _tenderLockMessage = RWReg.GetValue(Constants.SubName, "TenderLockMessage", TENDERLOCK_MESSAGE).ToString(); // 温柔锁强制发送的内容
 
-        private bool _remeberRTF = Converter.ToInt(RWReg.GetValue(SUB_NAME, "RemeberRTF", 0)) != 0; //  打开 RTF 文档不再提示
+        private bool _remeberRTF = Converter.ToInt(RWReg.GetValue(Constants.SubName, "RemeberRTF", 0)) != 0; //  打开 RTF 文档不再提示
 
-        private bool _autoSaveExit = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSaveExit", 1)) != 0; //  退出时自动保存
+        private bool _autoSaveExit = Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoSaveExit", 1)) != 0; //  退出时自动保存
 
-        private bool _autoSaveReturn = Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSaveReturn", 1)) != 0; //  回车时自动保存
+        private bool _autoSaveReturn = Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoSaveReturn", 1)) != 0; //  回车时自动保存
 
         private readonly DelegateCommand _saveCommand;
 
@@ -304,22 +302,22 @@ namespace EasyCodeword.Core
 
         public string RecentFile
         {
-            get { return RWReg.GetValue(SUB_NAME, "RecentFile", string.Empty).ToString(); }
-            set { RWReg.SetValue(SUB_NAME, "RecentFile", value); }
+            get { return RWReg.GetValue(Constants.SubName, "RecentFile", string.Empty).ToString(); }
+            set { RWReg.SetValue(Constants.SubName, "RecentFile", value); }
         }
 
         public Rect ReferenceLocation
         {
             get 
             {
-                var rectString = RWReg.GetValue(SUB_NAME, "ReferenceLocation", string.Empty).ToString();
+                var rectString = RWReg.GetValue(Constants.SubName, "ReferenceLocation", string.Empty).ToString();
                 if (Regex.IsMatch(rectString, @"^-?(\d+(\.\d*)?|\.\d+),-?(\d+(\.\d*)?|\.\d+),(\d+(\.\d*)?|\.\d+),(\d+(\.\d*)?|\.\d+)$"))
                 {
                     return Rect.Parse(rectString);
                 }
                 return new Rect(SystemParameters.FullPrimaryScreenWidth * 0.5d, 35d, SystemParameters.FullPrimaryScreenWidth * 0.5d - 35d, SystemParameters.FullPrimaryScreenHeight - 35d);
             }
-            set { RWReg.SetValue(SUB_NAME, "ReferenceLocation", value.ToString()); }
+            set { RWReg.SetValue(Constants.SubName, "ReferenceLocation", value.ToString()); }
         }
 
         /// <summary>
@@ -327,8 +325,8 @@ namespace EasyCodeword.Core
         /// </summary>
         public string ReferenceFile
         {
-            get { return RWReg.GetValue(SUB_NAME, "ReferenceFile", string.Empty).ToString(); }
-            set { RWReg.SetValue(SUB_NAME, "ReferenceFile", value); }
+            get { return RWReg.GetValue(Constants.SubName, "ReferenceFile", string.Empty).ToString(); }
+            set { RWReg.SetValue(Constants.SubName, "ReferenceFile", value); }
         }
 
         public bool Boot
@@ -587,7 +585,7 @@ namespace EasyCodeword.Core
 
         private SettingViewModel()
         {
-            var boot = (string)RWReg.GetValue(BOOT_NAME, "EasyCodeword", string.Empty);
+            var boot = (string)RWReg.GetValue(Constants.BootName, "EasyCodeword", string.Empty);
             _boot = !string.IsNullOrEmpty(boot) &&
                 string.Compare(System.Windows.Forms.Application.ExecutablePath,
                     boot, true) == 0;
@@ -608,61 +606,61 @@ namespace EasyCodeword.Core
             {
                 if (_boot)
                 {
-                    RWReg.SetValue(BOOT_NAME, "EasyCodeword", System.Windows.Forms.Application.ExecutablePath);
+                    RWReg.SetValue(Constants.BootName, "EasyCodeword", System.Windows.Forms.Application.ExecutablePath);
                 }
                 else
                 {
-                    RWReg.RemoveKey(BOOT_NAME, "EasyCodeword");
+                    RWReg.RemoveKey(Constants.BootName, "EasyCodeword");
                 }
 
                 if (_hasBackgroundChanged)
                 {
                     MainWindow.Instance.SetBackground(_background);
-                    RWReg.SetValue(SUB_NAME, "Background", _background.ToString());
+                    RWReg.SetValue(Constants.SubName, "Background", _background.ToString());
                 }
 
                 if (_hasForegroundChanged)
                 {
                     MainWindow.Instance.SetForeground(_foreground);
-                    RWReg.SetValue(SUB_NAME, "Foreground", _foreground.ToString());
+                    RWReg.SetValue(Constants.SubName, "Foreground", _foreground.ToString());
                 }
 
                 if (_hasFontFamilyChanged)
                 {
                     MainWindow.Instance.SetFontFamily(_fontFamily.FontFamily);
-                    RWReg.SetValue(SUB_NAME, "FontFamily", _fontFamily.ToString());
+                    RWReg.SetValue(Constants.SubName, "FontFamily", _fontFamily.ToString());
                 }
 
                 if (_hasFontStyleChanged)
                 {
                     MainWindow.Instance.SetFontStyle(_fontStyle);
-                    RWReg.SetValue(SUB_NAME, "FontStyle", _fontStyle.ID);
+                    RWReg.SetValue(Constants.SubName, "FontStyle", _fontStyle.ID);
                 }
 
                 if (_hasFontSizeChanged)
                 {
                     MainWindow.Instance.SetFontSize(_fontSize.FontSize);
-                    RWReg.SetValue(SUB_NAME, "FontSize", _fontSize.FontSize);
+                    RWReg.SetValue(Constants.SubName, "FontSize", _fontSize.FontSize);
                 }
 
                 if (_hasAutoSaveIntervalChanged)
                 {
-                    RWReg.SetValue(SUB_NAME, "AutoSaveInterval", _autoSaveInterval);
+                    RWReg.SetValue(Constants.SubName, "AutoSaveInterval", _autoSaveInterval);
                 }
 
                 if (_hasAutoSaveChanged)
                 {
-                    RWReg.SetValue(SUB_NAME, "AutoSave", _autoSave ? 1 : 0);
+                    RWReg.SetValue(Constants.SubName, "AutoSave", _autoSave ? 1 : 0);
                 }
 
                 if (_hasAutoPlayMusicChanged)
                 {
-                    RWReg.SetValue(SUB_NAME, "AutoPlayMusic", _autoPlayMusic ? 1 : 0);
+                    RWReg.SetValue(Constants.SubName, "AutoPlayMusic", _autoPlayMusic ? 1 : 0);
                 }
 
                 if (_hasMusicFolderChanged)
                 {
-                    RWReg.SetValue(SUB_NAME, "MusicFolder", _musicFolder);
+                    RWReg.SetValue(Constants.SubName, "MusicFolder", _musicFolder);
                 }
 
                 if (_hasAutoPlayMusicChanged)
@@ -688,12 +686,12 @@ namespace EasyCodeword.Core
 
                 if (_hasLockTypeChanged)
                 {
-                    RWReg.SetValue(SUB_NAME, "LockType", _isTenderLock ? 1 : 0);
+                    RWReg.SetValue(Constants.SubName, "LockType", _isTenderLock ? 1 : 0);
                 }
 
                 if (_hasTenderLockMessageChanged)
                 {
-                    RWReg.SetValue(SUB_NAME, "TenderLockMessage", _tenderLockMessage);
+                    RWReg.SetValue(Constants.SubName, "TenderLockMessage", _tenderLockMessage);
                 }
 
                 if (QWeibo.HasChanged)
@@ -723,7 +721,7 @@ namespace EasyCodeword.Core
 
                 if (_hasAutoSaveReturnChanged)
                 {
-                    RWReg.SetValue(SUB_NAME, "AutoSaveReturn", _autoSaveReturn ? 1 : 0);
+                    RWReg.SetValue(Constants.SubName, "AutoSaveReturn", _autoSaveReturn ? 1 : 0);
                 }
 
                 Reset();
@@ -744,13 +742,13 @@ namespace EasyCodeword.Core
 
         public void SaveAutoSaveExit()
         {
-            RWReg.SetValue(SUB_NAME, "AutoSaveExit", _autoSaveExit ? 1 : 0);
+            RWReg.SetValue(Constants.SubName, "AutoSaveExit", _autoSaveExit ? 1 : 0);
             _hasAutoSaveExitChanged = false;
         }
 
         public void SaveRememberRTF()
         {
-            RWReg.SetValue(SUB_NAME, "RemeberRTF", _remeberRTF ? 1 : 0);
+            RWReg.SetValue(Constants.SubName, "RemeberRTF", _remeberRTF ? 1 : 0);
             _hasRemeberRTFChanged = false;
         }
 
@@ -842,7 +840,7 @@ namespace EasyCodeword.Core
 
         private bool HasBootChanged()
         {
-            var boot = (string)RWReg.GetValue(BOOT_NAME, "EasyCodeword", string.Empty);
+            var boot = (string)RWReg.GetValue(Constants.BootName, "EasyCodeword", string.Empty);
             return (!string.IsNullOrEmpty(boot) &&
                 string.Compare(System.Windows.Forms.Application.ExecutablePath,
                     boot, true) == 0) != _boot;
@@ -851,7 +849,7 @@ namespace EasyCodeword.Core
         private bool HasForegroundChanged()
         {
             return !string.Equals(
-                RWReg.GetValue(SUB_NAME, "Foreground", "#FF00FF00").ToString(),
+                RWReg.GetValue(Constants.SubName, "Foreground", "#FF00FF00").ToString(),
                 _foreground.ToString(),
                 StringComparison.CurrentCultureIgnoreCase);
         }
@@ -859,7 +857,7 @@ namespace EasyCodeword.Core
         private bool HasBackgroundChanged()
         {
             return !string.Equals(
-                RWReg.GetValue(SUB_NAME, "Background", "#FF000000").ToString(),
+                RWReg.GetValue(Constants.SubName, "Background", "#FF000000").ToString(),
                 _background.ToString(),
                 StringComparison.CurrentCultureIgnoreCase);
         }
@@ -867,7 +865,7 @@ namespace EasyCodeword.Core
         private bool HasFontFamilyChanged()
         {
             return null != _fontFamily && !string.Equals(
-                RWReg.GetValue(SUB_NAME, "FontFamily", MainWindow.Instance.FontFamily.Source).ToString(),
+                RWReg.GetValue(Constants.SubName, "FontFamily", MainWindow.Instance.FontFamily.Source).ToString(),
                 _fontFamily.ToString(),
                 StringComparison.CurrentCultureIgnoreCase);
         }
@@ -875,42 +873,42 @@ namespace EasyCodeword.Core
         private bool HasFontStyleChanged()
         {
             return null != _fontStyle && !int.Equals(
-                Converter.ToInt(RWReg.GetValue(SUB_NAME, "FontStyle", 0)),
+                Converter.ToInt(RWReg.GetValue(Constants.SubName, "FontStyle", 0)),
                 _fontStyle.ID);
         }
 
         private bool HasFontSizeChanged()
         {
             return null != _fontSize && !double.Equals(
-                Converter.ToDouble(RWReg.GetValue(SUB_NAME, "FontSize", 14d)),
+                Converter.ToDouble(RWReg.GetValue(Constants.SubName, "FontSize", 14d)),
                 _fontSize.FontSize);
         }
 
         private bool HasAutoSaveChanged()
         {
             return !int.Equals(
-                Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSave", 1)),
+                Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoSave", 1)),
                 _autoSave ? 1 : 0);
         }
 
         private bool HasAutoSaveIntervalChanged()
         {
             return !double.Equals(
-                Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSaveInterval", 2)),
+                Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoSaveInterval", 2)),
                 _autoSaveInterval);
         }
 
         private bool HasAutoPlayMusicChanged()
         {
             return !int.Equals(
-                Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoPlayMusic", 1)),
+                Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoPlayMusic", 1)),
                 _autoPlayMusic ? 1 : 0);
         }
 
         private bool HasMusicFolderChanged()
         {
             return !string.Equals(
-                RWReg.GetValue(SUB_NAME, "MusicFolder", string.Empty).ToString(),
+                RWReg.GetValue(Constants.SubName, "MusicFolder", string.Empty).ToString(),
                 _musicFolder, StringComparison.CurrentCultureIgnoreCase);
         }
 
@@ -924,35 +922,35 @@ namespace EasyCodeword.Core
         private bool HasLockTypeChanged()
         {
             return !int.Equals(
-                Converter.ToInt(RWReg.GetValue(SUB_NAME, "LockType", 0)),
+                Converter.ToInt(RWReg.GetValue(Constants.SubName, "LockType", 0)),
                 _isTenderLock ? 1 : 0);
         }
 
         private bool HasTenderLockMessageChanged()
         {
             return !string.Equals(
-                RWReg.GetValue(SUB_NAME, "TenderLockMessage", TENDERLOCK_MESSAGE).ToString(),
+                RWReg.GetValue(Constants.SubName, "TenderLockMessage", TENDERLOCK_MESSAGE).ToString(),
                 _tenderLockMessage);
         }
 
         private bool HasRemeberRTFChanged()
         {
             return !int.Equals(
-                Converter.ToInt(RWReg.GetValue(SUB_NAME, "RemeberRTF", 0)),
+                Converter.ToInt(RWReg.GetValue(Constants.SubName, "RemeberRTF", 0)),
                 _remeberRTF ? 1 : 0);
         }
         
         private bool HasAutoSaveExitChanged()
         {
             return !int.Equals(
-                Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSaveExit", 1)),
+                Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoSaveExit", 1)),
                 _autoSaveExit ? 1 : 0);
         }
 
         private bool HasAutoSaveReturnChanged()
         {
             return !int.Equals(
-                Converter.ToInt(RWReg.GetValue(SUB_NAME, "AutoSaveReturn", 1)),
+                Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoSaveReturn", 1)),
                 _autoSaveReturn ? 1 : 0);
         }
 

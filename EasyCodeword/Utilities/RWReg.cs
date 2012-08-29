@@ -12,7 +12,12 @@ namespace EasyCodeword.Utilities
         static ILogger _logger = LoggerFactory.GetLogger(typeof(RWReg).FullName);
         public static object GetValue(string subName, string keyName, object defualtValue = null, bool unDecrypt = false)
         {
-            using (var rootKey = Registry.CurrentUser)
+            return GetValue(Registry.CurrentUser, subName, keyName, defualtValue, unDecrypt);
+        }
+
+        public static object GetValue(RegistryKey registryKey, string subName, string keyName, object defualtValue = null, bool unDecrypt = false)
+        {
+            using (var rootKey = registryKey)
             {
                 using (var subKey = rootKey.OpenSubKey(subName))
                 {
@@ -39,7 +44,12 @@ namespace EasyCodeword.Utilities
 
         public static void SetValue(string subName, string keyName, object value, bool unEncrypt = false)
         {
-            using (var rootKey = Registry.CurrentUser)
+            SetValue(Registry.CurrentUser, subName, keyName, value, unEncrypt);
+        }
+
+        public static void SetValue(RegistryKey registryKey, string subName, string keyName, object value, bool unEncrypt = false)
+        {
+            using (var rootKey = registryKey)
             {
                 using (var subKey = rootKey.OpenSubKey(subName, true))
                 {
@@ -88,7 +98,12 @@ namespace EasyCodeword.Utilities
 
         public static void RemoveKey(string subName, string keyName)
         {
-            using (var rootKey = Registry.CurrentUser)
+            RemoveKey(Registry.CurrentUser, subName, keyName);
+        }
+
+        public static void RemoveKey(RegistryKey registryKey, string subName, string keyName)
+        {
+            using (var rootKey = registryKey)
             {
                 using (var subKey = rootKey.OpenSubKey(subName, true))
                 {

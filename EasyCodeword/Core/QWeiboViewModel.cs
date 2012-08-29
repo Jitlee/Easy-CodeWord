@@ -30,9 +30,9 @@ namespace EasyCodeword.Core
 
         private string _tokenSecret = null;
 
-        private string _accessKey = RWReg.GetValue(SettingViewModel.SUB_NAME, "QAccessKey", string.Empty).ToString();
+        private string _accessKey = RWReg.GetValue(Constants.SubName, "QAccessKey", string.Empty).ToString();
 
-        private string _accessSecret = RWReg.GetValue(SettingViewModel.SUB_NAME, "QAccessSecret", string.Empty).ToString();
+        private string _accessSecret = RWReg.GetValue(Constants.SubName, "QAccessSecret", string.Empty).ToString();
 
         private string _nickname;
 
@@ -202,8 +202,8 @@ namespace EasyCodeword.Core
 
         public void Save()
         {
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "QAccessKey", _accessKey);
-            RWReg.SetValue(SettingViewModel.SUB_NAME, "QAccessSecret", _accessSecret);
+            RWReg.SetValue(Constants.SubName, "QAccessKey", _accessKey);
+            RWReg.SetValue(Constants.SubName, "QAccessSecret", _accessSecret);
         }
 
         public void Reset()
@@ -258,9 +258,9 @@ namespace EasyCodeword.Core
 
         private void UpdateHasChanged()
         {
-            HasChanged = !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "QAccessKey", string.Empty).ToString(),
+            HasChanged = !string.Equals(RWReg.GetValue(Constants.SubName, "QAccessKey", string.Empty).ToString(),
                     _accessKey)
-                || !string.Equals(RWReg.GetValue(SettingViewModel.SUB_NAME, "QAccessSecret", string.Empty).ToString(),
+                || !string.Equals(RWReg.GetValue(Constants.SubName, "QAccessSecret", string.Empty).ToString(),
                     _accessSecret);
         }
 
