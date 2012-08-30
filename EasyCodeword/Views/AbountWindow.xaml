@@ -7,8 +7,7 @@
         ShowInTaskbar="False"
         Width="400"
         Height="300"
-        FontSize="14" Opacity="0"
-        AllowsTransparency="True">
+        FontSize="14" Opacity="0">
 	<Window.Resources>
 		<Storyboard x:Key="LoadStoryboard">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
@@ -37,7 +36,7 @@
 		</EventTrigger>
 	</Window.Triggers>
     <Window.Background>
-        <ImageBrush ImageSource="../Images/about.png" Stretch="UniformToFill"/>
+        <ImageBrush ImageSource="../Images/about.jpg" Stretch="UniformToFill"/>
     </Window.Background>
     <Grid x:Name="grid" RenderTransformOrigin="0.5,0.5">
     	<Grid.RenderTransform>
@@ -107,5 +106,15 @@
                 Foreground="Black"
                 Text="文件另存为"/>
         </Grid>
+        <TextBlock
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="10">
+            <Hyperlink
+                Foreground="White"
+                Click="Regeister_Click">
+                <Run x:Name="RegisterStatusRun"/>
+            </Hyperlink>
+        </TextBlock>
     </Grid>
 </Window>

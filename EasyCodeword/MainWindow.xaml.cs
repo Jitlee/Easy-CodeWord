@@ -44,6 +44,10 @@ namespace EasyCodeword
         private readonly Storyboard _showMessageStoryboard = null;
 
         private readonly Timer _autoSaveTimer;
+
+        //private readonly Storyboard _showMenuStorybaord;
+
+        //private readonly Storyboard _hideMenuStorybaord;
         
         #endregion
 
@@ -82,6 +86,9 @@ namespace EasyCodeword
             this.DataContext = MainViewModel.Instance;
             this.Loaded += MainWindow_Loaded;
             Instance = this;
+
+            //_showMenuStorybaord = Resources["ShowMenuStoryboard"] as Storyboard;
+            //_hideMenuStorybaord = Resources["HideMenuStoryboard"] as Storyboard;
         }
 
         #endregion
@@ -94,6 +101,8 @@ namespace EasyCodeword
         {
             MenuPopup.Width = SystemParameters.FullPrimaryScreenWidth;
             MenuPopup.IsOpen = true;
+            //_hideMenuStorybaord.Stop();
+            //_showMenuStorybaord.Begin();
         }
 
         private void MenuPopup_Opened(object sender, EventArgs e)
@@ -110,6 +119,8 @@ namespace EasyCodeword
         private void MenuGrid_MouseLeave(object sender, MouseEventArgs e)
         {
             MenuPopup.IsOpen = false;
+            //_showMenuStorybaord.Stop();
+            //_hideMenuStorybaord.Begin();
         }
 
         #endregion
@@ -159,6 +170,12 @@ namespace EasyCodeword
             {
                 SoundPlayerViewModel.Instance.Play(SettingViewModel.Instance.MusicFolder);
             }
+
+            if (!LicenseProvider.IsRegistered)
+            {
+                //AlertWindow.ShowAlert("软件尚未注册，如需注册请从帮助窗口(F1键)点击注册注册按钮", "软件注册");
+                ShowMessage("软件尚未注册，如需注册请从帮助窗口(F1键)点击注册注册按钮");
+            }
         }
 
         private void LoadAccidentFile()
@@ -172,12 +189,12 @@ namespace EasyCodeword
                 MessageBoxImage.Question) == MessageBoxResult.OK)
             {
                 OpenFile(Common.TempFile, false);
-                File.Delete(Common.TempFile);
             }
             else
             {
                 New();
             }
+            File.Delete(Common.TempFile);
         }
 
         private void New()
@@ -444,20 +461,27 @@ namespace EasyCodeword
 
         private void SaveFileAs()
         {
-            var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Title = GetSaveCaption();
-            saveFileDialog.Filter = "文本文件(*.txt)|*.txt|RTF文件(*.rtf)|*.rtf";
-            if (saveFileDialog.ShowDialog() == true)
+            if (LicenseProvider.IsRegistered)
             {
-                var fileName = saveFileDialog.FileName;
-                SaveFileTo(fileName);
-                MainViewModel.Instance.FileName = fileName;
-                OriginWords = MainViewModel.Instance.CountWords(MainTextBox.Text);
-                try
+                var saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Title = GetSaveCaption();
+                saveFileDialog.Filter = "文本文件(*.txt)|*.txt|RTF文件(*.rtf)|*.rtf";
+                if (saveFileDialog.ShowDialog() == true)
                 {
-                    File.Delete(Common.TempFile);
+                    var fileName = saveFileDialog.FileName;
+                    SaveFileTo(fileName);
+                    MainViewModel.Instance.FileName = fileName;
+                    OriginWords = MainViewModel.Instance.CountWords(MainTextBox.Text);
+                    try
+                    {
+                        File.Delete(Common.TempFile);
+                    }
+                    catch { }
                 }
-                catch{}
+            }
+            else
+            {
+                AlertWindow.ShowAlert("软件尚未注册，不提供文件保存功能。\n\n如需注册请从帮助窗口(F1键)点击注册注册按钮", "软件注册");
             }
         }
 
@@ -569,6 +593,11 @@ namespace EasyCodeword
         {
             this.MainTextBox.Dispatcher.Invoke(new Action(() =>
             {
+                var text = this.MainTextBox.Text;
+                if (string.IsNullOrEmpty(MainViewModel.Instance.FileName) && MainViewModel.Instance.CountWords(text) == 0)
+                {
+                    return;
+                }
                 File.WriteAllText(Common.TempFile, this.MainTextBox.Text, Encoding.Default);
             }));
         }

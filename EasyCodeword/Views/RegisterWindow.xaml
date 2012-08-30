@@ -1,0 +1,59 @@
+﻿<Window x:Class="EasyCodeword.Views.RegisterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="注册窗口"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterScreen">
+    <Grid
+        Margin="30,15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <TextBlock
+            Text="特征码："/>
+        <TextBox
+            x:Name="CodeTextBox"
+            Grid.Column="1"
+            Width="165"
+            IsReadOnly="True"
+            MouseMove="CodeTextBox_MouseMove"/>
+        <TextBlock
+            Grid.Row="1"
+            Text="注册码："/>
+        <TextBox
+            x:Name="SerialNumberTextBox"
+            Grid.Row="1"
+            Grid.Column="1"
+            Width="165"/>
+        <Button
+            x:Name="RegisterButton"
+            Grid.Row="1"
+            Grid.Column="2"
+            IsDefault="True"
+            Style="{DynamicResource NormalButtonStyle}"
+            Click="Register_Click">
+            <StackPanel Orientation="Horizontal">
+                <Image
+                    x:Name="UACImage"/>
+                <TextBlock
+                    Text="注册"/>
+            </StackPanel>
+        </Button>
+        <TextBlock
+            x:Name="HelpTextBlock"
+            Grid.Row="2"
+            Grid.ColumnSpan="3"
+            Width="280"
+            TextWrapping="Wrap"/>
+    </Grid>
+</Window>

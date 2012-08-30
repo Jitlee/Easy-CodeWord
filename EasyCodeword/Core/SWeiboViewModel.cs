@@ -93,15 +93,7 @@ namespace EasyCodeword.Core
             _oAuth = new OAuth(_appKey, _appSecret);
             _client = new Client(_oAuth);
 
-            if (IsAuthorized)
-            {
-                _nickname = "加载中...";
-                GetNickname();
-            }
-            else
-            {
-                _nickname = UNAUTHORIZED;
-            }
+            GetNickname();
         }
 
         /// <summary>
@@ -109,9 +101,19 @@ namespace EasyCodeword.Core
         /// </summary>
         private void GetNickname()
         {
-            ThreadPool.QueueUserWorkItem(delegate {
-                GetNicknameCallback();
-            });
+            if (IsAuthorized)
+            {
+                _nickname = "加载中...";
+
+                ThreadPool.QueueUserWorkItem(delegate
+                {
+                    GetNicknameCallback();
+                });
+            }
+            else
+            {
+                _nickname = UNAUTHORIZED;
+            }
         }
 
         private void GetNicknameCallback()
@@ -155,6 +157,14 @@ namespace EasyCodeword.Core
         {
             RWReg.SetValue(Constants.SubName, "SAccessKey", _accessKey);
             RWReg.SetValue(Constants.SubName, "SAccessSecret", _accessSecret);
+        }
+
+        public void Cancel()
+        {
+            _accessKey = RWReg.GetValue(Constants.SubName, "SAccessKey", string.Empty).ToString();
+            _accessSecret = RWReg.GetValue(Constants.SubName, "SAccessSecret", string.Empty).ToString();
+            RaisePropertyChanged("IsAuthorized");
+            GetNickname();
         }
 
         public void Reset()

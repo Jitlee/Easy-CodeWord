@@ -77,15 +77,7 @@ namespace EasyCodeword.Core
 
         private QWeiboViewModel()
         {
-            if (IsAuthorized)
-            {
-                _nickname = "加载中...";
-                GetNickname();
-            }
-            else
-            {
-                _nickname = UNAUTHORIZED;
-            }
+            GetNickname();
         }
 
         /// <summary>
@@ -93,9 +85,17 @@ namespace EasyCodeword.Core
         /// </summary>
         private void GetNickname()
         {
-            Thread thread = new Thread(GetNicknameCallback);
-            thread.IsBackground = true;
-            thread.Start();
+            if (IsAuthorized)
+            {
+                _nickname = "加载中...";
+                Thread thread = new Thread(GetNicknameCallback);
+                thread.IsBackground = true;
+                thread.Start();
+            }
+            else
+            {
+                _nickname = UNAUTHORIZED;
+            }
         }
 
         private void GetNicknameCallback()
@@ -204,6 +204,14 @@ namespace EasyCodeword.Core
         {
             RWReg.SetValue(Constants.SubName, "QAccessKey", _accessKey);
             RWReg.SetValue(Constants.SubName, "QAccessSecret", _accessSecret);
+        }
+
+        public void Cancel()
+        {
+            _accessKey = RWReg.GetValue(Constants.SubName, "QAccessKey", string.Empty).ToString();
+            _accessSecret = RWReg.GetValue(Constants.SubName, "QAccessSecret", string.Empty).ToString();
+            RaisePropertyChanged("IsAuthorized");
+            GetNickname();
         }
 
         public void Reset()

@@ -39,7 +39,7 @@
         </EventTrigger>
     </Window.Triggers>
     <Window.Background>
-        <ImageBrush ImageSource="../Images/about.png" Stretch="UniformToFill"/>
+        <ImageBrush ImageSource="../Images/about.jpg" Stretch="UniformToFill"/>
     </Window.Background>
     <Grid x:Name="grid" RenderTransformOrigin="0.5,0.5">
         <Grid.RenderTransform>

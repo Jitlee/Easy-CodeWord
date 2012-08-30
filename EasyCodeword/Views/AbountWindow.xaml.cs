@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using EasyCodeword.Core;
 
 namespace EasyCodeword.Views
 {
@@ -23,6 +24,14 @@ namespace EasyCodeword.Views
         public AbountWindow()
         {
             InitializeComponent();
+            if (LicenseProvider.IsRegistered)
+            {
+                RegisterStatusRun.Text = "软件已注册";
+            }
+            else
+            {
+                RegisterStatusRun.Text = "注册";
+            }
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
@@ -50,6 +59,14 @@ namespace EasyCodeword.Views
         {
             _flag = true;
             this.Close();
+        }
+
+        private void Regeister_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+            var registerWindow = new RegisterWindow();
+            registerWindow.Owner = MainWindow.Instance;
+            registerWindow.Show();
         }
     }
 }

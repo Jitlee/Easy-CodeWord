@@ -201,6 +201,12 @@ namespace EasyCodeword.Core
 
         public void Lock()
         {
+            // 软件尚未注册
+            if (!Verify())
+            {
+                return;
+            }
+
             var lockWords = Converter.ToInt(_lockWords);
             var lockMinutes = Converter.ToInt(_lockMinutes);
             if (lockWords > 0 || lockMinutes > 0)
@@ -256,6 +262,28 @@ namespace EasyCodeword.Core
                     MainWindow.Instance.ShowMessage("已启用锁定功能：锁定 {0} 字和 {1} 分钟。", lockWords, lockMinutes);
                 }
             }
+        }
+
+        public bool Verify()
+        {
+            var lockWords = Converter.ToInt(_lockWords);
+            var lockMinutes = Converter.ToInt(_lockMinutes);
+
+            if (!LicenseProvider.IsRegistered
+                && (lockWords > 100
+                || lockMinutes > 10))
+            {
+                //MainWindow.Instance.ShowMessage("软件尚未注册，最多锁定100字和10分钟！");
+                AlertWindow.ShowAlert("软件尚未注册，最多锁定100字和10分钟！", "软件注册");
+                return false;
+            }
+            return true;
+        }
+
+        public void Cancel()
+        {
+            LockWords = string.Empty;
+            LockMinutes = string.Empty;
         }
     }
 }

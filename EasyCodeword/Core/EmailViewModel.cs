@@ -125,6 +125,23 @@ namespace EasyCodeword.Core
             }
         }
 
+        public void Cancel()
+        {
+            _emailFrom = RWReg.GetValue(Constants.SubName, "EmailF", string.Empty).ToString();
+
+            _emailPassword = RWReg.GetValue(Constants.SubName, "EmailP", string.Empty).ToString();
+
+            _emailTo = RWReg.GetValue(Constants.SubName, "EmailTo", string.Empty).ToString();
+
+            _smtp = RWReg.GetValue(Constants.SubName, "SMTP", string.Empty).ToString();
+
+            RaisePropertyChanged("EmailFrom");
+
+            RaisePropertyChanged("EmailTo");
+
+            RaisePropertyChanged("SMTP");
+        }
+
         public void Reset()
         {
             HasChanged = false;

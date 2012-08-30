@@ -49,6 +49,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -65,13 +71,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </ApplicationDefinition>
+    </Page>
     <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Core\LicenceProvider.cs" />
+    <Compile Include="Core\LicenseProvider.cs" />
     <Compile Include="Utilities\Constants.cs" />
     <Compile Include="Utilities\MachineCode.cs" />
     <Compile Include="Core\TypingSpeedViewModel.cs" />
@@ -374,6 +380,9 @@
     <Compile Include="Views\AddWeiboWindow.xaml.cs">
       <DependentUpon>AddWeiboWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AlertWindow.xaml.cs">
+      <DependentUpon>AlertWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ConfirmWindow.xaml.cs">
       <DependentUpon>ConfirmWindow.xaml</DependentUpon>
     </Compile>
@@ -388,6 +397,9 @@
     </Compile>
     <Compile Include="Views\ReferenceWindow.xaml.cs">
       <DependentUpon>ReferenceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RegisterWindow.xaml.cs">
+      <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReplaceWindow.xaml.cs">
       <DependentUpon>ReplaceWindow.xaml</DependentUpon>
@@ -439,6 +451,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AlertWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ConfirmWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -456,6 +472,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ReferenceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RegisterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -532,7 +552,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\about.png" />
+    <Resource Include="Images\splash_screen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\about.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

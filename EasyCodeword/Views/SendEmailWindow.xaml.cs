@@ -58,8 +58,15 @@ namespace EasyCodeword.Views
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
-            this.Close();
+            if (LicenseProvider.IsRegistered)
+            {
+                this.DialogResult = true;
+                this.Close();
+            }
+            else
+            {
+                AlertWindow.ShowAlert("软件尚未注册，不提发送邮件功能。\n\n如需注册请从帮助窗口(F1键)点击注册注册按钮", "软件注册");
+            }
         }
 
         private void ChangeFrom_Click(object sender, RoutedEventArgs e)

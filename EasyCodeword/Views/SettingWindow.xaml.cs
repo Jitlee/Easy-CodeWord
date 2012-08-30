@@ -79,30 +79,40 @@ namespace EasyCodeword.Views
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            if (SettingViewModel.Instance.Verify())
+            if (this.DialogResult == true)
             {
-                if (this.DialogResult != true
-                    && SettingViewModel.Instance.SaveCommand.CanExecute(null))
+                if (!SettingViewModel.Instance.Verify())
                 {
-                    var result = MessageBox.Show(this,
-                            "设置已更改，是否需要保存？",
-                            "询问",
-                            MessageBoxButton.YesNoCancel,
-                            MessageBoxImage.None,
-                            MessageBoxResult.Yes);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        SettingViewModel.Instance.SaveCommand.Execute(null);
-                    }
-                    else if (result == MessageBoxResult.Cancel)
+                    e.Cancel = true;
+                }
+            }
+            else if (SettingViewModel.Instance.SaveCommand.CanExecute(null))
+            {
+                var result = MessageBox.Show(this,
+                        "设置已更改，是否需要保存？",
+                        "询问",
+                        MessageBoxButton.YesNoCancel,
+                        MessageBoxImage.None,
+                        MessageBoxResult.Yes);
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (!SettingViewModel.Instance.Verify())
                     {
                         e.Cancel = true;
                     }
+                    else
+                    {
+                        SettingViewModel.Instance.SaveCommand.Execute(null);
+                    }
                 }
-            }
-            else
-            {
-                e.Cancel = true;
+                else if (result == MessageBoxResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    SettingViewModel.Instance.Cancel();
+                }
             }
             base.OnClosing(e);
         }

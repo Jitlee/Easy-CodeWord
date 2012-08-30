@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
+using EasyCodeword.Views;
 
 namespace EasyCodeword.Core
 {
@@ -734,9 +735,14 @@ namespace EasyCodeword.Core
                 && _isTenderLock && !SWeibo.IsAuthorized
                 && !QWeibo.IsAuthorized)
             {
-                MainWindow.Instance.ShowMessage("如果选择温柔锁，至少需要授权一个微博账号!");
+                AlertWindow.ShowAlert("如果选择温柔锁，至少需要授权一个微博账号!", "锁定级别");
                 return false;
             }
+            else if (!Lock.Verify())
+            {
+                return false;
+            }
+
             return true;
         }
 
@@ -796,6 +802,124 @@ namespace EasyCodeword.Core
             _hasRemeberRTFChanged = false;
             _hasAutoSaveExitChanged = false;
             _hasAutoSaveReturnChanged = false;
+        }
+
+        public void Cancel()
+        {
+            var boot = (string)RWReg.GetValue(Constants.BootName, "EasyCodeword", string.Empty);
+            _boot = !string.IsNullOrEmpty(boot) &&
+                string.Compare(System.Windows.Forms.Application.ExecutablePath,
+                    boot, true) == 0;
+            RaisePropertyChanged("Boot");
+
+            if (_hasBackgroundChanged)
+            {
+                _background = Converter.ToBrush(RWReg.GetValue(Constants.SubName, "Background", "#FF000000").ToString());
+                RaisePropertyChanged("Background");
+            }
+
+            if (_hasForegroundChanged)
+            {
+                _foreground = Converter.ToBrush(RWReg.GetValue(Constants.SubName, "Foreground", "#FF00FF00").ToString());
+                RaisePropertyChanged("Foreground");
+            }
+
+            if (_hasFontFamilyChanged)
+            {
+                _fontFamily = new _FontFamily(new FontFamily(RWReg.GetValue(Constants.SubName, "FontFamily", MainWindow.Instance.FontFamily.ToString()).ToString()) ?? MainWindow.Instance.FontFamily);
+                RaisePropertyChanged("__FontFamily");
+            }
+
+            if (_hasFontStyleChanged)
+            {
+                _fontStyle = new _FontStyle(Converter.ToInt(RWReg.GetValue(Constants.SubName, "FontStyle", 0)));
+                RaisePropertyChanged("__FontStyle");
+            }
+
+            if (_hasFontSizeChanged)
+            {
+                _fontSize = _fontSizes.FirstOrDefault(f => f.FontSize == Converter.ToDouble(RWReg.GetValue(Constants.SubName, "FontSize", 14d)))
+                    ?? new _FontSize() { DisplayName = "14", FontSize = 14d };
+                RaisePropertyChanged("__FontSize");
+            }
+
+            if (_hasAutoSaveIntervalChanged)
+            {
+                _autoSaveInterval = Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoSaveInterval", 3)); // 分钟
+                RaisePropertyChanged("AutoSaveInterval");
+            }
+
+            if (_hasAutoSaveChanged)
+            {
+                _autoSave = Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoSave", 1)) != 0; // 退出时否自动保存
+                RaisePropertyChanged("AutoSave");
+            }
+
+            if (_hasAutoPlayMusicChanged)
+            {
+                _autoPlayMusic = Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoPlayMusic", 1)) != 0; // 播放背景音乐
+                RaisePropertyChanged("AutoPlayMusic");
+            }
+
+            if (_hasMusicFolderChanged)
+            {
+                _musicFolder = RWReg.GetValue(Constants.SubName, "MusicFolder", string.Empty).ToString();
+                RaisePropertyChanged("MusicFolder");
+
+            }
+
+            if (_hasLockChanged)
+            {
+                Lock.Cancel();
+            }
+
+            if (_hasLockTypeChanged)
+            {
+                _isViolenceLock = Converter.ToInt(RWReg.GetValue(Constants.SubName, "LockType", 0)) == 0; // 暴力锁
+                _isTenderLock = Converter.ToInt(RWReg.GetValue(Constants.SubName, "LockType", 0)) != 0; // 暴力锁
+                RaisePropertyChanged("IsViolenceLock");
+                RaisePropertyChanged("IsTenderLock");
+            }
+
+            if (_hasTenderLockMessageChanged)
+            {
+                _tenderLockMessage = RWReg.GetValue(Constants.SubName, "TenderLockMessage", TENDERLOCK_MESSAGE).ToString(); // 温柔锁强制发送的内容
+                RaisePropertyChanged("TenderLockMessage");
+            }
+
+            if (QWeibo.HasChanged)
+            {
+                QWeibo.Cancel();
+            }
+
+            if (SWeibo.HasChanged)
+            {
+                SWeibo.Cancel();
+            }
+
+            if (Email.HasChanged)
+            {
+                Email.Cancel();
+            }
+
+            if (_hasRemeberRTFChanged)
+            {
+                _remeberRTF = Converter.ToInt(RWReg.GetValue(Constants.SubName, "RemeberRTF", 0)) != 0; //  打开 RTF 文档不再提示
+                RaisePropertyChanged("RemeberRTF");
+            }
+
+            if (_hasAutoSaveExitChanged)
+            {
+                _autoSaveExit = Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoSaveExit", 1)) != 0; //  退出时自动保存
+                RaisePropertyChanged("AutoSaveExit");
+            }
+
+            if (_hasAutoSaveReturnChanged)
+            {
+                _autoSaveReturn = Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoSaveReturn", 1)) != 0; //  回车时自动保存
+                RaisePropertyChanged("AutoSaveReturn");
+            }
+            Reset();
         }
 
         /// <summary>

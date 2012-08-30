@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 
 namespace EasyCodeword.Utilities
 {
@@ -28,5 +29,13 @@ namespace EasyCodeword.Utilities
             return Path.Combine(Path.Combine(ApplicationDataPath, path1), path2);
         }
 
+
+        /// <summary>
+        /// 判断当前是否具有管理员权限
+        /// </summary>
+        public static bool IsAdmin()
+        {
+            return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+        }
     }
 }
