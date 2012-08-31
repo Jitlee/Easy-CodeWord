@@ -165,16 +165,23 @@ namespace EasyCodeword.Core
             {
                 if (SettingViewModel.Instance.IsTenderLock)
                 {
-                    var addWeiboWindow = new AddWeiboWindow();
-                    addWeiboWindow.Owner = MainWindow.Instance;
-                    if (addWeiboWindow.ShowDialog() == true)
+                    try
                     {
-                        var weibo = addWeiboWindow.Weibo;
-                        QWeiboViewModel.Instance.Add(weibo);
-                        SWeiboViewModel.Instance.Add(weibo);
-                        //MessageBox.Show(ret);
-                        e.Cancel = false;
-                        return;
+                        var addWeiboWindow = new AddWeiboWindow();
+                        addWeiboWindow.Owner = MainWindow.Instance;
+                        if (addWeiboWindow.ShowDialog() == true)
+                        {
+                            var weibo = addWeiboWindow.Weibo;
+                            QWeiboViewModel.Instance.Add(weibo);
+                            SWeiboViewModel.Instance.Add(weibo);
+                            //MessageBox.Show(ret);
+                            e.Cancel = false;
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        
                     }
                 }
                 e.Cancel = true;

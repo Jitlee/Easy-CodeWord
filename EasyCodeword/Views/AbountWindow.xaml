@@ -5,8 +5,8 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         ShowInTaskbar="False"
-        Width="400"
-        Height="300"
+        Width="500"
+        SizeToContent="Height"
         FontSize="14" Opacity="0">
 	<Window.Resources>
 		<Storyboard x:Key="LoadStoryboard">
@@ -49,15 +49,18 @@
     	</Grid.RenderTransform>
         <Grid Margin="30">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -69,6 +72,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Foreground="Red"
+                HorizontalAlignment="Right"
                 Text="Ctrl+N"/>
             <TextBlock
                 Grid.Row="0"
@@ -79,6 +83,7 @@
                 Grid.Row="1"
                 Grid.Column="0"
                 Foreground="Red"
+                HorizontalAlignment="Right"
                 Text="Ctrl+O"/>
             <TextBlock
                 Grid.Row="1"
@@ -89,6 +94,7 @@
                 Grid.Row="2"
                 Grid.Column="0"
                 Foreground="Red"
+                HorizontalAlignment="Right"
                 Text="Ctrl+S"/>
             <TextBlock
                 Grid.Row="2"
@@ -99,13 +105,169 @@
                 Grid.Row="3"
                 Grid.Column="0"
                 Foreground="Red"
+                HorizontalAlignment="Right"
                 Text="Ctrl+Alt+S"/>
             <TextBlock
                 Grid.Row="3"
                 Grid.Column="1"
                 Foreground="Black"
                 Text="文件另存为"/>
+				
+            <TextBlock
+                Grid.Row="5"
+                Grid.Column="0"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="Ctrl+M"/>
+            <TextBlock
+                Grid.Row="5"
+                Grid.Column="1"
+                Foreground="Black"
+                Text="老板键"/>
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="0"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="Alt+G"/>
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="1"
+                Foreground="Black"
+                Text="操作计算机"/>
+            <TextBlock
+                Grid.Row="7"
+                Grid.Column="0"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="Ctrl+Tab"/>
+            <TextBlock
+                Grid.Row="7"
+                Grid.Column="1"
+                Foreground="Black"
+                Text="资料窗口"/>
+				
+            <TextBlock
+                Grid.Row="9"
+                Grid.Column="0"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="Ctrl+F"/>
+            <TextBlock
+                Grid.Row="9"
+                Grid.Column="1"
+                Foreground="Black"
+                Text="查找"/>
+            <TextBlock
+                Grid.Row="10"
+                Grid.Column="0"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="Ctrl+H"/>
+            <TextBlock
+                Grid.Row="10"
+                Grid.Column="1"
+                Foreground="Black"
+                Text="替换"/>
+				
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="2"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="F1"/>
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="3"
+                Foreground="Black"
+                Text="帮助卡片"/>
+			<TextBlock
+                Grid.Row="1"
+                Grid.Column="2"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="F2"/>
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="3"
+                Foreground="Black"
+                Text="统计信息"/>
+			<TextBlock
+                Grid.Row="2"
+                Grid.Column="2"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="F3"/>
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="3"
+                Foreground="Black"
+                Text="查找下一个"/>
+			<TextBlock
+                Grid.Row="3"
+                Grid.Column="2"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="F4"/>
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="3"
+                Foreground="Black"
+                Text="置顶"/>
+			<TextBlock
+                Grid.Row="4"
+                Grid.Column="2"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="F5"/>
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="3"
+                Foreground="Black"
+                Text="播放音乐"/>
+			<TextBlock
+                Grid.Row="6"
+                Grid.Column="2"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="F6"/>
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="3"
+                Foreground="Black"
+                Text="停止播放音乐"/>
+			<TextBlock
+                Grid.Row="7"
+                Grid.Column="2"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="F9"/>
+            <TextBlock
+                Grid.Row="7"
+                Grid.Column="3"
+                Foreground="Black"
+                Text="一键排版"/>
+			<TextBlock
+                Grid.Row="9"
+                Grid.Column="2"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Text="Alt+F4"/>
+            <TextBlock
+                Grid.Row="9"
+                Grid.Column="3"
+                Foreground="Black"
+                Text="退出软件"/>
         </Grid>
+        <TextBlock
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Foreground="White"
+            Margin="10">
+            <Run Text="“富士山”码字控 - 版本号:"/>
+            <Run x:Name="VersionRun"/>
+            <Run x:Name="RegisterHelperRun"/>
+        </TextBlock>
         <TextBlock
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"

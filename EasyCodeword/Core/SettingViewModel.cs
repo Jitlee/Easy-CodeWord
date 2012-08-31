@@ -927,27 +927,34 @@ namespace EasyCodeword.Core
         /// </summary>
         private void Authorize(object state)
         {
-            var type = Converter.ToInt(state);
-            if (type == 0)
+            try
             {
-                SWeibo.Authorize();
-            }
-            else if (type == 1)
-            {
-                // 用户授权
-                QWeibo.Authorize();
-            }
-            else if (type == -1)
-            {
-                // 取消授权
-                QWeibo.Deauthorize();
-            }
-            else if (type == -2)
-            {
-                // 取消授权
-                SWeibo.Deauthorize();
+                var type = Converter.ToInt(state);
+                if (type == 0)
+                {
+                    SWeibo.Authorize();
+                }
+                else if (type == 1)
+                {
+                    // 用户授权
+                    QWeibo.Authorize();
+                }
+                else if (type == -1)
+                {
+                    // 取消授权
+                    QWeibo.Deauthorize();
+                }
+                else if (type == -2)
+                {
+                    // 取消授权
+                    SWeibo.Deauthorize();
 
-                MainWindow.Instance.ShowMessage("你已成功取消新浪微博对本应用的授权！");
+                    MainWindow.Instance.ShowMessage("你已成功取消新浪微博对本应用的授权！");
+                }
+            }
+            catch
+            {
+                MainWindow.Instance.ShowMessage("网络异常！");
             }
         }
 

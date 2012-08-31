@@ -6,7 +6,7 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         xmlns:ctrls="clr-namespace:EasyCodeword.Controls"
-        xmlns:converters="clr-namespace:EasyCodeword.Converters">
+        xmlns:converters="clr-namespace:EasyCodeword.Converters" Icon="Images/app.ico">
 	<Window.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 		<Storyboard x:Key="ShowMessageStoryboard">
@@ -17,171 +17,120 @@
 				<SplineDoubleKeyFrame KeyTime="0:0:10.5" Value="0"/>
 			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
-		<!--<Storyboard x:Key="ShowMenuStoryboard">
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="MenuGrid">
-				<SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="0" KeySpline="0.15,0.44,0.35,1"/>
-			</DoubleAnimationUsingKeyFrames>
-		</Storyboard>
-		<Storyboard x:Key="HideMenuStoryboard">
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="MenuGrid">
-				<SplineDoubleKeyFrame KeySpline="0.65,0,0.85,0.56" KeyTime="0:0:0.5" Value="-167"/>
-			</DoubleAnimationUsingKeyFrames>
-		</Storyboard>-->
+        <Storyboard x:Key="ShowMenuStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MainMenuSubBorder">
+                <SplineDoubleKeyFrame KeyTime="0" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:0.7" Value="1" KeySpline="0,0,0.33,1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="MainMenuSubStackPanel">
+                <SplineDoubleKeyFrame KeyTime="0" Value="-44"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:1" Value="0" KeySpline="0,0,0,1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ShowLockStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="LockSubBorder">
+                <SplineDoubleKeyFrame KeyTime="0" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:0.7" Value="1" KeySpline="0,0,0.33,1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="LockSubStackPanel">
+                <SplineDoubleKeyFrame KeyTime="0" Value="-44"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:1" Value="0" KeySpline="0,0,0,1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
 	</Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid
-            x:Name="TopGrid"
-            Background="Transparent"
-            MouseEnter="Top_MouseEnter">
-            <TextBlock Text="{Binding Now, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" HorizontalAlignment="Right"/>
-            <TextBlock Text="{Binding FileName}" HorizontalAlignment="Left"/>
-        </Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Border
-            x:Name="MainTextBoxBorder"
-            Grid.Row="1"
-            Background="Transparent">
+            x:Name="MainMenuBorder"
+            Padding="{DynamicResource MainMenuItemPadding}"
+            Background="{DynamicResource MainMenuBackground}">
             <Grid>
-                <TextBox
-                    x:Name="MainTextBox"
-                    Style="{DynamicResource MainTextBoxStyle}"
-                    TextChanged="MainTextBox_TextChanged"
-                    AcceptsReturn="True"
-                    SelectionChanged="MainTextBox_SelectionChanged"
-                    PreviewKeyDown="MainTextBox_PreviewKeyDown">
-                </TextBox>
-                <GroupBox
-                    x:Name="ImmediateTotalGroupBox"
-                    Header="即时统计"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Visibility="Collapsed">
-                    <StackPanel>
-                        <TextBlock
-                            x:Name="ImmediateWordsTextBlock"/>
-                        <TextBlock
-                            x:Name="ImmediateLengthTextBlock"/>
-                    </StackPanel>
-                </GroupBox>
-            </Grid>
-        </Border>
-        <Popup x:Name="MenuPopup"
-               Placement="AbsolutePoint"
-               VerticalOffset="0"
-               HorizontalOffset="0"
-               PlacementTarget="{Binding ElementName=TopGrid}"
-               PopupAnimation="Slide"
-               StaysOpen="False"
-               Opened="MenuPopup_Opened"
-               Closed="MenuPopup_Closed">
-            <Grid
-                x:Name="MenuGrid"
-                Background="Transparent"
-                MouseLeave="MenuGrid_MouseLeave" RenderTransformOrigin="0.5,0.5">
-            	<!--<Grid.RenderTransform>
-            		<TransformGroup>
-            			<ScaleTransform/>
-            			<SkewTransform/>
-            			<RotateTransform/>
-            			<TranslateTransform Y="-167"/>
-            		</TransformGroup>
-            	</Grid.RenderTransform>-->
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="{DynamicResource MainMenuItemSize}"/>
+                    <ColumnDefinition Width="{DynamicResource MainMenuItemSize}"/>
                 </Grid.ColumnDefinitions>
-                <GroupBox
-                    Header="文件"
-                    HorizontalAlignment="Center"
-                    Padding="22,0">
-                    <StackPanel>
-                        <Button Content="新建" Style="{DynamicResource NormalButtonStyle}" Click="New_Click"/>
-                        <Button Content="打开" Style="{DynamicResource NormalButtonStyle}" Click="Open_Click"/>
-                        <Button Content="保存" Style="{DynamicResource NormalButtonStyle}" Click="Save_Click"/>
-                        <Button Content="另存为" Style="{DynamicResource NormalButtonStyle}" Click="SaveAs_Click"/>
-                        <Button Content="退出程序" Style="{DynamicResource NormalButtonStyle}" Click="Exit_Click"/>
-                    </StackPanel>
-                </GroupBox>
-                <GroupBox
-                    Header="编辑"
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{DynamicResource MainMenuItemSize}"/>
+                    <RowDefinition Height="{DynamicResource MainMenuItemSize}"/>
+                    <RowDefinition Height="{DynamicResource MainMenuItemSize}"/>
+                </Grid.RowDefinitions>
+                <Button
+                    Style="{DynamicResource MainMenuItemStyle}"
+                    Content="文件"
+                    Click="File_Click"/>
+                <Button
+                    Grid.Row="0"
                     Grid.Column="1"
-                    HorizontalAlignment="Center"
-                    Padding="22,0">
-                    <StackPanel>
-                        <Button Content="全选" Style="{DynamicResource NormalButtonStyle}" Command="SelectAll" CommandTarget="{Binding ElementName=MainTextBox}"/>
-                        <Button Content="剪切" Style="{DynamicResource NormalButtonStyle}" Command="Cut" CommandTarget="{Binding ElementName=MainTextBox}"/>
-                        <Button Content="复制" Style="{DynamicResource NormalButtonStyle}" Command="Copy" CommandTarget="{Binding ElementName=MainTextBox}"/>
-                        <Button Content="粘贴" Style="{DynamicResource NormalButtonStyle}" Command="Paste" CommandTarget="{Binding ElementName=MainTextBox}"/>
-                        <Button Content="撤销" Style="{DynamicResource NormalButtonStyle}" Command="Undo" CommandTarget="{Binding ElementName=MainTextBox}"/>
-                    </StackPanel>
-                </GroupBox>
-
-                <GroupBox
-                    Header="操作"
-                    Grid.Column="2"
-                    HorizontalAlignment="Center"
-                    Padding="22,0">
-                    <StackPanel>
-                        <Button Content="查找" Style="{DynamicResource NormalButtonStyle}" Click="Search_Click"/>
-                        <Button Content="替换" Style="{DynamicResource NormalButtonStyle}" Click="Replace_Click"/>
-                        <Button Content="设置窗口" Style="{DynamicResource NormalButtonStyle}" Click="Setting_Click"/>
-                        <Button Content="日记窗口" Style="{DynamicResource NormalButtonStyle}" Visibility="Hidden"/>
-                        <Button Content="资料窗口" Style="{DynamicResource NormalButtonStyle}" Click="Refrence_Click"/>
-                    </StackPanel>
-                </GroupBox>
-
-                <GroupBox
-                    x:Name="LockGrid"
-                    IsEnabled="{Binding IsUnlocked}"
-                    Header="锁定"
-                    Grid.Column="3"
-                    HorizontalAlignment="Center"
-                    Padding="22,0">
-                    <StackPanel>
-                        <TextBlock
-                            Text="锁定字数：(数字)"/>
-                        <TextBox
-                            VerticalAlignment="Center"
-                            Text="{Binding LockWords, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock
-                            Margin="3,8,3,3"
-                            Text="锁定时间：(分钟)"/>
-                        <TextBox
-                            VerticalAlignment="Center"
-                            Text="{Binding LockMinutes, UpdateSourceTrigger=PropertyChanged}" />
-                        <Button
-                            Margin="3,8,3,3"
-                            Content="锁定"
-                            Style="{DynamicResource NormalButtonStyle}"
-                            Command="{Binding LockCommand}"/>
-                    </StackPanel>
-                </GroupBox>
-
-                <GroupBox
-                    HorizontalAlignment="Center"
-                    Padding="22,0"
-                    Header="操作"
-                    Grid.Column="4">
-                    <StackPanel>
-                        <Button Content="一键排版" Style="{DynamicResource NormalButtonStyle}" Click="AutoTypeSetting_Click"/>
-                        <Button Content="统计窗口" Style="{DynamicResource NormalButtonStyle}" Click="Total_Click"/>
-                        <Button Content="邮件窗口" Style="{DynamicResource NormalButtonStyle}" Click="SendEmail_Click"/>
-                        <Button Content="帮助卡片" Style="{DynamicResource NormalButtonStyle}" Click="About_Click"/>
-                        <Button Content="操作计算机" Style="{DynamicResource NormalButtonStyle}" Click="Operation_Click"/>
-                    </StackPanel>
-                </GroupBox>
+                    Style="{DynamicResource MainMenuItemStyle}"
+                    Content="编辑"
+                    Click="Edit_Click"/>
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Style="{DynamicResource MainMenuItemStyle}"
+                    Content="操作"
+                    Click="Operation_Click"/>
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Style="{DynamicResource MainMenuItemStyle}"
+                    Content="帮助"
+                    Click="Help_Click"/>
+                <Button
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    FontSize="48"
+                    Style="{DynamicResource MainMenuItemStyle}"
+                    Content="锁定"
+                    Click="Lock_Click"/>
             </Grid>
-        </Popup>
-        <TextBlock x:Name="MessageTextBlock" Grid.Row="3" VerticalAlignment="Center" Margin="5" Opacity="0"/>
-        <TextBlock x:Name="CharacterCountTextBlock" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5"/>
-        <StackPanel
+        </Border>   
+        <Grid
+            Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid
+                x:Name="TopGrid">
+                <TextBlock Text="{Binding Now, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding FileName}" HorizontalAlignment="Left"/>
+            </Grid>
+            <Border
+                x:Name="MainTextBoxBorder"
+                Grid.Row="1"
+                Background="Transparent">
+                <Grid>
+                    <TextBox
+                        x:Name="MainTextBox"
+                        Style="{DynamicResource MainTextBoxStyle}"
+                        TextChanged="MainTextBox_TextChanged"
+                        AcceptsReturn="True"
+                        SelectionChanged="MainTextBox_SelectionChanged"
+                        PreviewKeyDown="MainTextBox_PreviewKeyDown">
+                    </TextBox>
+                    <GroupBox
+                        x:Name="ImmediateTotalGroupBox"
+                        Header="即时统计"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Visibility="Collapsed">
+                        <StackPanel>
+                            <TextBlock
+                            x:Name="ImmediateWordsTextBlock"/>
+                            <TextBlock
+                            x:Name="ImmediateLengthTextBlock"/>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+            </Border>
+            <TextBlock x:Name="MessageTextBlock" Grid.Row="3" VerticalAlignment="Center" Margin="5" Opacity="0"/>
+            <TextBlock x:Name="CharacterCountTextBlock" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5"/>
+            <StackPanel
             x:Name="LockInfoTextBlock"
             Grid.Row="3"
             VerticalAlignment="Center"
@@ -189,18 +138,118 @@
             HorizontalAlignment="Center"
             Visibility="{Binding IsUnlocked,Converter={StaticResource BooleanToVisibilityConverter}}"
             Orientation="Horizontal">
-            <TextBlock
+                <TextBlock
                 FontFamily="Webdings" 
                 FontSize="14"
                 Text="Ï"/>
-            <TextBlock Text="{Binding SurplusWords, Mode=OneWay}"/>
-            <TextBlock
+                <TextBlock Text="{Binding SurplusWords, Mode=OneWay}"/>
+                <TextBlock
                 Margin="15,3,3,3"
                 FontSize="14"
                 FontFamily="Wingdings"
                 Text="¸"/>
-            <TextBlock
+                <TextBlock
                 Text="{Binding SurplusMinutes, Mode=OneWay}"/>
-        </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Popup
+            x:Name="MainMenuPopup"
+            AllowsTransparency="True"
+            PlacementTarget="{Binding ElementName=MainMenuBorder}"
+            Placement="AbsolutePoint"
+            VerticalOffset="0"
+            HorizontalOffset="{Binding ElementName=MainMenuBorder, Path=ActualWidth}"
+            StaysOpen="False">
+            <Border
+                x:Name="MainMenuSubBorder"
+                Height="{DynamicResource MainMenuSubHeight}"
+                Background="{DynamicResource MainMenuBackground}"
+                Opacity="0">
+                <StackPanel
+                    x:Name="MainMenuSubStackPanel"
+                    Orientation="Horizontal"
+                    RenderTransformOrigin="0.5,0.5">
+                    <StackPanel.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </StackPanel.RenderTransform>
+                    <TextBlock
+                        x:Name="MenuSubTitleTextBlock"
+                        Text="{Binding Title}"
+                        VerticalAlignment="Top"
+                        Margin="{DynamicResource MainMenuSubTitleMargin}"
+                        Foreground="{DynamicResource MainMenuItemForeground}"
+                        FontSize="{DynamicResource MainMenuSubFontSize}"/>
+                    <ListBox x:Name="MenuSubListBox" Style="{DynamicResource MenuSubStyle}"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+        <Popup
+            x:Name="LockPopup"
+            AllowsTransparency="True"
+            PlacementTarget="{Binding ElementName=MainMenuBorder}"
+            Placement="AbsolutePoint"
+            VerticalOffset="0"
+            HorizontalOffset="{Binding ElementName=MainMenuBorder, Path=ActualWidth}"
+            StaysOpen="False">
+            <Border
+                x:Name="LockSubBorder"
+                Height="{DynamicResource MainMenuSubHeight}"
+                Background="{DynamicResource MainMenuBackground}"
+                Opacity="0">
+                <StackPanel
+                    x:Name="LockSubStackPanel"
+                    Orientation="Horizontal"
+                    RenderTransformOrigin="0.5,0.5">
+                    <StackPanel.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </StackPanel.RenderTransform>
+                    <TextBlock
+                        x:Name="LockSubTitleTextBlock"
+                        Text="锁定"
+                        VerticalAlignment="Top"
+                        Margin="{DynamicResource MainMenuSubTitleMargin}"
+                        Foreground="{DynamicResource MainMenuItemForeground}"
+                        FontSize="{DynamicResource MainMenuSubFontSize}"/>
+                    <Grid x:Name="LockSubGrid"
+                         IsEnabled="{Binding IsUnlocked}"
+                         Margin="0,32,20,32">
+                        <StackPanel>
+                            <TextBlock
+                                    Foreground="{DynamicResource MainMenuItemForeground}"
+                                    FontSize="{DynamicResource MainMenuSubItemFontSize}"
+                                    Text="锁定字数:（字数）"/>
+                            <TextBox
+                                    VerticalAlignment="Center"
+                                    Style="{DynamicResource MetroTextBoxStyle}"
+                                    Text="{Binding LockWords, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock
+                                    Margin="3,8,3,3"
+                                    Foreground="{DynamicResource MainMenuItemForeground}"
+                                    FontSize="{DynamicResource MainMenuSubItemFontSize}"
+                                    Text="锁定时间:（分钟）"/>
+                            <TextBox
+                                    VerticalAlignment="Center"
+                                    Style="{DynamicResource MetroTextBoxStyle}"
+                                    Text="{Binding LockMinutes, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button
+                                    Margin="3,8,3,3"
+                                    Content="确定"
+                                    Style="{DynamicResource MetroButtonStyle}"
+                                    Command="{Binding LockCommand}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Popup>
     </Grid>
 </Window>

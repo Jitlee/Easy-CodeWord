@@ -8,7 +8,7 @@
         ShowInTaskbar="False"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        xmlns:converters="clr-namespace:EasyCodeword.Converters">
+        xmlns:converters="clr-namespace:EasyCodeword.Converters" Icon="/EasyCodeword;component/Images/app.ico">
     <Window.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>

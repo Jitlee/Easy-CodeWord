@@ -25,4 +25,23 @@
     <sys:Double x:Key="ColorPickerItemStrokeThickness">1</sys:Double>
     
     <!-- ColorPicker 颜色结束 -->
+    
+    <!-- MainMenu 颜色开始 -->
+    
+    <SolidColorBrush x:Key="MainMenuBackground" Color="#FFB3BE1A"/>
+    <SolidColorBrush x:Key="MainMenuItemBackground" Color="#FF989400"/>
+    <SolidColorBrush x:Key="MainMenuItemBorderBrush" Color="#85989400"/>
+    <SolidColorBrush x:Key="MainMenuItemForeground" Color="#FFFFFFFF"/>
+    <sys:Double x:Key="MainMenuSubItemFontSize">24</sys:Double>
+    <sys:Double x:Key="MainMenuItemFontSize">30</sys:Double>
+    <sys:Double x:Key="MainMenuSubFontSize">60</sys:Double>
+    <sys:Double x:Key="MainMenuItemLargeFontSize">48</sys:Double>
+    <sys:Double x:Key="MainMenuSubHeight">299</sys:Double>
+    <sys:Double x:Key="MainMenuSubItemSize">110</sys:Double>
+    <GridLength x:Key="MainMenuItemSize">110</GridLength>
+    <Thickness x:Key="MainMenuItemPadding">2</Thickness>
+    <Thickness x:Key="MainMenuItemBorderThickness">2</Thickness>
+    <Thickness x:Key="MainMenuSubTitleMargin">20,32,36,0</Thickness>
+    
+    <!-- MainMenu 颜色结束 -->
 </ResourceDictionary>

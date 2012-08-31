@@ -127,5 +127,12 @@ namespace EasyCodeword.Views
                 textBox.SelectAll();
             }
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            MainWindow.Instance.Focus();
+        }
     }
 }

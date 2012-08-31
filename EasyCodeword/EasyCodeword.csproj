@@ -55,6 +55,9 @@
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\app.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -78,6 +81,7 @@
     <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Core\LicenseProvider.cs" />
+    <Compile Include="Core\MenuViewModel.cs" />
     <Compile Include="Utilities\Constants.cs" />
     <Compile Include="Utilities\MachineCode.cs" />
     <Compile Include="Core\TypingSpeedViewModel.cs" />
@@ -556,6 +560,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\about.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\app.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

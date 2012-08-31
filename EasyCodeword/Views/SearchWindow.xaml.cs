@@ -93,5 +93,12 @@ namespace EasyCodeword.Views
         {
             this.SearchNextButton.IsEnabled = SearchTextBox.Text.Length > 0;
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            MainWindow.Instance.Focus();
+        }
     }
 }

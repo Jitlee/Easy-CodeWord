@@ -83,5 +83,12 @@ namespace EasyCodeword.Views
                 EmailViewModel.Instance.Save(false);
             }
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            MainWindow.Instance.Focus();
+        }
     }
 }

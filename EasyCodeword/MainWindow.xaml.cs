@@ -45,6 +45,10 @@ namespace EasyCodeword
 
         private readonly Timer _autoSaveTimer;
 
+        private Storyboard _showMenuStoryboard;
+
+        private Storyboard _showLockStoryboard;
+
         //private readonly Storyboard _showMenuStorybaord;
 
         //private readonly Storyboard _hideMenuStorybaord;
@@ -77,15 +81,18 @@ namespace EasyCodeword
 #else
             LoggerFactory.SetLoggerInstance(typeof(WriteFileLogger));
 #endif
-
+            
             InitializeComponent();
             _showMessageStoryboard = Resources["ShowMessageStoryboard"] as Storyboard;
             _autoSaveTimer = new Timer(AutoSaveCallback);
-            this.LockGrid.DataContext = LockViewModel.Insatance;
+            LockSubBorder.DataContext = LockViewModel.Insatance;
             this.LockInfoTextBlock.DataContext = LockViewModel.Insatance;
             this.DataContext = MainViewModel.Instance;
             this.Loaded += MainWindow_Loaded;
             Instance = this;
+
+            _showMenuStoryboard = Resources["ShowMenuStoryboard"] as Storyboard;
+            _showLockStoryboard = Resources["ShowLockStoryboard"] as Storyboard;
 
             //_showMenuStorybaord = Resources["ShowMenuStoryboard"] as Storyboard;
             //_hideMenuStorybaord = Resources["HideMenuStoryboard"] as Storyboard;
@@ -97,31 +104,31 @@ namespace EasyCodeword
 
         #region Menu 事件
 
-        private void Top_MouseEnter(object sender, MouseEventArgs e)
-        {
-            MenuPopup.Width = SystemParameters.FullPrimaryScreenWidth;
-            MenuPopup.IsOpen = true;
-            //_hideMenuStorybaord.Stop();
-            //_showMenuStorybaord.Begin();
-        }
+        //private void Top_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    //MenuPopup.Width = SystemParameters.FullPrimaryScreenWidth;
+        //    //MenuPopup.IsOpen = true;
+        //    //_hideMenuStorybaord.Stop();
+        //    //_showMenuStorybaord.Begin();
+        //}
 
-        private void MenuPopup_Opened(object sender, EventArgs e)
-        {
-            MainTextBoxBorder.SetValue(MarginProperty, new Thickness(0d, 150d, 0d, 0d));
-        }
+        //private void MenuPopup_Opened(object sender, EventArgs e)
+        //{
+        //    MainTextBoxBorder.SetValue(MarginProperty, new Thickness(0d, 150d, 0d, 0d));
+        //}
 
-        private void MenuPopup_Closed(object sender, EventArgs e)
-        {
-            MainTextBoxBorder.ClearValue(MarginProperty);
-            SetFocus();
-        }
+        //private void MenuPopup_Closed(object sender, EventArgs e)
+        //{
+        //    MainTextBoxBorder.ClearValue(MarginProperty);
+        //    SetFocus();
+        //}
 
-        private void MenuGrid_MouseLeave(object sender, MouseEventArgs e)
-        {
-            MenuPopup.IsOpen = false;
-            //_showMenuStorybaord.Stop();
-            //_hideMenuStorybaord.Begin();
-        }
+        //private void MenuGrid_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    MenuPopup.IsOpen = false;
+        //    //_showMenuStorybaord.Stop();
+        //    //_hideMenuStorybaord.Begin();
+        //}
 
         #endregion
 
@@ -238,12 +245,12 @@ namespace EasyCodeword
             if (Keyboard.Modifiers == ModifierKeys.Control
                 && e.Key == Key.F)
             {
-                Search();
+                SearchCommand();
             }
             if (Keyboard.Modifiers == ModifierKeys.Control
                 && e.Key == Key.H)
             {
-                Replace();
+                ReplaceCommand();
             }
             else if (e.Key == Key.F3)
             {
@@ -273,6 +280,61 @@ namespace EasyCodeword
             {
                 SaveAsCommand();
             }
+            else if (Keyboard.Modifiers == ModifierKeys.Control
+               && e.Key == Key.M)
+            {
+                this.WindowState = WindowState.Minimized;
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Alt
+                && e.Key == Key.G)
+            {
+                PowerCommand();
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control
+                && e.Key == Key.Tab)
+            {
+                RefrenceCommand();
+            }
+            else if (e.Key == Key.F2)
+            {
+                TotalCommand();
+            }
+            else if (e.Key == Key.F4)
+            {
+                Topmost = !Topmost;
+                if (Topmost)
+                {
+                    ShowMessage("窗口已取消置顶，可以按快捷键F4取消或设置本窗口置顶");
+                }
+                else
+                {
+                    ShowMessage("窗口已取消置顶！");
+                }
+            }
+            else if (e.Key == Key.F5)
+            {
+                if (!SoundPlayerViewModel.Instance.IsPlaying)
+                {
+                    SoundPlayerViewModel.Instance.Play(SettingViewModel.Instance.MusicFolder);
+                }
+            }
+            else if (e.Key == Key.F6)
+            {
+                SoundPlayerViewModel.Instance.Stop();
+            }
+            else if (e.Key == Key.F9)
+            {
+                AutoTypingSettingCommand();
+            }
+            else if (e.Key == Key.F12)
+            {
+                SettingCommand();
+            }
+            //else if (Keyboard.Modifiers == ModifierKeys.Alt
+            //    && e.Key == Key.Q)
+            //{
+            //    ExitCommand();
+            //}
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -331,42 +393,9 @@ namespace EasyCodeword
             NewCommand();
         }
 
-        private void NewCommand()
-        {
-            if (!(string.IsNullOrEmpty(MainViewModel.Instance.FileName) && MainViewModel.Instance.CountWords(MainTextBox.Text) == 0)
-                 && MessageBox.Show(this, "当前文档还未保存，是否需要保存？", "询问", MessageBoxButton.YesNo, MessageBoxImage.Asterisk) == MessageBoxResult.Yes)
-            {
-                SaveCommand();
-            }
-
-            TypingSpeedViewModel.Instance.Total();
-            this.MainTextBox.Text = string.Empty;
-            MenuPopup.IsOpen = false;
-            MainViewModel.Instance.FileName = string.Empty;
-            TypingSpeedViewModel.Instance.Refresh();
-            OriginWords = 0;
-            New();
-        }
-
         private void Open_Click(object sender, RoutedEventArgs e)
         {
             OpenCommand();
-        }
-
-        private void OpenCommand()
-        {
-            if (!(string.IsNullOrEmpty(MainViewModel.Instance.FileName) &&  MainViewModel.Instance.CountWords(MainTextBox.Text) == 0)
-                 && MessageBox.Show(this, "当前文档还未保存，是否需要保存？", "询问", MessageBoxButton.YesNo, MessageBoxImage.Asterisk) == MessageBoxResult.Yes)
-            {
-                SaveCommand();
-            }
-
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "文件(*.txt;*.rtf)|*.txt;*.rtf|文本文件(*.txt)|*.txt|RTF文件(*.rtf)|*.rtf";
-            if (openFileDialog.ShowDialog() == true)
-            {
-                OpenFile(openFileDialog.FileName);
-            }
         }
 
         private void OpenFile(string fileName, bool confirm = true)
@@ -423,40 +452,9 @@ namespace EasyCodeword
             SaveCommand();
         }
 
-        private void SaveCommand()
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(MainViewModel.Instance.FileName))
-                {
-                    SaveFileAs();
-                }
-                else
-                {
-                    SaveFileTo(MainViewModel.Instance.FileName);
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowMessage("文件保存时出现异常：", ex.Message);
-            }
-        }
-
         private void SaveAs_Click(object sender, RoutedEventArgs e)
         {
             SaveAsCommand();
-        }
-
-        private void SaveAsCommand()
-        {
-            try
-            {
-                SaveFileAs();
-            }
-            catch (Exception ex)
-            {
-                ShowMessage("文件另存为时出现异常：", ex.Message);
-            }
         }
 
         private void SaveFileAs()
@@ -506,7 +504,7 @@ namespace EasyCodeword
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            ExitCommand();
         }
 
         #endregion
@@ -515,30 +513,7 @@ namespace EasyCodeword
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            Search();
-        }
-
-        private void Search()
-        {
-            if (MainTextBox.Text.Length > 0)
-            {
-                if (null != _replaceWindow)
-                {
-                    _replaceWindow.Close();
-                }
-
-                if (null == _searchWindow)
-                {
-                    _searchWindow = new SearchWindow();
-                    _searchWindow.Owner = this;
-                    _searchWindow.Closed += SearchWindow_Closed;
-                    _searchWindow.Show();
-                }
-                else
-                {
-                    _searchWindow.Activate();
-                }
-            }
+            SearchCommand();
         }
 
         private void SearchWindow_Closed(object sender, EventArgs e)
@@ -548,30 +523,7 @@ namespace EasyCodeword
 
         private void Replace_Click(object sender, RoutedEventArgs e)
         {
-            Replace();
-        }
-
-        private void Replace()
-        {
-            if (MainTextBox.Text.Length > 0)
-            {
-                if (null != _searchWindow)
-                {
-                    _searchWindow.Close();
-                }
-
-                if (null == _replaceWindow)
-                {
-                    _replaceWindow = new ReplaceWindow();
-                    _replaceWindow.Owner = this;
-                    _replaceWindow.Closed += ReplaceWindow_Closed;
-                    _replaceWindow.Show();
-                }
-                else
-                {
-                    _replaceWindow.Activate();
-                }
-            }
+            ReplaceCommand();
         }
 
         private void ReplaceWindow_Closed(object sender, EventArgs e)
@@ -581,10 +533,7 @@ namespace EasyCodeword
 
         private void Setting_Click(object sender, RoutedEventArgs e)
         {
-            var settingWindow = new SettingWindow();
-            settingWindow.Owner = this;
-            settingWindow.ShowDialog();
-            SetFocus();
+            SettingCommand();
         }
 
         #endregion
@@ -610,7 +559,7 @@ namespace EasyCodeword
         {
             this.Background = brush;
             this.MainTextBox.Background = brush;
-            this.MenuGrid.Background = brush;
+            //this.MenuGrid.Background = brush;
         }
 
         public void SetForeground(Brush brush)
@@ -662,18 +611,7 @@ namespace EasyCodeword
 
         private void Refrence_Click(object sender, RoutedEventArgs e)
         {
-            if (null == _referenceWindow)
-            {
-                _referenceWindow = new ReferenceWindow();
-                _referenceWindow.Closed += ReferenceWindow_Closed;
-                _referenceWindow.Owner = this;
-                _referenceWindow.Show();
-            }
-            else
-            {
-                _referenceWindow.Activate();
-            }
-            SetFocus();
+            RefrenceCommand();
         }
 
         private void ReferenceWindow_Closed(object sender, EventArgs e)
@@ -683,11 +621,7 @@ namespace EasyCodeword
 
         private void AutoTypeSetting_Click(object sender, RoutedEventArgs e)
         {
-            this.MainTextBox.Text =
-                Regex.Replace(this.MainTextBox.Text,
-                    @"([\s]*[\r\n]+[\s]*)|([\s]{5,})",
-                    "\r\n\r\n　　").TrimStart('\r', '\n', ' ', '　').Insert(0, "　　");
-            SetFocus(true);
+            AutoTypingSettingCommand();
         }
 
         private void MainTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -705,45 +639,19 @@ namespace EasyCodeword
             }
         }
 
-        private void Operation_Click(object sender, RoutedEventArgs e)
-        {
-            var powerWindow = new PowerWindow();
-            powerWindow.Owner = this;
-            powerWindow.ShowDialog();
-        }
+        //private void Operation_Click(object sender, RoutedEventArgs e)
+        //{
+        //    PowerCommand();
+        //}
 
         private void SendEmail_Click(object sender, RoutedEventArgs e)
         {
-            var sendEmailWindow = new SendEmailWindow();
-            sendEmailWindow.Owner = this;
-            if (sendEmailWindow.ShowDialog() == true)
-            {
-                var result = EmailViewModel.Instance.Send(sendEmailWindow.SubjectTextBox.Text, this.MainTextBox.Text);
-                if (result)
-                {
-                    ShowMessage("邮件发送成功");
-                }
-                else
-                {
-                    ShowMessage("邮件发送失败");
-                }
-            }
+            SendEmailCommand();
         }
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
             AboutCommand();
-        }
-
-        private void AboutCommand()
-        {
-            if (null == _abountWindow)
-            {
-                _abountWindow = new AbountWindow();
-                _abountWindow.Owner = this;
-                _abountWindow.Closed += (o, e) => { _abountWindow = null; };
-                _abountWindow.Show();
-            }
         }
 
         private void MainTextBox_SelectionChanged(object sender, RoutedEventArgs e)
@@ -765,7 +673,199 @@ namespace EasyCodeword
             TotalCommand();
         }
 
-        private void TotalCommand()
+        #region Command
+
+        #region 文件操作
+
+        public void NewCommand()
+        {
+            if (!(string.IsNullOrEmpty(MainViewModel.Instance.FileName) && MainViewModel.Instance.CountWords(MainTextBox.Text) == 0)
+                 && MessageBox.Show(this, "当前文档还未保存，是否需要保存？", "询问", MessageBoxButton.YesNo, MessageBoxImage.Asterisk) == MessageBoxResult.Yes)
+            {
+                SaveCommand();
+            }
+
+            TypingSpeedViewModel.Instance.Total();
+            this.MainTextBox.Text = string.Empty;
+            //MenuPopup.IsOpen = false;
+            MainViewModel.Instance.FileName = string.Empty;
+            TypingSpeedViewModel.Instance.Refresh();
+            OriginWords = 0;
+            New();
+            this.MainMenuPopup.IsOpen = false;
+        }
+
+        public void OpenCommand()
+        {
+            if (!(string.IsNullOrEmpty(MainViewModel.Instance.FileName) && MainViewModel.Instance.CountWords(MainTextBox.Text) == 0)
+                 && MessageBox.Show(this, "当前文档还未保存，是否需要保存？", "询问", MessageBoxButton.YesNo, MessageBoxImage.Asterisk) == MessageBoxResult.Yes)
+            {
+                SaveCommand();
+                this.MainMenuPopup.IsOpen = false;
+            }
+
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "文件(*.txt;*.rtf)|*.txt;*.rtf|文本文件(*.txt)|*.txt|RTF文件(*.rtf)|*.rtf";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                OpenFile(openFileDialog.FileName);
+            }
+        }
+
+        public void SaveCommand()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(MainViewModel.Instance.FileName))
+                {
+                    SaveFileAs();
+                    this.MainMenuPopup.IsOpen = false;
+                }
+                else
+                {
+                    SaveFileTo(MainViewModel.Instance.FileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("文件保存时出现异常：", ex.Message);
+            }
+        }
+
+        public void SaveAsCommand()
+        {
+            try
+            {
+                SaveFileAs();
+                this.MainMenuPopup.IsOpen = false;
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("文件另存为时出现异常：", ex.Message);
+            }
+        }
+
+        public void ExitCommand()
+        {
+            this.Close();
+        }
+
+        #endregion
+
+        #region 操作
+
+        public void SearchCommand()
+        {
+            if (MainTextBox.Text.Length > 0)
+            {
+                if (null != _replaceWindow)
+                {
+                    _replaceWindow.Close();
+                }
+
+                if (null == _searchWindow)
+                {
+                    _searchWindow = new SearchWindow();
+                    _searchWindow.Owner = this;
+                    _searchWindow.Closed += SearchWindow_Closed;
+                    _searchWindow.Show();
+                }
+                else
+                {
+                    _searchWindow.Activate();
+                }
+                this.MainMenuPopup.IsOpen = false;
+            }
+        }
+
+        public void ReplaceCommand()
+        {
+            if (MainTextBox.Text.Length > 0)
+            {
+                if (null != _searchWindow)
+                {
+                    _searchWindow.Close();
+                }
+
+                if (null == _replaceWindow)
+                {
+                    _replaceWindow = new ReplaceWindow();
+                    _replaceWindow.Owner = this;
+                    _replaceWindow.Closed += ReplaceWindow_Closed;
+                    _replaceWindow.Show();
+                }
+                else
+                {
+                    _replaceWindow.Activate();
+                }
+                this.MainMenuPopup.IsOpen = false;
+            }
+        }
+
+        public void SettingCommand()
+        {
+            var settingWindow = new SettingWindow();
+            settingWindow.Owner = this;
+            settingWindow.ShowDialog();
+            SetFocus();
+        }
+
+        public void RefrenceCommand()
+        {
+            if (null == _referenceWindow)
+            {
+                _referenceWindow = new ReferenceWindow();
+                _referenceWindow.Closed += ReferenceWindow_Closed;
+                _referenceWindow.Owner = this;
+                _referenceWindow.Show();
+            }
+            else
+            {
+                _referenceWindow.Activate();
+            }
+            SetFocus();
+        }
+
+        #endregion
+
+        #region 帮助
+
+        public void SendEmailCommand()
+        {
+            var sendEmailWindow = new SendEmailWindow();
+            sendEmailWindow.Owner = this;
+            if (sendEmailWindow.ShowDialog() == true)
+            {
+                var result = EmailViewModel.Instance.Send(sendEmailWindow.SubjectTextBox.Text, this.MainTextBox.Text);
+                if (result)
+                {
+                    ShowMessage("邮件发送成功");
+                }
+                else
+                {
+                    ShowMessage("邮件发送失败");
+                }
+            }
+        }
+
+        public void AutoTypingSettingCommand()
+        {
+            this.MainTextBox.Text =
+                Regex.Replace(this.MainTextBox.Text,
+                    @"([\s]*[\r\n]+[\s]*)|([\s]{5,})",
+                    "\r\n\r\n　　").TrimStart('\r', '\n', ' ', '　').Insert(0, "　　");
+            SetFocus(true);
+            this.MainMenuPopup.IsOpen = false;
+        }
+
+        public void PowerCommand()
+        {
+            var powerWindow = new PowerWindow();
+            powerWindow.Owner = this;
+            powerWindow.ShowDialog();
+        }
+
+        public void TotalCommand()
         {
             if (null == _totalWindow)
             {
@@ -773,8 +873,69 @@ namespace EasyCodeword
                 _totalWindow.Owner = this;
                 _totalWindow.Closed += (o, e) => { _totalWindow = null; };
                 _totalWindow.Show();
+                this.MainMenuPopup.IsOpen = false;
             }
+        }
+
+        public void AboutCommand()
+        {
+            if (null == _abountWindow)
+            {
+                _abountWindow = new AbountWindow();
+                _abountWindow.Owner = this;
+                _abountWindow.Closed += (o, e) => { _abountWindow = null; };
+                _abountWindow.Show();
+                this.MainMenuPopup.IsOpen = false;
+            }
+        }
+
+        #endregion
+
+
+        #endregion
+
+        private void OpenPopup()
+        {
+            var top = (SystemParameters.PrimaryScreenHeight - MainMenuSubBorder.Height) / 2d;
+            this.MainMenuPopup.VerticalOffset = top;
+            MainMenuSubBorder.Width = SystemParameters.PrimaryScreenWidth - this.MainMenuPopup.HorizontalOffset;
+            this.MainMenuPopup.IsOpen = true;
+            _showMenuStoryboard.Begin();
+        }
+
+        private void File_Click(object sender, RoutedEventArgs e)
+        {
+            OpenPopup();
+            this.MainMenuPopup.DataContext = MenuViewModel.FileMenu;
+        }
+
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
+            OpenPopup();
+            this.MainMenuPopup.DataContext = MenuViewModel.EditMenu;
+        }
+
+        private void Operation_Click(object sender, RoutedEventArgs e)
+        {
+            OpenPopup();
+            this.MainMenuPopup.DataContext = MenuViewModel.OperationMenu;
+        }
+
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            OpenPopup();
+            this.MainMenuPopup.DataContext = MenuViewModel.HelpMenu;
+        }
+
+        private void Lock_Click(object sender, RoutedEventArgs e)
+        {
+            var top = (SystemParameters.PrimaryScreenHeight - MainMenuSubBorder.Height) / 2d;
+            this.LockPopup.VerticalOffset = top;
+            LockPopup.Width = SystemParameters.PrimaryScreenWidth - this.LockPopup.HorizontalOffset;
+            this.LockPopup.IsOpen = true;
+            _showLockStoryboard.Begin();
         }
 
     }
 }
+

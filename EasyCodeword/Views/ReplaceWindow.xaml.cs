@@ -115,5 +115,12 @@ namespace EasyCodeword.Views
                 this.ReplaceButton.IsEnabled =
                 this.ReplaceAllButton.IsEnabled = SearchTextBox.Text.Length > 0;
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            MainWindow.Instance.Focus();
+        }
     }
 }

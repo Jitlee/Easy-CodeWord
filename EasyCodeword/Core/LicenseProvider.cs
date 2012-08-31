@@ -42,9 +42,9 @@ namespace EasyCodeword.Core
             long i = 1;
             foreach (byte b in code)
             {
-                i *= ((int)b - 569);
+                i *= ((int)b + 56);
             }
-            return i.ToString().PadLeft(19, '8');
+            return i.ToString().PadLeft(19, '8').Trim('-');
         }
 
         private static string GetGenerateSerialNumber(string code)

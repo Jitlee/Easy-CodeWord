@@ -123,6 +123,8 @@ namespace EasyCodeword.Core
             }
         }
 
+        public bool IsPlaying { get { return null != _soundPlayer; } }
+
         public void Stop()
         {
             try

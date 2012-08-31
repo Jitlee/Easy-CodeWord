@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using EasyCodeword.Core;
 
 namespace EasyCodeword.Views
@@ -31,7 +23,9 @@ namespace EasyCodeword.Views
             else
             {
                 RegisterStatusRun.Text = "注册";
+                RegisterHelperRun.Text = "\n本软件尚未注册，部分功能将限制使用";
             }
+            VersionRun.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
