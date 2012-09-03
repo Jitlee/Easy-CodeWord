@@ -131,13 +131,13 @@
             <TextBlock x:Name="MessageTextBlock" Grid.Row="3" VerticalAlignment="Center" Margin="5" Opacity="0"/>
             <TextBlock x:Name="CharacterCountTextBlock" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5"/>
             <StackPanel
-            x:Name="LockInfoTextBlock"
-            Grid.Row="3"
-            VerticalAlignment="Center"
-            Margin="5"
-            HorizontalAlignment="Center"
-            Visibility="{Binding IsUnlocked,Converter={StaticResource BooleanToVisibilityConverter}}"
-            Orientation="Horizontal">
+                x:Name="LockInfoTextBlock"
+                Grid.Row="3"
+                VerticalAlignment="Center"
+                Margin="5"
+                HorizontalAlignment="Center"
+                Visibility="{Binding IsUnlocked,Converter={StaticResource BooleanToVisibilityConverter}}"
+                Orientation="Horizontal">
                 <TextBlock
                 FontFamily="Webdings" 
                 FontSize="14"

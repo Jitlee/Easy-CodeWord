@@ -85,9 +85,6 @@ namespace EasyCodeword
             InitializeComponent();
             _showMessageStoryboard = Resources["ShowMessageStoryboard"] as Storyboard;
             _autoSaveTimer = new Timer(AutoSaveCallback);
-            LockSubBorder.DataContext = LockViewModel.Insatance;
-            this.LockInfoTextBlock.DataContext = LockViewModel.Insatance;
-            this.DataContext = MainViewModel.Instance;
             this.Loaded += MainWindow_Loaded;
             Instance = this;
 
@@ -183,6 +180,12 @@ namespace EasyCodeword
                 //AlertWindow.ShowAlert("软件尚未注册，如需注册请从帮助窗口(F1键)点击注册注册按钮", "软件注册");
                 ShowMessage("软件尚未注册，如需注册请从帮助窗口(F1键)点击注册注册按钮");
             }
+
+
+            this.MainMenuPopup.DataContext = MenuViewModel.FileMenu;
+            this.LockSubBorder.DataContext = LockViewModel.Insatance;
+            this.LockInfoTextBlock.DataContext = LockViewModel.Insatance;
+            this.TopGrid.DataContext = MainViewModel.Instance;
         }
 
         private void LoadAccidentFile()
@@ -229,7 +232,7 @@ namespace EasyCodeword
         {
             if (e.Key == Key.Return)
             {
-                if (SettingViewModel.Instance.AutoSaveReturn)
+                if (LicenseProvider.IsRegistered && SettingViewModel.Instance.AutoSaveReturn)
                 {
                     SaveCommand();
                 }
@@ -301,14 +304,17 @@ namespace EasyCodeword
             }
             else if (e.Key == Key.F4)
             {
-                Topmost = !Topmost;
-                if (Topmost)
+                if (LockViewModel.Insatance.IsUnlocked)
                 {
-                    ShowMessage("窗口已取消置顶，可以按快捷键F4取消或设置本窗口置顶");
-                }
-                else
-                {
-                    ShowMessage("窗口已取消置顶！");
+                    Topmost = !Topmost;
+                    if (Topmost)
+                    {
+                        ShowMessage("窗口已取消置顶，可以按快捷键F4取消或设置本窗口置顶");
+                    }
+                    else
+                    {
+                        ShowMessage("窗口已取消置顶！");
+                    }
                 }
             }
             else if (e.Key == Key.F5)
@@ -906,25 +912,37 @@ namespace EasyCodeword
         private void File_Click(object sender, RoutedEventArgs e)
         {
             OpenPopup();
-            this.MainMenuPopup.DataContext = MenuViewModel.FileMenu;
+            if (this.MainMenuPopup.DataContext != MenuViewModel.FileMenu)
+            {
+                this.MainMenuPopup.DataContext = MenuViewModel.FileMenu;
+            }
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             OpenPopup();
-            this.MainMenuPopup.DataContext = MenuViewModel.EditMenu;
+            if (this.MainMenuPopup.DataContext != MenuViewModel.EditMenu)
+            {
+                this.MainMenuPopup.DataContext = MenuViewModel.EditMenu;
+            }
         }
 
         private void Operation_Click(object sender, RoutedEventArgs e)
         {
             OpenPopup();
-            this.MainMenuPopup.DataContext = MenuViewModel.OperationMenu;
+            if (this.MainMenuPopup.DataContext != MenuViewModel.OperationMenu)
+            {
+                this.MainMenuPopup.DataContext = MenuViewModel.OperationMenu;
+            }
         }
 
         private void Help_Click(object sender, RoutedEventArgs e)
         {
             OpenPopup();
-            this.MainMenuPopup.DataContext = MenuViewModel.HelpMenu;
+            if (this.MainMenuPopup.DataContext != MenuViewModel.HelpMenu)
+            {
+                this.MainMenuPopup.DataContext = MenuViewModel.HelpMenu;
+            }
         }
 
         private void Lock_Click(object sender, RoutedEventArgs e)

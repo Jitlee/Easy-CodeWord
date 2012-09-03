@@ -320,9 +320,13 @@
                         Header="                    "
                         Margin="5"
                         IsEnabled="{Binding IsViolenceLock, UpdateSourceTrigger=PropertyChanged}">
-                        <CheckBox
+                        <!--<CheckBox
                             Margin="15,5,5,15"
-                            Content="锁定 Ctrl + Alt + Delete 键"/>
+                            Visibility="Hidden"
+                            Content="锁定 Ctrl + Alt + Delete 键"/>-->
+                        <TextBlock
+                            Text="暴力锁设定后，系统将无法使用其他功能"
+                            />
                     </GroupBox>
                     <RadioButton
                         VerticalAlignment="Top"

@@ -196,6 +196,11 @@ namespace EasyCodeword.Core
             App.Current.MainWindow.Topmost = false;
             MainWindow.Instance.Closing -= MainWindow_Closing;
             MainWindow.Instance.MainTextBox.TextChanged -= MainTextBox_TextChanged;
+
+            //RWReg.RemoveKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\System", "DisableChangePassword");
+            //RWReg.RemoveKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\System", "DisableLockWorkstation");
+            //RWReg.RemoveKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\System", "DisableTaskMgr");
+            //RWReg.RemoveKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\Explorer", "NoLogoff");
             IsUnlocked = true;
             if (null != _hook)
             {
@@ -228,12 +233,19 @@ namespace EasyCodeword.Core
 
                 if (SettingViewModel.Instance.IsViolenceLock)
                 {
+#if !DEBUG
                     App.Current.MainWindow.Topmost = true;
+#endif
                     if (_hook == null)
                     {
                         _hook = new KeyboardHook();
                         _hook.KeyMaskStart(LockCallback);
                     }
+
+                    //RWReg.SetValue(@"Software\Microsoft\Windows\CurrentVersion\Policies\System", "DisableChangePassword", 1, true);
+                    //RWReg.SetValue(@"Software\Microsoft\Windows\CurrentVersion\Policies\System", "DisableLockWorkstation", 1, true);
+                    //RWReg.SetValue(@"Software\Microsoft\Windows\CurrentVersion\Policies\System", "DisableTaskMgr", 1, true);
+                    //RWReg.SetValue(@"Software\Microsoft\Windows\CurrentVersion\Policies\Explorer", "NoLogoff", 1, true);
                 }
                 else if (SettingViewModel.Instance.IsTenderLock)
                 {
