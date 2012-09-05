@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Windows;
 using System.Windows.Media;
 using EasyCodeword.Utilities;
 
 namespace EasyCodeword.Core
 {
-    public class SoundPlayerViewModel
+    public class SoundPlayerViewModel : EntityObject
     {
         #region 变量
 
@@ -22,11 +24,21 @@ namespace EasyCodeword.Core
 
         int _index = -1;
 
+        private string _playingMusic = string.Empty;
+
         #endregion
 
         #region 属性
 
         public static SoundPlayerViewModel Instance { get { return _instance; } }
+
+        public bool IsPlaying { get { return null != _soundPlayer; } }
+
+        public string PlayingMusic
+        {
+            get { return _playingMusic; }
+            set { _playingMusic = value; RaisePropertyChanged("PlayingMusic"); }
+        }
 
         #endregion
 
@@ -68,8 +80,16 @@ namespace EasyCodeword.Core
                     var file = _files[index];
                     if (File.Exists(file))
                     {
-                        _soundPlayer.Open(new Uri(file, UriKind.Relative));
-                        _soundPlayer.Play();
+                        LoadSongProperty(file);
+                        try
+                        {
+                            _soundPlayer.Open(new Uri(file, UriKind.Relative));
+                            _soundPlayer.Play();
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.Error("[AutoPlay] Exception : {0}", ex.Message);
+                        }
                     }
                     else
                     {
@@ -77,6 +97,17 @@ namespace EasyCodeword.Core
                     }
                 }
             }
+        }
+
+        private void LoadSongProperty(string fileName)
+        {
+            ThreadPool.QueueUserWorkItem((state) => {
+                var songInfo = SongHelper.GetMp3Info(fileName);
+                var title = string.Format("{0}-{1}", songInfo.Artist, songInfo.Title);
+                Application.Current.Dispatcher.Invoke(new Action(() => {
+                    PlayingMusic = title;
+                }));
+            });
         }
 
         private void SoundPlayer_MediaEnded(object sender, EventArgs e)
@@ -114,16 +145,17 @@ namespace EasyCodeword.Core
                             _soundPlayer.Stop();
                         }
                         AutoPlay();
+                        RaisePropertyChanged("IsPlaying");
+                        return;
                     }
                 }
+                Stop();
             }
             catch (Exception ex)
             {
                 _logger.Debug("[Play] Exception : {0}", ex.Message);
             }
         }
-
-        public bool IsPlaying { get { return null != _soundPlayer; } }
 
         public void Stop()
         {
@@ -136,6 +168,7 @@ namespace EasyCodeword.Core
                     _soundPlayer.Close();
                     _soundPlayer = null;
                 }
+                RaisePropertyChanged("IsPlaying");
             }
             catch (Exception ex)
             {

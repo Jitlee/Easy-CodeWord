@@ -158,8 +158,8 @@
             <TabItem Header="音乐">
             	<Grid Background="#FFE5E5E5">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
@@ -186,6 +186,11 @@
                             IsEnabled="{Binding AutoPlayMusic}"
                             Style="{DynamicResource NormalButtonStyle}"
                             Grid.Column="2"/>
+                        
+                        <CheckBox
+                            Grid.Row="2"
+                            Grid.ColumnSpan="3"
+                            Content="主界面显示当前正在播放的歌曲"/>
                     </Grid>
                 </Grid>
             </TabItem>

@@ -288,12 +288,11 @@ namespace EasyCodeword.Core
             var lockWords = Converter.ToInt(_lockWords);
             var lockMinutes = Converter.ToInt(_lockMinutes);
 
-            if (!LicenseProvider.IsRegistered
-                && (lockWords > 100
-                || lockMinutes > 10))
+            if ((lockWords > 0 ||
+                lockMinutes > 0) &&
+                !LicenseProvider.IsRegistered)
             {
-                //MainWindow.Instance.ShowMessage("软件尚未注册，最多锁定100字和10分钟！");
-                AlertWindow.ShowAlert("软件尚未注册，最多锁定100字和10分钟！", "软件注册");
+                AlertWindow.ShowAlert("软件尚未注册，不能使用锁定功能，如需注册请从帮助窗口(F1键)点击注册注册按钮", "软件注册");
                 return false;
             }
             return true;

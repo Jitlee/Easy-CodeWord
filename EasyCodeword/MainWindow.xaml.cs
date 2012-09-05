@@ -182,10 +182,11 @@ namespace EasyCodeword
             }
 
 
-            this.MainMenuPopup.DataContext = MenuViewModel.FileMenu;
+            this.MainMenuSubPopup.DataContext = MenuViewModel.FileMenu;
             this.LockSubBorder.DataContext = LockViewModel.Insatance;
             this.LockInfoTextBlock.DataContext = LockViewModel.Insatance;
             this.TopGrid.DataContext = MainViewModel.Instance;
+            this.MusicStackPanel.DataContext = SoundPlayerViewModel.Instance;
         }
 
         private void LoadAccidentFile()
@@ -232,7 +233,7 @@ namespace EasyCodeword
         {
             if (e.Key == Key.Return)
             {
-                if (LicenseProvider.IsRegistered && SettingViewModel.Instance.AutoSaveReturn)
+                if (SettingViewModel.Instance.AutoSaveReturn)
                 {
                     SaveCommand();
                 }
@@ -465,27 +466,20 @@ namespace EasyCodeword
 
         private void SaveFileAs()
         {
-            if (LicenseProvider.IsRegistered)
+            var saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = GetSaveCaption();
+            saveFileDialog.Filter = "文本文件(*.txt)|*.txt|RTF文件(*.rtf)|*.rtf";
+            if (saveFileDialog.ShowDialog() == true)
             {
-                var saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Title = GetSaveCaption();
-                saveFileDialog.Filter = "文本文件(*.txt)|*.txt|RTF文件(*.rtf)|*.rtf";
-                if (saveFileDialog.ShowDialog() == true)
+                var fileName = saveFileDialog.FileName;
+                SaveFileTo(fileName);
+                MainViewModel.Instance.FileName = fileName;
+                OriginWords = MainViewModel.Instance.CountWords(MainTextBox.Text);
+                try
                 {
-                    var fileName = saveFileDialog.FileName;
-                    SaveFileTo(fileName);
-                    MainViewModel.Instance.FileName = fileName;
-                    OriginWords = MainViewModel.Instance.CountWords(MainTextBox.Text);
-                    try
-                    {
-                        File.Delete(Common.TempFile);
-                    }
-                    catch { }
+                    File.Delete(Common.TempFile);
                 }
-            }
-            else
-            {
-                AlertWindow.ShowAlert("软件尚未注册，不提供文件保存功能。\n\n如需注册请从帮助窗口(F1键)点击注册注册按钮", "软件注册");
+                catch { }
             }
         }
 
@@ -698,7 +692,7 @@ namespace EasyCodeword
             TypingSpeedViewModel.Instance.Refresh();
             OriginWords = 0;
             New();
-            this.MainMenuPopup.IsOpen = false;
+            this.MainMenuSubPopup.IsOpen = false;
         }
 
         public void OpenCommand()
@@ -707,7 +701,7 @@ namespace EasyCodeword
                  && MessageBox.Show(this, "当前文档还未保存，是否需要保存？", "询问", MessageBoxButton.YesNo, MessageBoxImage.Asterisk) == MessageBoxResult.Yes)
             {
                 SaveCommand();
-                this.MainMenuPopup.IsOpen = false;
+                this.MainMenuSubPopup.IsOpen = false;
             }
 
             var openFileDialog = new OpenFileDialog();
@@ -725,7 +719,7 @@ namespace EasyCodeword
                 if (string.IsNullOrEmpty(MainViewModel.Instance.FileName))
                 {
                     SaveFileAs();
-                    this.MainMenuPopup.IsOpen = false;
+                    this.MainMenuSubPopup.IsOpen = false;
                 }
                 else
                 {
@@ -743,7 +737,7 @@ namespace EasyCodeword
             try
             {
                 SaveFileAs();
-                this.MainMenuPopup.IsOpen = false;
+                this.MainMenuSubPopup.IsOpen = false;
             }
             catch (Exception ex)
             {
@@ -780,7 +774,7 @@ namespace EasyCodeword
                 {
                     _searchWindow.Activate();
                 }
-                this.MainMenuPopup.IsOpen = false;
+                this.MainMenuSubPopup.IsOpen = false;
             }
         }
 
@@ -804,7 +798,7 @@ namespace EasyCodeword
                 {
                     _replaceWindow.Activate();
                 }
-                this.MainMenuPopup.IsOpen = false;
+                this.MainMenuSubPopup.IsOpen = false;
             }
         }
 
@@ -861,7 +855,7 @@ namespace EasyCodeword
                     @"([\s]*[\r\n]+[\s]*)|([\s]{5,})",
                     "\r\n\r\n　　").TrimStart('\r', '\n', ' ', '　').Insert(0, "　　");
             SetFocus(true);
-            this.MainMenuPopup.IsOpen = false;
+            this.MainMenuSubPopup.IsOpen = false;
         }
 
         public void PowerCommand()
@@ -879,7 +873,7 @@ namespace EasyCodeword
                 _totalWindow.Owner = this;
                 _totalWindow.Closed += (o, e) => { _totalWindow = null; };
                 _totalWindow.Show();
-                this.MainMenuPopup.IsOpen = false;
+                this.MainMenuSubPopup.IsOpen = false;
             }
         }
 
@@ -891,7 +885,7 @@ namespace EasyCodeword
                 _abountWindow.Owner = this;
                 _abountWindow.Closed += (o, e) => { _abountWindow = null; };
                 _abountWindow.Show();
-                this.MainMenuPopup.IsOpen = false;
+                this.MainMenuSubPopup.IsOpen = false;
             }
         }
 
@@ -902,58 +896,86 @@ namespace EasyCodeword
 
         private void OpenPopup()
         {
+            this.MainMenuPopup.IsOpen = false;
             var top = (SystemParameters.PrimaryScreenHeight - MainMenuSubBorder.Height) / 2d;
-            this.MainMenuPopup.VerticalOffset = top;
-            MainMenuSubBorder.Width = SystemParameters.PrimaryScreenWidth - this.MainMenuPopup.HorizontalOffset;
-            this.MainMenuPopup.IsOpen = true;
+            this.MainMenuSubPopup.VerticalOffset = top;
+            MainMenuSubBorder.Width = SystemParameters.PrimaryScreenWidth - this.MainMenuSubPopup.HorizontalOffset;
+            this.MainMenuSubPopup.IsOpen = true;
             _showMenuStoryboard.Begin();
         }
 
         private void File_Click(object sender, RoutedEventArgs e)
         {
+            
             OpenPopup();
-            if (this.MainMenuPopup.DataContext != MenuViewModel.FileMenu)
+            if (this.MainMenuSubPopup.DataContext != MenuViewModel.FileMenu)
             {
-                this.MainMenuPopup.DataContext = MenuViewModel.FileMenu;
+                this.MainMenuSubPopup.DataContext = MenuViewModel.FileMenu;
             }
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             OpenPopup();
-            if (this.MainMenuPopup.DataContext != MenuViewModel.EditMenu)
+            if (this.MainMenuSubPopup.DataContext != MenuViewModel.EditMenu)
             {
-                this.MainMenuPopup.DataContext = MenuViewModel.EditMenu;
+                this.MainMenuSubPopup.DataContext = MenuViewModel.EditMenu;
             }
         }
 
         private void Operation_Click(object sender, RoutedEventArgs e)
         {
             OpenPopup();
-            if (this.MainMenuPopup.DataContext != MenuViewModel.OperationMenu)
+            if (this.MainMenuSubPopup.DataContext != MenuViewModel.OperationMenu)
             {
-                this.MainMenuPopup.DataContext = MenuViewModel.OperationMenu;
+                this.MainMenuSubPopup.DataContext = MenuViewModel.OperationMenu;
             }
         }
 
         private void Help_Click(object sender, RoutedEventArgs e)
         {
             OpenPopup();
-            if (this.MainMenuPopup.DataContext != MenuViewModel.HelpMenu)
+            if (this.MainMenuSubPopup.DataContext != MenuViewModel.HelpMenu)
             {
-                this.MainMenuPopup.DataContext = MenuViewModel.HelpMenu;
+                this.MainMenuSubPopup.DataContext = MenuViewModel.HelpMenu;
             }
         }
 
         private void Lock_Click(object sender, RoutedEventArgs e)
         {
+            this.MainMenuPopup.IsOpen = false;
             var top = (SystemParameters.PrimaryScreenHeight - MainMenuSubBorder.Height) / 2d;
             this.LockPopup.VerticalOffset = top;
             LockPopup.Width = SystemParameters.PrimaryScreenWidth - this.LockPopup.HorizontalOffset;
             this.LockPopup.IsOpen = true;
             _showLockStoryboard.Begin();
+            LockWordsTextBox.Focus();
         }
 
+        private void LockOK_Click(object sender, RoutedEventArgs e)
+        {
+            this.LockPopup.IsOpen = false;
+        }
+
+        private void LeftRectangle_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            this.MainMenuPopup.IsOpen = true;
+        }
+
+        private void MainMenuBorder_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.MainMenuPopup.IsOpen = false;
+        }
+
+        private void MainMenuPopup_Opened(object sender, EventArgs e)
+        {
+            MainTextBoxBorder.SetValue(MarginProperty, new Thickness(MainMenuBorder.ActualWidth, 0d, 0d, 0d));
+        }
+
+        private void MainMenuPopup_Closed(object sender, EventArgs e)
+        {
+            MainTextBoxBorder.ClearValue(MarginProperty);
+        }
     }
 }
 

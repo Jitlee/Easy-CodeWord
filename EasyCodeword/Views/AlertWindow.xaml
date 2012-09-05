@@ -58,16 +58,17 @@
             </Rectangle.Effect>
         </Rectangle>
         <Border
-            Background="#FFE3E1D5"
+            Background="{DynamicResource MainMenuItemBackground}"
             CornerRadius="15"
             Padding="0,48"
             Width="507">
             <Border
-                Background="#FFF9F3D1"
+                Background="{DynamicResource MainMenuBackground}"
                 MinHeight="108"
                 Padding="15">
                 <TextBlock
-                    Foreground="#FF989400">
+                    Foreground="{DynamicResource MainMenuItemForeground}"
+                    TextWrapping="Wrap">
                     <Run
                         x:Name="TitleRun"
                         FontSize="30"
@@ -84,7 +85,7 @@
             VerticalAlignment="Bottom"
             HorizontalAlignment="Right"
             Margin="10"
-            Foreground="#FFB3BE1A">
+            Foreground="{DynamicResource MainMenuItemForeground}">
             <Run Text="本消息窗口将在 "/>
             <Run x:Name="SecondRun" Text="5"/>
             <Run Text=" 秒后自动关闭"/>

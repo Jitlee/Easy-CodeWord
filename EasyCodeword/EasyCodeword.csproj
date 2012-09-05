@@ -82,6 +82,7 @@
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Core\LicenseProvider.cs" />
     <Compile Include="Core\MenuViewModel.cs" />
+    <Compile Include="Core\SongHelper.cs" />
     <Compile Include="Core\Weibo\Sina\Api.cs" />
     <Compile Include="Core\Weibo\Sina\HttpUtil.cs" />
     <Compile Include="Core\Weibo\Sina\OAuth.cs" />
@@ -288,7 +289,37 @@
     <Resource Include="Images\qweibo.png" />
     <Resource Include="Images\sweibo.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\about.png" />
+    <Resource Include="Images\auto_typing.png" />
+    <Resource Include="Images\copy.png" />
+    <Resource Include="Images\cut.png" />
+    <Resource Include="Images\edit.png" />
+    <Resource Include="Images\edit_legend.png" />
+    <Resource Include="Images\email.png" />
+    <Resource Include="Images\exit.png" />
+    <Resource Include="Images\file.png" />
+    <Resource Include="Images\file_legend.png" />
+    <Resource Include="Images\find.png" />
+    <Resource Include="Images\help.png" />
+    <Resource Include="Images\help_legend.png" />
+    <Resource Include="Images\lock.png" />
+    <Resource Include="Images\lock_legend.png" />
+    <Resource Include="Images\new.png" />
+    <Resource Include="Images\open.png" />
+    <Resource Include="Images\operation.png" />
+    <Resource Include="Images\operation_legend.png" />
+    <Resource Include="Images\paste.png" />
+    <Resource Include="Images\power.png" />
+    <Resource Include="Images\reference.png" />
+    <Resource Include="Images\replace.png" />
+    <Resource Include="Images\save.png" />
+    <Resource Include="Images\save_as.png" />
+    <Resource Include="Images\select_all.png" />
+    <Resource Include="Images\setting.png" />
+    <Resource Include="Images\total.png" />
+    <Resource Include="Images\undo.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Properties\email.xml" />
   </ItemGroup>
@@ -306,9 +337,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\splash_screen.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\about.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\app.ico" />

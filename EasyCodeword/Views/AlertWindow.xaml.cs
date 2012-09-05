@@ -86,6 +86,9 @@ namespace EasyCodeword.Views
         {
             base.OnClosed(e);
             _instnace = null;
+
+            MainWindow.Instance.Focus();
+            MainWindow.Instance.MainTextBox.Focus();
         }
 
         public static void ShowAlert(string message, string title = "消息")
@@ -101,6 +104,9 @@ namespace EasyCodeword.Views
             _instnace.MessageRun.Text = message;
             _instnace.Owner = MainWindow.Instance;
             _instnace.Show();
+
+            MainWindow.Instance.Focus();
+            MainWindow.Instance.MainTextBox.Focus();
         }
     }
 }

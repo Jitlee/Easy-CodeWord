@@ -170,8 +170,18 @@
                                         <Button
                                                 Command="{Binding Command}"
                                                 CommandTarget="{Binding CommandTarget}"
-                                                Content="{Binding Title}"
-                                                Style="{DynamicResource MainMenuItemStyle}"/>
+                                                Style="{DynamicResource MainMenuItemStyle}">
+                                            <StackPanel>
+                                                <Image
+                                                    Source="{Binding Icon}"
+                                                    Height="{DynamicResource MainMenuSubItemImageSize}"
+                                                    Width="{DynamicResource MainMenuSubItemImageSize}"/>
+                                                <TextBlock
+                                                    FontSize="{DynamicResource MainMenuSubItemFontSize}"
+                                                    HorizontalAlignment="Center"
+                                                    Text="{Binding Title}"/>
+                                            </StackPanel>
+                                        </Button>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
