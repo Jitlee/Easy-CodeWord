@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using EasyCodeword.Utilities;
 using EasyCodeword.Views;
-using NetDimension.Weibo;
-using WeiboSDK;
+using WeiboSDK.Sina;
 
 namespace EasyCodeword.Core
 {
@@ -32,8 +32,6 @@ namespace EasyCodeword.Core
         private readonly string _appSecret = "3fae75eb725ca4e5a356352d73904536";
 
         private OAuth _oAuth = null;
-
-        private Client _client = null;
 
         //private readonly string AppKey = "858273299";
 
@@ -91,7 +89,6 @@ namespace EasyCodeword.Core
         private SWeiboViewModel()
         {
             _oAuth = new OAuth(_appKey, _appSecret);
-            _client = new Client(_oAuth);
 
             GetNickname();
         }
@@ -120,30 +117,41 @@ namespace EasyCodeword.Core
         {
             try
             {
-                    if (string.IsNullOrEmpty(_oAuth.AccessToken))
+                if (string.IsNullOrEmpty(_oAuth.AccessToken))
+                {
+                    if (!_oAuth.Login(_accessKey, _accessSecret))
                     {
-                        bool result = _oAuth.ClientLogin(_accessKey, _accessSecret);
-                        var tr = _oAuth.VerifierAccessToken();
-                        if (tr != NetDimension.Weibo.TokenResult.Success)
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
                         {
-                            Application.Current.Dispatcher.Invoke(new Action(() =>
-                            {
-                                MainWindow.Instance.ShowMessage("获取新浪微博用户信息失败！");
-                            }));
-                            return;
-                        }
+                            Nickname = "获取昵称失败";
+                            MainWindow.Instance.ShowMessage("获取新浪微博用户信息失败！");
+                        }));
+                        return;
                     }
-                    string userID = _client.API.Account.GetUID();
-
-                    NetDimension.Weibo.Entities.user.Entity userInfo = _client.API.Users.Show(userID, null);
-
+                }
+                var user = new User(_oAuth);
+                var info = user.Info();
+                var counts = user.Counts();
+                var nameMatch = Regex.Match(info, @"""screen_name"":""(?<name>[^""]{0,32})""");
+                var countsMath = Regex.Match(counts, @"""followers_count"":(?<fansnum>[0-9]+).*""friends_count"":(?<favnum>[0-9]+)");
+                if (nameMatch.Success && countsMath.Success)
+                {
                     Application.Current.Dispatcher.Invoke(new Action(() =>
                     {
-                        Nickname = string.Format("{0}[收听{1};听众:{2}]", userInfo.ScreenName, userInfo.FriendsCount, userInfo.FollowersCount);
+                        Nickname = string.Format("{0}[收听{1};听众:{2}]",
+                            nameMatch.Groups["name"].Value,
+                            countsMath.Groups["favnum"].Value,
+                            countsMath.Groups["fansnum"].Value);
                     }));
+                }
             }
             catch (Exception ex)
             {
+                Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    Nickname = "获取昵称失败";
+                    MainWindow.Instance.ShowMessage("获取新浪微博用户信息失败！");
+                }));
                 _logger.Error("[GetNicknameCallback] : Exception ： {0}", ex.Message);
             }
         }
@@ -196,10 +204,7 @@ namespace EasyCodeword.Core
                 Application.Current.Dispatcher.Invoke(new Action(() => {
                     try
                     {
-                        bool result = _oAuth.ClientLogin(username, password);
-                        var tr = _oAuth.VerifierAccessToken();
-
-                        if (tr == NetDimension.Weibo.TokenResult.Success)
+                        if (_oAuth.Login(username, password))
                         {
                             _accessKey = username;
 
@@ -265,29 +270,25 @@ namespace EasyCodeword.Core
         /// </summary>
         /// <param name="weibo">微博信息</param>
         /// <returns></returns>
-        public string Add(string weibo)
+        public void Add(string weibo)
         {
             try
             {
                 if (string.IsNullOrEmpty(_oAuth.AccessToken))
                 {
-                    bool result = _oAuth.ClientLogin(_accessKey, _accessSecret);
-                    var tr = _oAuth.VerifierAccessToken();
-                    if (tr != NetDimension.Weibo.TokenResult.Success)
+                    if (!_oAuth.Login(_accessKey, _accessSecret))
                     {
                         _accessKey = string.Empty;
                         _accessSecret = string.Empty;
-                        return string.Empty;
                     }
                 }
-                _client.API.Statuses.Update(string.Concat(weibo, "  ", SettingViewModel.Instance.TenderLockMessage)
-                    , 0, 0, null);
+                var t = new T(_oAuth);
+                t.Update(string.Concat(weibo, "  ", SettingViewModel.Instance.TenderLockMessage));
             }
             catch (Exception ex)
             {
                 _logger.Error("[Add] Exception : {0}" , ex.Message);
             }
-            return string.Empty;
         }
     }
 }

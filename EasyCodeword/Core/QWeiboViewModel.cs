@@ -125,17 +125,18 @@ namespace EasyCodeword.Core
                         {
                             Nickname = string.Format("{0}[收听{1};听众:{2}]", nick.Value, favnum.Value, fansnum.Value);
                         }));
+                        return;
                     }
-                }
-                else
-                {
-                    _logger.Debug("try parse xelement faild");
                 }
             }
             catch (Exception ex)
             {
                 _logger.Error("[GetNicknameCallback] : Exception ： {0}", ex.Message);
             }
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+                Nickname = "获取昵称失败";
+            }));
         }
 
         private bool GetAccessToken(string customKey, string customSecret, string requestToken, string requestTokenSecrect, string verify)
