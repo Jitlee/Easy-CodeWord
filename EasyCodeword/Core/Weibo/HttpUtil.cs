@@ -5,7 +5,7 @@ using System.Web;
 using System.IO;
 using Microsoft.Win32;
 
-namespace WeiboSDK.QQ
+namespace WeiboSDK
 {
     public static class HttpUtil
     {

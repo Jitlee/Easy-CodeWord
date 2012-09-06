@@ -19,11 +19,12 @@ namespace EasyCodeword.Views
     /// <summary>
     /// AlertWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class AlertWindow : Window
+    public partial class AlertWindow : Window, IDisposable
     {
         private static AlertWindow _instnace;
-        private Timer _timer;
+        private readonly Timer _timer;
         private bool _flag = false;
+        private bool _isDisposed;
 
         public AlertWindow()
         {
@@ -34,7 +35,7 @@ namespace EasyCodeword.Views
 
         private void AlertWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            _timer.Change(1000,1000);
+            _timer.Change(1000, 1000);
         }
 
         private void TimerCalback(object state)
@@ -42,7 +43,8 @@ namespace EasyCodeword.Views
             var count = Converter.ToInt(SecondRun.Text);
             count--;
 
-            this.Dispatcher.Invoke(new Action(() => {
+            this.Dispatcher.Invoke(new Action(() =>
+            {
                 if (count < 1)
                 {
                     this.Close();
@@ -62,7 +64,6 @@ namespace EasyCodeword.Views
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            _timer.Dispose();
             if (_flag != true)
             {
                 var unLoadStoryboard = Resources["UnLoadStoryboard"] as Storyboard;
@@ -85,6 +86,7 @@ namespace EasyCodeword.Views
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
+            _instnace.Dispose();
             _instnace = null;
 
             MainWindow.Instance.Focus();
@@ -107,6 +109,32 @@ namespace EasyCodeword.Views
 
             MainWindow.Instance.Focus();
             MainWindow.Instance.MainTextBox.Focus();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    _timer.Dispose();
+                }
+
+                // Release unmanaged resources
+
+                _isDisposed = true;
+            }
+        }
+
+        ~AlertWindow()
+        {
+            Dispose(false);
         }
     }
 }

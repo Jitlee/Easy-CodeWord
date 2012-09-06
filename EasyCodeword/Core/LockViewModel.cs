@@ -1,17 +1,19 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Security.Permissions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-
 using EasyCodeword.Utilities;
 using EasyCodeword.Views;
 
 namespace EasyCodeword.Core
 {
-    public class LockViewModel : EntityObject
+    public class LockViewModel : EntityObject, IDisposable
     {
         private static LockViewModel _instance = new LockViewModel();
+
+        private bool _isDisposed;
 
         private Timer _timer;   // 自动解锁时钟
 
@@ -211,7 +213,8 @@ namespace EasyCodeword.Core
             MainWindow.Instance.ShowMessage("锁定功能已解除。");
         }
 
-        public void Lock()
+        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        internal void Lock()
         {
             // 软件尚未注册
             if (!Verify())
@@ -302,6 +305,35 @@ namespace EasyCodeword.Core
         {
             LockWords = string.Empty;
             LockMinutes = string.Empty;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    if (null != _timer)
+                    {
+                        _timer.Dispose();
+                    }
+                }
+
+                // Release unmanaged resources
+
+                _isDisposed = true;
+            }
+        }
+
+        ~LockViewModel()
+        {
+            Dispose(false);
         }
     }
 }

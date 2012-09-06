@@ -4,33 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows;
+using EasyCodeword.Utilities;
 
 namespace EasyCodeword
 {
     static class WindowIconHelper
     {
-        [DllImport("user32.dll")]
-        static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter, int x, int y, int width, int height, uint flags);
-
-        [DllImport("user32.dll")]
-        static extern IntPtr SendMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
-        private static extern int GetWindowLong(IntPtr hwnd, int nIndex);
-        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
-        private static extern int SetWindowLong(IntPtr hMenu, int nIndex, int dwNewLong);
-
-        [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
-        static extern IntPtr GetWindowLong32(IntPtr hWnd, int nIndex);
-
-        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
-        static extern IntPtr GetWindowLong64(IntPtr hWnd, int nIndex);
-
-        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
-        static extern IntPtr SetWindowLong32(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
-
-        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
-        static extern IntPtr SetWindowLong64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
         const int SWP_NOSIZE = 0x0001;
         const int SWP_NOMOVE = 0x0002;
@@ -50,17 +29,17 @@ namespace EasyCodeword
         public static IntPtr GetWindowLongPtr(IntPtr hWnd, WindowLongFlags nIndex)
         {
             if (IntPtr.Size == 8)
-                return GetWindowLong64(hWnd, (int)nIndex);
+                return NativeMethods.GetWindowLong64(hWnd, (int)nIndex);
             else
-                return GetWindowLong32(hWnd, (int)nIndex);
+                return NativeMethods.GetWindowLong32(hWnd, (int)nIndex);
         }
 
         public static IntPtr SetWindowLongPtr(IntPtr hWnd, WindowLongFlags nIndex, IntPtr dwNewLong)
         {
             if (IntPtr.Size == 8)
-                return SetWindowLong64(hWnd, (int)nIndex, dwNewLong);
+                return NativeMethods.SetWindowLong64(hWnd, (int)nIndex, dwNewLong);
             else
-                return SetWindowLong32(hWnd, (int)nIndex, dwNewLong);
+                return NativeMethods.SetWindowLong32(hWnd, (int)nIndex, dwNewLong);
         }
 
         //设置标志位
@@ -100,7 +79,7 @@ namespace EasyCodeword
             {
                 var hwnd = window.GetHandle();
                 SetWindowStylesEx(hwnd, WindowStylesEx.WS_EX_DLGMODALFRAME);
-                SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+                NativeMethods.SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
             };
         }
 
@@ -110,7 +89,7 @@ namespace EasyCodeword
             {
                 var hwnd = window.GetHandle();
                 SetWindowStylesEx(hwnd, WindowStylesEx.WS_EX_DLGMODALFRAME);
-                SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+                NativeMethods.SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 
                 UnsetWindowStyles(hwnd, WindowStyles.WS_MINIMIZEBOX);
                 UnsetWindowStyles(hwnd, WindowStyles.WS_MAXIMIZEBOX);

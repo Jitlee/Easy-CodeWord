@@ -20,14 +20,16 @@ namespace EasyCodeword.Utilities
         /// <returns>返回加密后的密文</returns>
         internal static string Encrypt(string plainText, string key)
         {
-            //分组加密算法
-            SymmetricAlgorithm des = Rijndael.Create();
-            byte[] inputByteArray = Encoding.UTF8.GetBytes(plainText);//得到需要加密的字节数组	
-            //设置密钥及密钥向量
-            des.Key = ConvertKey(key);
-            des.IV = DefaultKey;
-            using (MemoryStream ms = new MemoryStream())
+            MemoryStream ms = null;
+            try
             {
+                //分组加密算法
+                SymmetricAlgorithm des = Rijndael.Create();
+                byte[] inputByteArray = Encoding.UTF8.GetBytes(plainText);//得到需要加密的字节数组	
+                //设置密钥及密钥向量
+                des.Key = ConvertKey(key);
+                des.IV = DefaultKey;
+                ms = new MemoryStream();
                 using (CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(), CryptoStreamMode.Write))
                 {
                     cs.Write(inputByteArray, 0, inputByteArray.Length);
@@ -36,6 +38,17 @@ namespace EasyCodeword.Utilities
                     var output = Convert.ToBase64String(cipherBytes);
                     cipherBytes = null;
                     return output;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (ms != null)
+                {
+                    //ms.Dispose();
                 }
             }
         }
@@ -48,6 +61,7 @@ namespace EasyCodeword.Utilities
         /// <returns>返回解密后的字符串</returns>
         internal static string Decrypt(string cipherText, string key)
         {
+            MemoryStream ms = null;
             try
             {
                 var cipherBytes = Convert.FromBase64String(cipherText);
@@ -55,23 +69,26 @@ namespace EasyCodeword.Utilities
                 des.Key = ConvertKey(key);
                 des.IV = DefaultKey;
                 byte[] decryptBytes = new byte[cipherBytes.Length];
-                using (MemoryStream ms = new MemoryStream(cipherBytes))
+                ms = new MemoryStream(cipherBytes);
+                using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(), CryptoStreamMode.Read))
                 {
-                    using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(), CryptoStreamMode.Read))
-                    {
-                        cs.Read(decryptBytes, 0, decryptBytes.Length);
-                        cs.Close();
-                        ms.Close();
-                        var output = Encoding.UTF8.GetString(decryptBytes).TrimEnd('\0');
-                        decryptBytes = null;
-                        cipherBytes = null;
-                        return output;
-                    }
+                    cs.Read(decryptBytes, 0, decryptBytes.Length);
+                    var output = Encoding.UTF8.GetString(decryptBytes).TrimEnd('\0');
+                    decryptBytes = null;
+                    cipherBytes = null;
+                    return output;
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return cipherText;
+            }
+            finally
+            {
+                if (null != ms)
+                {
+                    //ms.Dispose();
+                }
             }
         }
 

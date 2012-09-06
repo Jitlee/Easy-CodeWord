@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace EasyCodeword.Core
 {
-    public class MainViewModel : EntityObject
+    public class MainViewModel : EntityObject, IDisposable
     {
         #region 变量
 
@@ -18,6 +18,8 @@ namespace EasyCodeword.Core
         private readonly Timer _timer;
 
         private string _fileName = string.Empty;
+
+        private bool _isDisposed;
 
         #endregion
 
@@ -47,7 +49,7 @@ namespace EasyCodeword.Core
 
         ~MainViewModel()
         {
-            _timer.Dispose();
+            Dispose(false);
         }
 
         #endregion
@@ -87,5 +89,27 @@ namespace EasyCodeword.Core
         }
 
         #endregion
+
+        
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    _timer.Dispose();
+                }
+
+                // Release unmanaged resources
+
+                _isDisposed = true;
+            }
+        }
     }
 }

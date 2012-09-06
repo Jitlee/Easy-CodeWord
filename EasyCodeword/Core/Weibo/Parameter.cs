@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace WeiboSDK.QQ
+namespace WeiboSDK
 {
     public class Parameter
     {

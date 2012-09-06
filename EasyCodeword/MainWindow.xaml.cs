@@ -25,7 +25,7 @@ namespace EasyCodeword
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
         #region 变量
 
@@ -52,6 +52,8 @@ namespace EasyCodeword
         //private readonly Storyboard _showMenuStorybaord;
 
         //private readonly Storyboard _hideMenuStorybaord;
+
+        private bool _isDisposed;
         
         #endregion
 
@@ -93,6 +95,7 @@ namespace EasyCodeword
 
             //_showMenuStorybaord = Resources["ShowMenuStoryboard"] as Storyboard;
             //_hideMenuStorybaord = Resources["HideMenuStoryboard"] as Storyboard;
+            this.LeftRectangle.PreviewMouseMove += LeftRectangle_PreviewMouseMove;
         }
 
         #endregion
@@ -906,7 +909,6 @@ namespace EasyCodeword
 
         private void File_Click(object sender, RoutedEventArgs e)
         {
-            
             OpenPopup();
             if (this.MainMenuSubPopup.DataContext != MenuViewModel.FileMenu)
             {
@@ -959,6 +961,7 @@ namespace EasyCodeword
 
         private void LeftRectangle_PreviewMouseMove(object sender, MouseEventArgs e)
         {
+            this.MainMenuPopup.Height = SystemParameters.PrimaryScreenHeight;
             this.MainMenuPopup.IsOpen = true;
         }
 
@@ -969,12 +972,41 @@ namespace EasyCodeword
 
         private void MainMenuPopup_Opened(object sender, EventArgs e)
         {
+            this.LeftRectangle.PreviewMouseMove -= LeftRectangle_PreviewMouseMove;
             MainTextBoxBorder.SetValue(MarginProperty, new Thickness(MainMenuBorder.ActualWidth, 0d, 0d, 0d));
         }
 
         private void MainMenuPopup_Closed(object sender, EventArgs e)
         {
+            this.LeftRectangle.PreviewMouseMove -= LeftRectangle_PreviewMouseMove;
+            this.LeftRectangle.PreviewMouseMove += LeftRectangle_PreviewMouseMove;
             MainTextBoxBorder.ClearValue(MarginProperty);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    _autoSaveTimer.Dispose();
+                }
+
+                // Release unmanaged resources
+
+                _isDisposed = true;
+            }
+        }
+
+        ~MainWindow()
+        {
+            Dispose(false);
         }
     }
 }

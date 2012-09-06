@@ -41,13 +41,13 @@
     <sys:Double x:Key="MainMenuSubItemSize">110</sys:Double>
     <GridLength x:Key="MainMenuItemSize">110</GridLength>
     
-    <sys:Double x:Key="MainMenuSubItemImageSize">48</sys:Double>
-    <sys:Double x:Key="MainMenuItemImageSize">84</sys:Double>
-    <sys:Double x:Key="MainMenuImageSize">60</sys:Double>
+    <sys:Double x:Key="MainMenuSubItemImageSize">45</sys:Double>
+    <sys:Double x:Key="MainMenuItemImageSize">55</sys:Double>
+    <sys:Double x:Key="MainMenuImageSize">45</sys:Double>
     
     <Thickness x:Key="MainMenuItemPadding">2</Thickness>
     <Thickness x:Key="MainMenuItemBorderThickness">2</Thickness>
-    <Thickness x:Key="MainMenuSubTitleImageMargin">20,39,20,0</Thickness>
+    <Thickness x:Key="MainMenuSubTitleImageMargin">20,55,20,0</Thickness>
     <Thickness x:Key="MainMenuSubTitleMargin">0,39,36,0</Thickness>
     
     <!-- MainMenu 颜色结束 -->

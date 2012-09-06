@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Security.Permissions;
 using System.Windows;
 using EasyCodeword.Core;
 using EasyCodeword.Utilities;
@@ -49,12 +50,12 @@ namespace EasyCodeword
                 }
             }
         }
+
         protected override void OnStartup(StartupEventArgs e)
         {
+            LicenseProvider.Verify();
             SplashScreen splashScreen = new SplashScreen("Images/splash_screen.png");
             splashScreen.Show(true);
-
-            LicenseProvider.Verify();
             base.OnStartup(e);
         }
     }

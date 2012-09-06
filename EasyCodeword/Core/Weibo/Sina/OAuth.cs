@@ -5,11 +5,13 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using EasyCodeword.Utilities;
 
 namespace WeiboSDK.Sina
 {
     public class OAuth
     {
+        private ILogger _logger = LoggerFactory.GetLogger(typeof(OAuth).FullName);
         /// <summary>
         /// 获取App Key
         /// </summary>
@@ -98,7 +100,7 @@ namespace WeiboSDK.Sina
             }
             catch (WebException webException)
             {
-                
+                _logger.Trance("[Login] WebException : {0}", webException.Message);
             }
             return false;
         }

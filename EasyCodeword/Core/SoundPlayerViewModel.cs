@@ -34,6 +34,8 @@ namespace EasyCodeword.Core
 
         public bool IsPlaying { get { return null != _soundPlayer; } }
 
+        public bool IsShowNowPlaying { get { return IsPlaying && SettingViewModel.Instance.IsShowNowPlaying; } }
+
         public string PlayingMusic
         {
             get { return _playingMusic; }
@@ -51,16 +53,21 @@ namespace EasyCodeword.Core
 
         ~SoundPlayerViewModel()
         {
-            try
+            if (null != _soundPlayer)
             {
-                if (null != _soundPlayer)
+                Application.Current.Dispatcher.Invoke(new Action(() =>
                 {
-                    _soundPlayer.Close();
-                    _soundPlayer = null;
-                }
-            }
-            catch
-            {
+
+                    try
+                    {
+                        _soundPlayer.Close();
+                        _soundPlayer = null;
+                    }
+                    catch(Exception ex)
+                    {
+                        _logger.Error("[~SoundPlayerViewModel] Exception : {0}", ex.Message);
+                    }
+                }));
             }
         }
 
@@ -145,7 +152,7 @@ namespace EasyCodeword.Core
                             _soundPlayer.Stop();
                         }
                         AutoPlay();
-                        RaisePropertyChanged("IsPlaying");
+                        RaisePropertyChanged("IsShowNowPlaying");
                         return;
                     }
                 }
@@ -168,7 +175,7 @@ namespace EasyCodeword.Core
                     _soundPlayer.Close();
                     _soundPlayer = null;
                 }
-                RaisePropertyChanged("IsPlaying");
+                RaisePropertyChanged("IsShowNowPlaying");
             }
             catch (Exception ex)
             {

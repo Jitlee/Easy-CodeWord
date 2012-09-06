@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -25,7 +26,7 @@ namespace EasyCodeword.Views
                 RegisterStatusRun.Text = "注册";
                 RegisterHelperRun.Text = "\n本软件尚未注册，部分功能将限制使用";
             }
-            VersionRun.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            VersionRun.Text = Regex.Match(Assembly.GetExecutingAssembly().GetName().Version.ToString(), @"^[0-9]+\.[0-9]+").Value;
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e)

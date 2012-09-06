@@ -304,7 +304,7 @@ namespace EasyCodeword.Core
             RWReg.SetValue(Constants.SubName, "MaximumDailyHours", _maximumDailyHours.TotalMilliseconds);
             RWReg.SetValue(Constants.SubName, "MaximumDailyWords", _maximumDailyWords);
             RWReg.SetValue(Constants.SubName, "MaximumTypingSpeed", _maximumTypingSpeed);
-            RWReg.SetValue(Constants.SubName, "TotalHours", _totalHours.Milliseconds);
+            RWReg.SetValue(Constants.SubName, "TotalHours", _totalHours.TotalMilliseconds);
             RWReg.SetValue(Constants.SubName, "TotalWords", _totalWords);
         }
 

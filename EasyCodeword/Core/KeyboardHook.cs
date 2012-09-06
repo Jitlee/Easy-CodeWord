@@ -5,12 +5,13 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Reflection;
 using System.Diagnostics;
+using EasyCodeword.Utilities;
+using System.Security.Permissions;
 
 namespace EasyCodeword.Core
 {
     public class KeyboardHook
     {
-        public delegate int KeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
         static int hKeyboardHook = 0;
         KeyboardProc KeyboardHookProcedure;
@@ -26,15 +27,6 @@ namespace EasyCodeword.Core
         public const int WH_KEYBOARD = 13;
         public const int WH_MOUSE_LL = 14;
 
-        public struct KeyboardMSG
-        {
-            public int vkCode;
-            public int scanCode;
-            public int flags;
-            public int time;
-            public int dwExtraInfo;
-
-        }
         //private FileStream MyFs;
 
         //各种键位的ASC码
@@ -68,28 +60,6 @@ namespace EasyCodeword.Core
         private const int WM_SYSKEYUP = 0x105;
         //private static int hKeyboardHook = 0;
 
-        /// <summary>
-        /// vs2008中的声明方法，在vs2010中略有不同
-
-        /// </summary>
-        /// <returns></returns>
-        [DllImport("kernel32")]
-        public static extern int GetCurrentThreadId();
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetWindowsHookEx(int idHook, KeyboardProc lpfn, IntPtr hInstance, int threadId);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern bool UnhookWindowsHookEx(int idHook);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern int CallNextHookEx(int idHook, int nCode, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Winapi)]
-        public static extern short GetKeyState(int keycode);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr GetModuleHandle(string lpModuleName);
 
         //在这里你可以自己定义要拦截的键。
         private int KeyboardHookProc(int nCode, IntPtr wParam, IntPtr lParam)
@@ -103,10 +73,10 @@ namespace EasyCodeword.Core
            ((m.vkCode == VK_ESCAPE) && ((m.flags & LLKHF_ALTDOWN) != 0)) ||
            ((m.vkCode == VK_F4) && ((m.flags & LLKHF_ALTDOWN) != 0)) ||
                 //用于三个组合键
-           (m.vkCode == VK_ESCAPE) && ((GetKeyState(VK_LCONTROL) & 0x8000) != 0) ||
-           ((int)m.vkCode >= 65 && (int)m.vkCode <= 90 && ((GetKeyState(0x12) & 0x8000) != 0)) ||
-           ((int)m.vkCode >= 65 && (int)m.vkCode <= 90 && ((GetKeyState(0x11) & 0x8000) != 0)) ||
-           (m.vkCode == VK_ESCAPE) && ((GetKeyState(VK_RCONTROL) & 0x8000) != 0)
+           (m.vkCode == VK_ESCAPE) && ((NativeMethods.GetKeyState(VK_LCONTROL) & 0x8000) != 0) ||
+           ((int)m.vkCode >= 65 && (int)m.vkCode <= 90 && ((NativeMethods.GetKeyState(0x12) & 0x8000) != 0)) ||
+           ((int)m.vkCode >= 65 && (int)m.vkCode <= 90 && ((NativeMethods.GetKeyState(0x11) & 0x8000) != 0)) ||
+           (m.vkCode == VK_ESCAPE) && ((NativeMethods.GetKeyState(VK_RCONTROL) & 0x8000) != 0)
            )
             {
                 if (null == _callback || (null != _callback && _callback()))
@@ -118,10 +88,12 @@ namespace EasyCodeword.Core
                     KeyMaskStop();
                 }
             }
-            return CallNextHookEx(hKeyboardHook, nCode, wParam, lParam);
+            return NativeMethods.CallNextHookEx(hKeyboardHook, nCode, wParam, lParam);
         }
+
         // 安装钩子
-        public void KeyMaskStart(Func<bool> callback)
+        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        internal void KeyMaskStart(Func<bool> callback)
         {
             _callback = callback;
             if (hKeyboardHook == 0)
@@ -130,8 +102,8 @@ namespace EasyCodeword.Core
                 KeyboardHookProcedure = new KeyboardProc(KeyboardHookProc);
 
                 // 设置线程钩子
-                hKeyboardHook = SetWindowsHookEx(WH_KEYBOARD, KeyboardHookProcedure,
-                    GetModuleHandle(Process.GetCurrentProcess().MainModule.ModuleName), 0);
+                hKeyboardHook = NativeMethods.SetWindowsHookEx(WH_KEYBOARD, KeyboardHookProcedure,
+                    NativeMethods.GetModuleHandle(Process.GetCurrentProcess().MainModule.ModuleName), 0);
                 // 如果设置钩子失败
                 if (hKeyboardHook == 0)
                 {
@@ -153,7 +125,7 @@ namespace EasyCodeword.Core
             bool retKeyboard = true;
             if (hKeyboardHook != 0)
             {
-                retKeyboard = UnhookWindowsHookEx(hKeyboardHook);
+                retKeyboard = NativeMethods.UnhookWindowsHookEx(hKeyboardHook);
                 hKeyboardHook = 0;
             }
             if (!(retKeyboard))

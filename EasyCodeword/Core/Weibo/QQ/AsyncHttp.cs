@@ -35,12 +35,11 @@ namespace WeiboSDK.QQ
         }
     }
 
-
-
-    public class AsyncHttp
+    public class AsyncHttp : IDisposable
     {
         public ManualResetEvent allDone = new ManualResetEvent(false);
         const int DefaultTimeout = 60 * 1000; // 1 minutes timeout
+        private bool _isDisposed;
 
         //异步方式发起http get请求
         public bool HttpGet(string url, string queryString, AsyncHttpCallback callback)
@@ -347,6 +346,32 @@ namespace WeiboSDK.QQ
             {
                 state.cb(this, state.requestData.ToString());
             }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    allDone.Close();
+                }
+
+                // Release unmanaged resources
+
+                _isDisposed = true;
+            }
+        }
+
+        ~AsyncHttp()
+        {
+            Dispose(false);
         }
     }
 }

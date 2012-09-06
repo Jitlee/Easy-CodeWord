@@ -7,11 +7,11 @@
     WindowStartupLocation="CenterScreen"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
-    SizeToContent="WidthAndHeight"
+    WindowState="Maximized"
     FontSize="14"
     Opacity="0"
     AllowsTransparency="True"
-    Background="{DynamicResource MainMenuBackground}">
+    Background="{x:Null}">
     <Window.Resources>
         <Storyboard x:Key="LoadStoryboard">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
@@ -39,7 +39,9 @@
             <BeginStoryboard Storyboard="{StaticResource LoadStoryboard}"/>
         </EventTrigger>
     </Window.Triggers>
-    <Grid x:Name="grid" RenderTransformOrigin="0.5,0.5">
+    <Grid x:Name="grid" RenderTransformOrigin="0.5,0.5"
+        Height="{DynamicResource MainMenuSubHeight}"
+        Background="{DynamicResource MainMenuBackground}">
         <Grid.RenderTransform>
             <TransformGroup>
                 <ScaleTransform/>
@@ -48,24 +50,21 @@
                 <TranslateTransform/>
             </TransformGroup>
         </Grid.RenderTransform>
-        <Grid Margin="30">
+        <Grid Margin="0,30"
+              MaxWidth="800">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock
@@ -123,28 +122,28 @@
             </TextBlock>
             
             <TextBlock
-                Grid.Row="7"
-                Grid.Column="0"
+                Grid.Row="0"
+                Grid.Column="2"
                 Text="历史最快速度："/>
             <TextBlock
-                Grid.Row="7"
-                Grid.Column="1"
+                Grid.Row="0"
+                Grid.Column="3"
                 Text="{Binding MaximumTypingSpeed, StringFormat=\{0\}字/分钟}"/>
             <TextBlock
-                Grid.Row="8"
-                Grid.Column="0"
+                Grid.Row="1"
+                Grid.Column="2"
                 Text="最高日产量："/>
             <TextBlock
-                Grid.Row="8"
-                Grid.Column="1"
+                Grid.Row="1"
+                Grid.Column="3"
                 Text="{Binding MaximumDailyWords, StringFormat=\{0\}字}"/>
             <TextBlock
-                Grid.Row="9"
-                Grid.Column="0"
+                Grid.Row="2"
+                Grid.Column="2"
                 Text="最长日用时："/>
             <TextBlock
-                Grid.Row="9"
-                Grid.Column="1">
+                Grid.Row="2"
+                Grid.Column="3">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}{0:D2}小时{1:D2}分钟">
                         <Binding Path="MaximumDailyHours.Hours" />
@@ -153,21 +152,40 @@
                 </TextBlock.Text>
             </TextBlock>
             <TextBlock
-                Grid.Row="11"
-                Grid.Column="0"
+                Grid.Row="4"
+                Grid.Column="2"
                 Text="总字数："/>
             <TextBlock
-                Grid.Row="11"
-                Grid.Column="1"
+                Grid.Row="4"
+                Grid.Column="3"
                 Text="{Binding TotalWords, StringFormat=\{0\}字}"/>
             <TextBlock
-                Grid.Row="12"
-                Grid.Column="0"
+                Grid.Row="5"
+                Grid.Column="2"
                 Text="总时长："/>
             <TextBlock
-                Grid.Row="12"
-                Grid.Column="1"
+                Grid.Row="5"
+                Grid.Column="3"
                 Text="{Binding TotalHours.Hours, StringFormat=\{0\}小时}"/>
         </Grid>
+            <TextBlock
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Foreground="White"
+                Margin="10">
+                <Run Text="“富士山下”码字控 - 版本号:"/>
+                <Run x:Name="VersionRun"/>
+                <Run x:Name="RegisterHelperRun"/>
+            </TextBlock>
+            <TextBlock
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="10">
+                <Hyperlink
+                    Foreground="White"
+                    Click="Regeister_Click">
+                    <Run x:Name="RegisterStatusRun"/>
+                </Hyperlink>
+            </TextBlock>
     </Grid>
 </Window>

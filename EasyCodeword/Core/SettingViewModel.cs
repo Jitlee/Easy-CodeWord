@@ -231,6 +231,8 @@ namespace EasyCodeword.Core
 
         private bool _autoPlayMusic = Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoPlayMusic", 1)) != 0; // 播放背景音乐
 
+        private bool _isShowNowPlaying = Converter.ToInt(RWReg.GetValue(Constants.SubName, "IsShowNowPlaying", 1)) != 0; // 播放背景音乐
+
         private string _musicFolder = RWReg.GetValue(Constants.SubName, "MusicFolder", string.Empty).ToString();
 
         private bool _isViolenceLock = Converter.ToInt(RWReg.GetValue(Constants.SubName, "LockType", 0)) == 0; // 暴力锁
@@ -270,6 +272,8 @@ namespace EasyCodeword.Core
         private bool _hasAutoSaveIntervalChanged = false;
 
         private bool _hasAutoPlayMusicChanged = false;
+
+        private bool _hasIsShowNowPlayingChanged = false;
 
         private bool _hasMusicFolderChanged = false;
 
@@ -473,6 +477,21 @@ namespace EasyCodeword.Core
             }
         }
 
+        public bool IsShowNowPlaying
+        {
+            get
+            {
+                return _isShowNowPlaying;
+            }
+            set
+            {
+                _isShowNowPlaying = value;
+                RaisePropertyChanged("IsShowNowPlaying");
+                _hasIsShowNowPlayingChanged = HasIsShowNowPlayingChanged();
+                _saveCommand.RaiseCanExecuteChanged();
+            }
+        }
+
         public string MusicFolder
         {
             get { return _musicFolder; }
@@ -657,6 +676,13 @@ namespace EasyCodeword.Core
                 if (_hasAutoPlayMusicChanged)
                 {
                     RWReg.SetValue(Constants.SubName, "AutoPlayMusic", _autoPlayMusic ? 1 : 0);
+
+                }
+                
+                if (_hasIsShowNowPlayingChanged)
+                {
+                    RWReg.SetValue(Constants.SubName, "IsShowNowPlaying", _isShowNowPlaying ? 1 : 0);
+                    SoundPlayerViewModel.Instance.RaisePropertyChanged("IsShowNowPlaying");
                 }
 
                 if (_hasMusicFolderChanged)
@@ -769,6 +795,7 @@ namespace EasyCodeword.Core
                 || _hasAutoSaveIntervalChanged
                 || _hasAutoSaveChanged
                 || _hasAutoPlayMusicChanged
+                || _hasIsShowNowPlayingChanged
                 || _hasMusicFolderChanged
                 || _hasLockChanged
                 || _hasLockTypeChanged
@@ -793,6 +820,7 @@ namespace EasyCodeword.Core
             _hasAutoSaveChanged = false;
             _hasAutoPlayMusicChanged = false;
             _hasMusicFolderChanged = false;
+            _hasIsShowNowPlayingChanged = false;
             _hasLockChanged = false;
             _hasLockTypeChanged = false;
             _hasTenderLockMessageChanged = false;
@@ -859,6 +887,12 @@ namespace EasyCodeword.Core
             {
                 _autoPlayMusic = Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoPlayMusic", 1)) != 0; // 播放背景音乐
                 RaisePropertyChanged("AutoPlayMusic");
+            }
+            
+            if (_hasIsShowNowPlayingChanged)
+            {
+                _isShowNowPlaying = Converter.ToInt(RWReg.GetValue(Constants.SubName, "IsShowNowPlaying", 1)) != 0; // 主界面是否显示正在播放的歌曲
+                RaisePropertyChanged("IsShowNowPlaying");
             }
 
             if (_hasMusicFolderChanged)
@@ -1034,6 +1068,13 @@ namespace EasyCodeword.Core
             return !int.Equals(
                 Converter.ToInt(RWReg.GetValue(Constants.SubName, "AutoPlayMusic", 1)),
                 _autoPlayMusic ? 1 : 0);
+        }
+
+        private bool HasIsShowNowPlayingChanged()
+        {
+            return !int.Equals(
+                Converter.ToInt(RWReg.GetValue(Constants.SubName, "IsShowNowPlaying", 1)),
+                _isShowNowPlaying ? 1 : 0);
         }
 
         private bool HasMusicFolderChanged()
